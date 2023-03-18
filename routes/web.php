@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\PeopleController;
+use App\Models\Income;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +26,15 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+
+    Route::get('people', [PeopleController::class, 'index'])->name('voyager.people.index');
+    Route::get('people/ajax/list/{search?}', [PeopleController::class, 'list']);
+
+    Route::resource('incomes', IncomeController::class);
+    Route::get('income/article/ajax', [IncomeController::class, 'ajaxArticle']);//para poder obtener los particulos o productos
+
+
+
 });
 
 
