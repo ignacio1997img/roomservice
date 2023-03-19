@@ -5,11 +5,19 @@
 @section('content')
     @php
         $months = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');    
-    @endphp
+    @endphp    
 
     <table width="100%">
         <tr>
-            <td style="width: 20%"><img src="{{ asset('images/icon.png') }}" alt="CAPRESI" width="70px"></td>
+            <td style="width: 20%">
+                <?php $admin_favicon = Voyager::setting('admin.icon_image'); ?>
+                @if($admin_favicon == '')
+                    <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
+                    <img src="{{ asset('images/icon.png') }}" alt="CAPRESI" width="70px">
+                @else
+                    <img src="{{ Voyager::image($admin_favicon) }}" alt="CAPRESI" width="70px">
+                @endif
+            </td>
             <td style="text-align: center;  width:50%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
                     {{strtoupper(setting('admin.title'))}}<br>
