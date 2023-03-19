@@ -96,11 +96,16 @@ class IncomeController extends Controller
     }
     public function show($id)
     {
-        $data = Income::with(['detail'=>function($q)
-                {$q->where('deleted_at',null);}])
-                ->where('id', $id)
-                ->get();
+        $income = Income::where('id', $id)
+                ->first();
         // return $data;
-        return view('store.income.print', compact('data'));
+        $data = DB::table('incomes_details as id')
+            ->join('articles as a', 'a.id', 'id.article_id')
+            ->join('categories as c', 'c.id', 'a.category_id')
+            ->where('id.income_id', $income->id)
+            ->select('id.cantSolicitada', 'id.price', 'id.amount', 'a.name as article', 'c.name as category')
+            ->get();
+        // return $data;
+        return view('store.income.print', compact('income', 'data'));
     }
 }
