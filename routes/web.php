@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('people/ajax/list/{search?}', [PeopleController::class, 'list']);
 
     Route::resource('incomes', IncomeController::class);
+    Route::get('incomes/ajax/list/{search?}', [IncomeController::class, 'list']);
     Route::get('income/article/ajax', [IncomeController::class, 'ajaxArticle']);//para poder obtener los particulos o productos
 
 

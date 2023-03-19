@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Income extends Model
@@ -22,4 +23,12 @@ class Income extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+    public function detail()
+    {
+        return $this->hasMany(IncomesDetail::class, 'income_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'registerUser_id');
+    }
 }

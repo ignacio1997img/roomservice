@@ -1,101 +1,36 @@
 <div class="col-md-12">
     <div class="table-responsive">
-        <table id="dataStyle" class="table table-bordered table-hover">
+        <table id="dataTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    @if (auth()->user()->hasRole('admin'))
-                        <th>ID</th>
-                    @endif
-                    <th>Codigo</th>
-                    <th>Fecha Solicitud</th>
-                    <th>Nombre Cliente</th>                    
-                    <th>Tipo de Préstamos</th>                    
-                    <th>Monto Prestado</th>                    
-                    <th>Interés a Cobrar</th>   
-                    <th>Total a Pagar</th>
-                    <th>Deuda Pendiente</th>                    
-                    {{-- <th style="text-align: center">Estado</th> --}}
+                    <th>ID</th>
+                    <th style="text-align: center">Numero Factura</th>
+                    <th style="text-align: center">Fecha FActura</th>
+                    <th style="text-align: center">Monto</th>    
+                    <th style="text-align: center">Estado</th>    
                     <th class="text-right">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($data as $item)
                 <tr>
-                    @if (auth()->user()->hasRole('admin'))
-                        <th>{{$item->id}}</th>
-                    @endif
-                    <td><small>{{ $item->code }}</small></td>
-                    <td>{{ date("d-m-Y", strtotime($item->date)) }}</td>
-                    <td>
-                        <table>                                                    
-                            @php
-                                $image = asset('images/icono-anonimato.png');
-                                if($item->people->image){
-                                    $image = asset('storage/'.str_replace('.', '-cropped.', $item->people->image));
-                                }
-                            @endphp
-                            <tr>
-                                <td>
-                                    <img src="{{ $image }}" alt="{{strtoupper($item->people->first_name)}} {{strtoupper($item->people->last_name1)}} {{strtoupper($item->people->last_name2)}}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px">
-                                </td>
-                                <td>
-                                    <small>CI:</small> {{ $item->people->ci }} <br>
-                                    <small>NOMBRE:</small> {{strtoupper($item->people->first_name)}} {{strtoupper($item->people->last_name1)}} {{strtoupper($item->people->last_name2)}}
-                                </td>
-                            </tr>
-                            
-                        </table>
-                    </td>
-                    <td>
-                        @if ($item->typeLoan == 'diario')
-                            Diario
-                        @endif
-                        @if ($item->typeLoan == 'diarioespecial')
-                            Diario Especial
-                        @endif
-                    </td>
-                    <td style="text-align: right"> <small>Bs.</small> {{$item->amountLoan}}</td>
-                    <td style="text-align: right"> <small>Bs.</small> {{$item->amountPorcentage}}</td>
-                    <td style="text-align: right"> <small>Bs.</small> {{$item->amountTotal}}</td>
-                    {{-- <td style="text-align: right"> <small>Bs.</small> {{$item->debt}}</td> --}}
+                    <td>{{$item->id}}</td>
+                    <td><small>{{ $item->numberFactura?$item->numberFactura:'SN' }}</small></td>
+                    <td>{{ $item->dateFactura?date("d-m-Y", strtotime($item->dateFactura)):'SN' }}</td>
+                    <td style="text-align: right"> <small>Bs.</small> {{$item->amount}}</td>
                     <td style="text-align: right">
-                        @if ($item->debt == 0)
-                            <label class="label label-success">PAGADO</label>
+                        @if ($item->stock == 1)
+                            <label class="label label-success">Con Stock</label>
                         @else
-                            <label class="label label-danger"><small>Bs.</small> {{$item->debt}}</label>
-                        @endif
-                        <br>
-                        @if ($item->status == 'pendiente')
-                            <label class="label label-danger">PENDIENTE</label>                            
-                        @endif
-                        @if ($item->status == 'verificado')
-                            <label class="label label-warning">VERIFICADO</label>                            
-                        @endif
-                        @if ($item->status == 'aprobado')
-                            <label class="label label-primary">APROBADO</label>                            
-                        @endif
-                        @if ($item->status == 'entregado')
-                            <label class="label label-success">ACTIVO</label>                            
-                        @endif
-                        @if ($item->status == 'rechazado')
-                            <label class="label label-danger">RECHAZADO</label>                            
-                        @endif       
+                            <label class="label label-danger">Sin Stock</label>
+                        @endif     
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
-                        @if ($item->status == 'aprobado')
-                            <a href="#" data-toggle="modal" data-target="#notificar-modal" data-name="{{ $item->people->first_name }} {{ $item->people->last_name1 }} {{ $item->people->last_name2 }}" data-phone="{{$item->people->cell_phone}}" title="Notificar al beneficiario" class="btn btn-sm">
-                                <i class="fa-brands fa-square-whatsapp" style="color: #43d180; font-size: 35px;"></i>
-                            </a>
-                            @if (auth()->user()->hasPermission('deliverMoney_loans'))
-                                <a title="Entregar dinero al Beneficiario" class="btn btn-sm btn-success" onclick="deliverItem('{{ route('loans-money.deliver', ['loan' => $item->id]) }}',{{$item->id}}, {{$item->amountLoan}})" data-toggle="modal" data-target="#deliver-modal" data-fechass="{{$item->date}}">
-                                    <i class="fa-solid fa-money-check-dollar"></i><span class="hidden-xs hidden-sm"> Entregar</span>
-                                </a>
-                            @endif
-                        @endif
-
-
-                        @if($item->status != 'rechazado')
-                            <div class="btn-group" style="margin-right: 3px">
+                        <a href="{{route('incomes.show',$item->id)}}" title="Ver" target="_blank" class="btn btn-sm btn-dark view">
+                            <i class="glyphicon glyphicon-print"></i>
+                        </a>     
+                        @if($item->status == 1)
+                            {{-- <div class="btn-group" style="margin-right: 3px">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                     Mas <span class="caret"></span>
                                 </button>
@@ -110,57 +45,7 @@
                                         <li><a onclick="comprobanteDelivered({{$item->id}})" class="btn-rotation"  data-toggle="modal" title="Imprimir Comprobante de Entrega de Prestamos" ><i class="fa-solid fa-print"></i> Imprimir Comprobante Entrega</a></li>
                                     @endif                      
                                 </ul>
-                            </div>
-                        @endif
-
-                            @if(!auth()->user()->hasRole('cobrador') && !auth()->user()->hasRole('cajeros'))
-                                <a href="{{ route('loan-routeOld.index', ['loan' => $item->id]) }}" title="Rutas del Prestamo" class="btn btn-sm btn-dark">
-                                    <i class="fa-solid fa-route"></i><span class="hidden-xs hidden-sm"> Rutas</span>
-                                </a>
-                            @endif
-
-                            @if($item->status != 'rechazado')
-                                <a href="{{ route('loans-requirement-daily.create', ['loan' => $item->id]) }}" title="Requisitos" class="btn btn-sm btn-warning">
-                                    <i class="fa-solid fa-file"></i><span class="hidden-xs hidden-sm"> Requisitos</span>
-                                </a>
-                            @endif
-                            
-                            @if ($item->status=='verificado' && auth()->user()->hasPermission('successLoan_loans') && $item->status != 'rechazado')
-                                <a title="Aprobar prestamo" class="btn btn-sm btn-dark" onclick="successItem('{{ route('loans.success', ['loan' => $item->id]) }}')" data-toggle="modal" data-target="#success-modal">
-                                    <i class="fa-solid fa-money-check-dollar"></i><span class="hidden-xs hidden-sm"> Aprobar Prestamos</span>
-                                </a>
-                            @endif
-
-
-                            @if ($item->status == 'entregado' && $item->status != 'rechazado')
-                                <a href="{{ route('loans-daily.money', ['loan' => $item->id, 'cashier_id'=>$cashier_id]) }}" title="Abonar Pago"  class="btn btn-sm btn-success">
-                                    <i class="voyager-dollar"></i><span class="hidden-xs hidden-sm"> {{$item->debt == 0?'Ver':'Abonar Pago'}}</span>
-                                </a>
-                            @endif
-
-                            
-
-                        @if (auth()->user()->hasRole('gerente')||auth()->user()->hasRole('administrador')||auth()->user()->hasRole('admin'))                            
-                            @if ($item->status == 'entregado')
-                                @php
-                                    $destroy = \App\Models\Cashier::where('id', $item->cashier_id)->first();
-                                @endphp
-                                @if($destroy->status == 'cerrada')
-                                    <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="destroyItem('{{ route('loans-cashierclose.destroy', ['loan' => $item->id]) }}')" data-toggle="modal" data-target="#destroy-modal">
-                                        <i class="fa-solid fa-trash"></i> <span class="hidden-xs hidden-sm">Eliminar</span>
-                                    </button>
-                                @endif
-                            @endif
-                        @endif
-                        @if (auth()->user()->hasPermission('delete_loans'))
-                            @if ($item->status != 'rechazado' && $item->status != 'entregado')
-                                <button title="Rechazar" class="btn btn-sm btn-dark" onclick="rechazarItem('{{ route('loans.rechazar', ['loan' => $item->id]) }}')" data-toggle="modal" data-target="#rechazar-modal">
-                                    <i class="fa-solid fa-thumbs-down"></i> <span class="hidden-xs hidden-sm">Rechazar</span>
-                                </button>
-                                <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('loans.destroy', ['loan' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
-                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                                </button>
-                            @endif
+                            </div> --}}
                         @endif
                     </td>
                     
@@ -168,7 +53,7 @@
                 </tr>
                 @empty
                     <tr>
-                        <td style="text-align: center" valign="top" colspan="10" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                        <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
                     </tr>
                 @endforelse
             </tbody>

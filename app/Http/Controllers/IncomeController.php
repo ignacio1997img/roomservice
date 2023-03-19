@@ -17,6 +17,27 @@ class IncomeController extends Controller
     {
         return view('store.income.browse');
     }
+
+    public function list($search = null)
+    {
+        $paginate = request('paginate') ?? 10;
+        // return 1;
+       
+        $data = Income::with(['user'])
+                    ->where(function($query) use ($search){
+                        if($search){
+                            $query->OrWhereRaw($search ? "numberFactura like '%$search%'" : 1)
+                            ->OrWhereRaw($search ? "dateFactura like '%$search%'" : 1)
+                            ->OrWhereRaw($search ? "amount like '%$search%'" : 1);
+                        }
+                    })
+                    ->where('deleted_at', NULL)->orderBy('id', 'DESC')->paginate($paginate);
+        // dump($data);
+        return view('store.income.list', compact('data'));
+
+    }
+
+
     public function create()
     {
         $category = Category::where('deleted_at', null)->get();
@@ -69,8 +90,17 @@ class IncomeController extends Controller
             return redirect()->route('incomes.index')->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return 0;
+            // return 0;
             return redirect()->route('incomes.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
+    }
+    public function show($id)
+    {
+        $data = Income::with(['detail'=>function($q)
+                {$q->where('deleted_at',null);}])
+                ->where('id', $id)
+                ->get();
+        // return $data;
+        return view('store.income.print', compact('data'));
     }
 }

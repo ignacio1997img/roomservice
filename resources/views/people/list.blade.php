@@ -49,17 +49,7 @@
                         @endif                       
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
-                        @if ($item->token==null)
-                            <a href="#" data-toggle="modal" data-target="#verificar-modal" data-name="{{ $item->first_name }} {{ $item->last_name1 }} {{ $item->last_name2 }}" data-id="{{$item->id}}" data-phone="{{$item->cell_phone}}" title="Verificación" class="btn btn-sm btn-success">
-                                <i class="fa-solid fa-key"></i> <span class="hidden-xs hidden-sm">Verificar</span>
-                            </a>
-                        @endif
-                        @if (auth()->user()->hasPermission('sponsor_people'))
-                            <a href="{{route('people-sponsor.index', ['id'=>$item->id])}}" title="Ver" class="btn btn-sm btn-dark view">
-                                <i class="fa-solid fa-medal"></i> <span class="hidden-xs hidden-sm">Patrocinador</span>
-                            </a>
-                        @endif
-
+                       
                         @if (auth()->user()->hasPermission('read_people'))
                             <a href="{{ route('voyager.people.show', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
                                 <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
