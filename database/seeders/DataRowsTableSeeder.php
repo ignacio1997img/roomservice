@@ -913,7 +913,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":12},"resize":{"width":"1000","height":null},"quality":"70%","upsize":true,"thumbnails":[{"name":"medium","scale":"50%"},{"name":"small","scale":"25%"},{"name":"cropped","crop":{"width":"300","height":"250"}}]}',
-                'order' => 3,
+                'order' => 2,
             ),
             56 => 
             array (
@@ -929,7 +929,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\Category","table":"categories","type":"belongsTo","column":"category_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
-                'order' => 2,
+                'order' => 3,
             ),
             57 => 
             array (
