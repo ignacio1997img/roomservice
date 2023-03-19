@@ -53,7 +53,7 @@
                 </tr>
                 @empty
                     <tr>
-                        <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                        <td style="text-align: center" valign="top" colspan="6" class="dataTables_empty">No hay datos disponibles en la tabla</td>
                     </tr>
                 @endforelse
             </tbody>
