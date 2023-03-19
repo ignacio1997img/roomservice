@@ -12,7 +12,7 @@
             <td style="width: 20%">
                 <?php $admin_favicon = Voyager::setting('admin.icon_image'); ?>
                 @if($admin_favicon == '')
-                    <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
+                    <link rel="shortcut icon" href="{{ asset('image/default.jpg') }}" type="image/png">
                     <img src="{{ asset('images/icon.png') }}" alt="CAPRESI" width="70px">
                 @else
                     <img src="{{ Voyager::image($admin_favicon) }}" alt="CAPRESI" width="70px">
