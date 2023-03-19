@@ -24,4 +24,8 @@ class IncomesDetail extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+    public function article()
+    {
+        return $this->belongsTo(Article::class, 'article_id');
+    }
 }

@@ -108,4 +108,26 @@ class IncomeController extends Controller
         // return $data;
         return view('store.income.print', compact('income', 'data'));
     }
+
+
+    //Para ver el stock del almacen
+    public function indexStock()
+    {
+        return view('store.stock.browse');
+    }
+
+    public function listStock($search = null)
+    {
+        $paginate = request('paginate') ?? 10;
+
+        $data = IncomesDetail::with(['article.category'])
+                ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price')->paginate($paginate);
+
+        
+        // dump($data);
+        return view('store.stock.list', compact('data'));
+
+    }
+
+
 }
