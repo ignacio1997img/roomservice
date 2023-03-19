@@ -931,22 +931,6 @@ class DataRowsTableSeeder extends Seeder
                 'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\Category","table":"categories","type":"belongsTo","column":"category_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
                 'order' => 3,
             ),
-            57 => 
-            array (
-                'id' => 69,
-                'data_type_id' => 9,
-                'field' => 'expirationStatus',
-                'type' => 'text',
-                'display_name' => 'ExpirationStatus',
-                'required' => 1,
-                'browse' => 1,
-                'read' => 1,
-                'edit' => 1,
-                'add' => 1,
-                'delete' => 1,
-                'details' => '{}',
-                'order' => 10,
-            ),
         ));
         
         
