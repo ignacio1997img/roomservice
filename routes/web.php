@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\WorkerController;
 use App\Models\Income;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('incomes', IncomeController::class);
     Route::get('incomes/ajax/list/{search?}', [IncomeController::class, 'list']);
     Route::get('income/article/ajax', [IncomeController::class, 'ajaxArticle']);//para poder obtener los particulos o productos
+
+    Route::resource('worker', WorkerController::class);
 
 
 

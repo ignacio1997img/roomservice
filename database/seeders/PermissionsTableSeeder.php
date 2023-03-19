@@ -48,5 +48,8 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('people');
         Permission::generateFor('categories');
         Permission::generateFor('articles');
+
+
+        Permission::generateFor('categories_workers');
     }
 }
