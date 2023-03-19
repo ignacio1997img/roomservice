@@ -17,4 +17,9 @@ class Worker extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+
+    public function worker()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 }
