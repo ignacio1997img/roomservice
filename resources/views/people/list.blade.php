@@ -20,7 +20,7 @@
                     <td>
                         <table>
                             @php
-                                $image = asset('images/icono-anonimato.png');
+                                $image = asset('image/default.jpg');
                                 if($item->image){
                                     $image = asset('storage/'.str_replace('.', '-cropped.', $item->image));
                                 }
