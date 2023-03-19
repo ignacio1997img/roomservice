@@ -39,6 +39,8 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     Route::resource('worker', WorkerController::class);
+    Route::get('worker/ajax/list/{search?}', [WorkerController::class, 'list']);
+
 
 
 
