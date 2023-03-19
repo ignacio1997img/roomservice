@@ -801,7 +801,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{}',
-                'order' => 3,
+                'order' => 4,
             ),
             49 => 
             array (
@@ -817,7 +817,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 0,
                 'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
-                'order' => 4,
+                'order' => 5,
             ),
             50 => 
             array (
@@ -833,7 +833,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 0,
                 'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
-                'order' => 5,
+                'order' => 6,
             ),
             51 => 
             array (
@@ -897,7 +897,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 10,
+                'order' => 11,
             ),
             55 => 
             array (
@@ -913,7 +913,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":12},"resize":{"width":"1000","height":null},"quality":"70%","upsize":true,"thumbnails":[{"name":"medium","scale":"50%"},{"name":"small","scale":"25%"},{"name":"cropped","crop":{"width":"300","height":"250"}}]}',
-                'order' => 6,
+                'order' => 3,
             ),
             56 => 
             array (
@@ -930,6 +930,22 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\Category","table":"categories","type":"belongsTo","column":"category_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
                 'order' => 2,
+            ),
+            57 => 
+            array (
+                'id' => 69,
+                'data_type_id' => 9,
+                'field' => 'expirationStatus',
+                'type' => 'text',
+                'display_name' => 'ExpirationStatus',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 10,
             ),
         ));
         
