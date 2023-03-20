@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CategoryRoomController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\WorkerController;
+use App\Models\CategoriesRoom;
 use App\Models\Income;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,11 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('worker/category/store', [WorkerController::class, 'storeCategory'])->name('worker-category.store');
     Route::delete('worker/{worker?}/category/delete', [WorkerController::class, 'deleteCategory'])->name('worker-category.delete');
 
+
+    Route::get('categories-rooms', [CategoryRoomController::class, 'index'])->name('voyager.categories-rooms.index');
+    Route::post('categories-rooms/store', [CategoryRoomController::class, 'store'])->name('categories-rooms.store');
+    Route::get('categories-rooms/parthotel/ajax', [CategoryRoomController::class, 'ajaxPartsHotel']);//para poder obtener las partes que conformara el hotel
+    Route::get('categories-rooms/ajax/list/{search?}', [CategoryRoomController::class, 'list']);
 
 
 

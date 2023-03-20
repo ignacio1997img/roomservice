@@ -56,28 +56,28 @@
         </div>
     </div>
 
-    <form lass="form-submit" id="irremovability-form" action="{{route('worker.store')}}" method="post">
+    <form lass="form-submit" id="irremovability-form" action="{{route('categories-rooms.store')}}" method="post">
         @csrf
         <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa-solid fa-person"></i> Registrar Personal</h4>
+                        <h4 class="modal-title"><i class="voyager-categories"></i> Registrar Categoria</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Personal</label>
-                            <select name="people" class="form-control" id="select-product_id" required></select>
+                            <input type="text" name="name" class="form-control" placeholder="Ingrese la categoria de la habitación" required>
                         </div>
                         <div class="form-group">
                             <label>Observaciones</label>
-                            <textarea name="observation" class="form-control" rows="5"></textarea>
+                            <textarea name="description" class="form-control" rows="5"></textarea>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>Area de trabajo</label>
-                            <select class="form-control" id="select-worker" required></select>
+                            <label>Partes de la Habitación</label>
+                            <select class="form-control" id="selected_parts" required></select>
                         </div>
                         <div class="form-group">
                             <div class="table-responsive">
@@ -86,14 +86,15 @@
                                         <tr>
                                             <th style="width: 30px">N&deg;</th>
                                             <th style="text-align: center">Detalle</th>  
+                                            <th style="text-align: center; width: 150px">Precio</th>  
                                             <th width="15px">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-body">
                                         <tr id="tr-empty">
-                                            <td colspan="3" style="height: 150px">
+                                            <td colspan="4" style="height: 150px">
                                                 <h4 class="text-center text-muted" style="margin-top: 50px">
-                                                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px"></i> <br><br>
+                                                    <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
                                                     Lista de detalle vacía
                                                 </h4>
                                             </td>
@@ -162,8 +163,8 @@
     <script>
         $(document).ready(function(){
                 var productSelected;
-                
-                $('#select-product_id').select2({
+
+                $('#selected_parts').select2({
                 // tags: true,
                     placeholder: '<i class="fa fa-search"></i> Buscar...',
                     escapeMarkup : function(markup) {
@@ -180,51 +181,7 @@
                     quietMillis: 250,
                     minimumInputLength: 2,
                     ajax: {
-                        url: "{{ url('admin/worker/people/ajax') }}",        
-                        processResults: function (data) {
-                            let results = [];
-                            data.map(data =>{
-                                results.push({
-                                    ...data,
-                                    disabled: false
-                                });
-                            });
-                            return {
-                                results
-                            };
-                        },
-                        cache: true
-                    },
-                    templateResult: formatResultCustomers,
-                    templateSelection: (opt) => {
-                        productSelected = opt;
-
-                        
-                        return opt.first_name?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
-                    }
-                }).change(function(){
-                   
-                });
-
-
-                $('#select-worker').select2({
-                // tags: true,
-                    placeholder: '<i class="fa fa-search"></i> Buscar...',
-                    escapeMarkup : function(markup) {
-                        return markup;
-                    },
-                    language: {
-                        inputTooShort: function (data) {
-                            return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
-                        },
-                        noResults: function () {
-                            return `<i class="far fa-frown"></i> No hay resultados encontrados`;
-                        }
-                    },
-                    quietMillis: 250,
-                    minimumInputLength: 2,
-                    ajax: {
-                        url: "{{ url('admin/worker/category/ajax') }}",        
+                        url: "{{ url('admin/categories-rooms/parthotel/ajax') }}",        
                         processResults: function (data) {
                             let results = [];
                             data.map(data =>{
@@ -248,7 +205,7 @@
                     }
                 }).change(function(){
                     // alert(2)
-                    if($('#select-worker option:selected').val()){
+                    if($('#selected_parts option:selected').val()){
                         let product = productSelected;
                         if($('.tables').find(`#tr-item-${product.id}`).val() === undefined){
                         // alert(product.name);
@@ -259,6 +216,9 @@
                                     <td>
                                         <b class="label-description" id="description-${product.id}"><small>${product.name}</small>
                                         <input type="hidden" name="category[]" value="${product.id}" />
+                                    </td>
+                                    <td>
+                                        <input type="number" name="price[]" min="0" step="1" id="select-price-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
                                     </td>
                                     <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
                                 </tr>
@@ -325,7 +285,7 @@
             }
             function removeTr(id){
                 $(`#tr-item-${id}`).remove();
-                $('#select-worker').val("").trigger("change");
+                $('#selected_parts').val("").trigger("change");
             }
             
     </script>
@@ -352,7 +312,7 @@
             var loader = '<div class="col-md-12 bg"><div class="loader" id="loader-3"></div></div>'
             $('#div-results').html(loader);
 
-            let url = '{{ url("admin/worker/ajax/list") }}';
+            let url = '{{ url("admin/categories-rooms/ajax/list") }}';
             let search = $('#input-search').val() ? $('#input-search').val() : '';
 
             $.ajax({
@@ -371,5 +331,42 @@
         }
 
        
+    </script>
+
+    <script>
+        function filterFloat(evt,input){
+            // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+                var key = window.Event ? evt.which : evt.keyCode;    
+                var chark = String.fromCharCode(key);
+                var tempValue = input.value+chark;
+                if(key >= 48 && key <= 57){
+                    if(filter(tempValue)=== false){
+                        return false;
+                    }else{       
+                        return true;
+                    }
+                }else{
+                    if(key == 8 || key == 0) {     
+                        return true;              
+                    }else if(key == 46){
+                            if(filter(tempValue)=== false){
+                                return false;
+                            }else{       
+                                return true;
+                            }
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            function filter(__val__){
+                var preg = /^([0-9]+\.?[0-9]{0,2})$/; 
+                if(preg.test(__val__) === true){
+                    return true;
+                }else{
+                return false;
+                }
+                
+            }
     </script>
 @stop

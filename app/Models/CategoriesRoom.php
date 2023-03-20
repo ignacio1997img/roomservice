@@ -14,6 +14,13 @@ class CategoriesRoom extends Model
     protected $fillable = [
         'name',
         'description',
-        'deleted_at'
+        'deleted_at',
+        'registerUser_id',
+        'deletedUser_id'
     ];
+
+    public function part()
+    {
+        return $this->hasMany(CategoriesRoomsPart::class, 'categoryRoom_id');
+    }
 }
