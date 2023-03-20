@@ -3,8 +3,8 @@
         <table id="dataTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th style="text-align: center">Categoría</th>
-                    <th style="text-align: center">Article</th>
+                    <th style="text-align: center">Detalles</th>
+                    {{-- <th style="text-align: center">Article</th> --}}
                     <th style="text-align: center">Cantidad Disponible</th>    
                     <th style="text-align: center">Precio</th>    
                     <th style="text-align: center">Total</th>    
@@ -13,8 +13,24 @@
             <tbody>
                 @forelse ($data as $item)
                 <tr>
-                    <td>{{ $item->article->category->name }}</td>
-                    <td>{{ $item->article->name }}</td>
+                    <td>
+                        @php
+                            $image = asset('image/default.jpg');
+                            if($item->article->image){
+                                $image = asset('storage/'.str_replace('.', '-cropped.', $item->article->image));
+                            }
+                        @endphp
+                        <div style="display: flex">
+                            <div style="margin: 0px 10px">
+                                <img src="${image}" width="50px" />
+                            </div>
+                            <div>
+                                <b style="font-size: 16px">{{ $item->article->name }}</b><br>
+                                <small>Categoría: </small>{{ $item->article->category->name }}
+                            </div>
+                        </div>
+                    </td>
+                    {{-- <td>{{ $item->article->name }}</td> --}}
                     <td style="text-align: right">{{ number_format($item->stock, 2, ',', '.') }}</td>
                     <td style="text-align: right">{{ number_format($item->price, 2, ',', '.') }}</td>
                     <td style="text-align: right"><small>Bs.</small> {{ number_format(($item->stock*$item->price), 2, ',', '.') }}</td>
