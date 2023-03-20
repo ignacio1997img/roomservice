@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <form lass="form-submit" id="irremovability-form" action="#" method="post">
+    <form lass="form-submit" id="irremovability-form" action="{{route('worker.store')}}" method="post">
         @csrf
         <div class="modal modal-success fade" id="modal-irremovability" role="dialog">
             <div class="modal-dialog">
@@ -67,13 +67,13 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Personal</label>
-                            <select name="people" class="form-control" id="select-product_id"></select>
+                            <select name="people" class="form-control" id="select-product_id" required></select>
 
 
                         </div>
                         <div class="form-group">
                             <label>Observaciones</label>
-                            <textarea name="observations" class="form-control" rows="5"></textarea>
+                            <textarea name="observation" class="form-control" rows="5"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

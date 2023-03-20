@@ -16,6 +16,7 @@ class CreateWorkersTable extends Migration
         Schema::create('workers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('people_id')->nullable()->constrained('people');
+            $table->text('observation')->nullable();
             $table->smallInteger('status')->default(1);
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');

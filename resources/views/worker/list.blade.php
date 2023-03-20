@@ -4,7 +4,6 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>CI</th>
                     <th>Nombre completo</th>                    
                     <th>Fecha nac.</th>
                     <th>Telefono</th>
@@ -16,30 +15,29 @@
                 @forelse ($data as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                    <td>{{ $item->ci }}</td>
                     <td>
                         <table>
                             @php
                                 $image = asset('image/default.jpg');
-                                if($item->image){
-                                    $image = asset('storage/'.str_replace('.', '-cropped.', $item->image));
+                                if($item->people->image){
+                                    $image = asset('storage/'.str_replace('.', '-cropped.', $item->people->image));
                                 }
                                 $now = \Carbon\Carbon::now();
-                                $birthday = new \Carbon\Carbon($item->birth_date);
+                                $birthday = new \Carbon\Carbon($item->people->birth_date);
                                 $age = $birthday->diffInYears($now);
                             @endphp
                             <tr>
-                                <td><img src="{{ $image }}" alt="{{ $item->first_name }} " style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
+                                <td><img src="{{ $image }}" alt="{{ $item->people->first_name }} " style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
                                 <td>
-                                    <small>CI. </small>{{ $item->ci }}
+                                    <small>CI. </small>{{ $item->people->ci }}
                                         <br>
-                                    {{ strtoupper($item->first_name) }} {{ strtoupper($item->last_name) }}
+                                    {{ strtoupper($item->people->first_name) }} {{ strtoupper($item->people->last_name) }}
                                 </td>
                             </tr>
                         </table>
                     </td>
-                    <td>{{ date('d/m/Y', strtotime($item->birth_date)) }} <br> <small>{{ $age }} años</small> </td>
-                    <td>{{ $item->cell_phone?$item->cell_phone:'SN' }}</td>
+                    <td>{{ date('d/m/Y', strtotime($item->people->birth_date)) }} <br> <small>{{ $age }} años</small> </td>
+                    <td>{{ $item->people->cell_phone?$item->people->cell_phone:'SN' }}</td>
                     <td style="text-align: center">
                         @if ($item->status==1)
                             <label class="label label-success">Activo</label>

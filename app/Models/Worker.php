@@ -12,11 +12,17 @@ class Worker extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'people_id',
+        'observation',
         'status',
         'registerUser_id',
         'deleted_at',
         'deletedUser_id'
     ];
+
+    public function people()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 
     public function worker()
     {

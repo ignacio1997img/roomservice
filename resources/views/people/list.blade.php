@@ -4,7 +4,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>CI</th>
+                    {{-- <th>CI</th> --}}
                     <th>Nombre completo</th>                    
                     <th>Fecha nac.</th>
                     <th>Telefono</th>
@@ -16,7 +16,7 @@
                 @forelse ($data as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
-                    <td>{{ $item->ci }}</td>
+                    {{-- <td>{{ $item->ci }}</td> --}}
                     <td>
                         <table>
                             @php
