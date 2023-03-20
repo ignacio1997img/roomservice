@@ -46,8 +46,20 @@ class WorkerController extends Controller
         return response()->json($data);
     }
 
+    public function ajaxCategory()
+    {
+        $q = request('q');
+        
+        $data = CategoriesWorker::whereRaw($q ? '(name like "%'.$q.'%" )' : 1)
+        ->where('deleted_at', null)->get();
+
+        return response()->json($data);
+    }
+
     public function store(Request $request)
     {
+        // return $request;
+        // return count($request->category);
         DB::beginTransaction();
         try {
             $ok = Worker::where('people_id', $request->people)->where('deleted_at', null)->first();
@@ -55,11 +67,21 @@ class WorkerController extends Controller
             {
                 return redirect()->route('worker.index')->with(['message' => 'El personal ya se encuenta registrado.', 'alert-type' => 'error']);
             }
-            Worker::create([
+            $worker = Worker::create([
                 'people_id'=>$request->people,
                 'observation'=>$request->observation,
                 'registerUser_id'=>Auth::user()->id
             ]);
+            if(count($request->category) > 0)
+            {
+                for ($i=0; $i < count($request->category); $i++) { 
+                    WorkersCategory::create([
+                        'worker_id'=>$worker->id,
+                        'categoryWorker_id'=>$request->category[$i],
+                        'registerUser_id'=>Auth::user()->id
+                    ]);
+                }
+            }
 
             DB::commit();
             return redirect()->route('worker.index')->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
@@ -75,7 +97,12 @@ class WorkerController extends Controller
         DB::beginTransaction();
         try {
             $ok = Worker::where('id', $id)->where('deleted_at', null)->first();
+            // return $ok;
+            // return 1;
+            WorkersCategory::where('worker_id', $ok->id)->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+            // return 1;
             $ok->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+
 
             DB::commit();
             return redirect()->route('worker.index')->with(['message' => 'Eliminado exitosamente...', 'alert-type' => 'success']);

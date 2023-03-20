@@ -36,14 +36,14 @@
                                                     <th style="text-align: center">Detalle</th>             
                                                     <th style="text-align: center; width: 120px">Fecha Expiración</th>             
                                                     <th style="text-align: center; width: 120px">Precio Unit.</th>
-                                                    <th style="text-align: center; width: 120px">Cantidad Items</th>
-                                                    <th style="text-align: right; width: 120px">Total</th>
+                                                    <th style="text-align: center; width: 120px">Cantidad</th>             
+                                                    <th style="text-align: center; width: 120px">Sub Total</th>
                                                     <th width="15px">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="table-body">
                                                 <tr id="tr-empty">
-                                                    <td colspan="6" style="height: 290px">
+                                                    <td colspan="7" style="height: 290px">
                                                         <h4 class="text-center text-muted" style="margin-top: 50px">
                                                             <i class="glyphicon glyphicon-shopping-cart" style="font-size: 50px"></i> <br><br>
                                                             Lista de venta vacía

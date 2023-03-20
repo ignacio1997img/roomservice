@@ -47,6 +47,7 @@
                                 <input type="text" id="input-search" class="form-control">
                             </div>
                         </div>
+                        
 
                         <div class="row" id="div-results" style="min-height: 120px"></div>
                     </div>
@@ -68,12 +69,38 @@
                         <div class="form-group">
                             <label>Personal</label>
                             <select name="people" class="form-control" id="select-product_id" required></select>
-
-
                         </div>
                         <div class="form-group">
                             <label>Observaciones</label>
                             <textarea name="observation" class="form-control" rows="5"></textarea>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>Area de trabajo</label>
+                            <select class="form-control" id="select-worker" required></select>
+                        </div>
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table id="dataTable" class="tables table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30px">N&deg;</th>
+                                            <th style="text-align: center">Detalle</th>  
+                                            <th width="15px">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        <tr id="tr-empty">
+                                            <td colspan="3" style="height: 150px">
+                                                <h4 class="text-center text-muted" style="margin-top: 50px">
+                                                    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px"></i> <br><br>
+                                                    Lista de venta vacía
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -178,6 +205,70 @@
                 }).change(function(){
                    
                 });
+
+
+                $('#select-worker').select2({
+                // tags: true,
+                    placeholder: '<i class="fa fa-search"></i> Buscar...',
+                    escapeMarkup : function(markup) {
+                        return markup;
+                    },
+                    language: {
+                        inputTooShort: function (data) {
+                            return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
+                        },
+                        noResults: function () {
+                            return `<i class="far fa-frown"></i> No hay resultados encontrados`;
+                        }
+                    },
+                    quietMillis: 250,
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ url('admin/worker/category/ajax') }}",        
+                        processResults: function (data) {
+                            let results = [];
+                            data.map(data =>{
+                                results.push({
+                                    ...data,
+                                    disabled: false
+                                });
+                            });
+                            return {
+                                results
+                            };
+                        },
+                        cache: true
+                    },
+                    templateResult: formatResultWorker,
+                    templateSelection: (opt) => {
+                        productSelected = opt;
+
+                        
+                        return opt.name?opt.name:'<i class="fa fa-search"></i> Buscar... ';
+                    }
+                }).change(function(){
+                    // alert(2)
+                    if($('#select-worker option:selected').val()){
+                        let product = productSelected;
+                        if($('.tables').find(`#tr-item-${product.id}`).val() === undefined){
+                        // alert(product.name);
+
+                            $('#table-body').append(`
+                                <tr class="tr-item" id="tr-item-${product.id}">
+                                    <td class="td-item"></td>
+                                    <td>
+                                        <b class="label-description" id="description-${product.id}"><small>${product.name}</small>
+                                        <input type="hidden" name="category[]" value="${product.id}" />
+                                    </td>
+                                    <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
+                                </tr>
+                            `);
+                        }else{
+                            toastr.info('EL producto ya está agregado', 'Información')
+                        }
+                        setNumber();
+                    }
+                });
                 
 
             })
@@ -203,6 +294,38 @@
                                     <b style="font-size: 16px">${option.first_name} ${option.last_name}
                                 </div>
                             </div>`);
+            }
+
+            function formatResultWorker(option){
+            // Si está cargando mostrar texto de carga
+                if (option.loading) {
+                    return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
+                }
+                
+                // Mostrar las opciones encontradas
+                return $(`  <div style="display: flex">
+                                <div>
+                                    <b style="font-size: 16px">${option.name}
+                                </div>
+                            </div>`);
+            }
+
+            function setNumber(){
+                var length = 0;
+                $(".td-item").each(function(index) {
+                    $(this).text(index +1);
+                    length++;
+                });
+
+                if(length > 0){
+                    $('#tr-empty').css('display', 'none');
+                }else{
+                    $('#tr-empty').fadeIn('fast');
+                }
+            }
+            function removeTr(id){
+                $(`#tr-item-${id}`).remove();
+                $('#select-worker').val("").trigger("change");
             }
             
     </script>
