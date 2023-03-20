@@ -22,7 +22,7 @@
                         @endphp
                         <div style="display: flex">
                             <div style="margin: 0px 10px">
-                                <img src="${image}" width="50px" />
+                                <img src="{{ $image }}" alt="{{ $item->article->name }} " width="50px" />
                             </div>
                             <div>
                                 <b style="font-size: 16px">{{ $item->article->name }}</b><br>
