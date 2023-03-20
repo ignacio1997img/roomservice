@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriesWorker;
 use Illuminate\Http\Request;
 use App\Models\Worker;
 use App\Models\People;
+use App\Models\WorkersCategory;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +67,77 @@ class WorkerController extends Controller
             DB::rollBack();
             // return 0;
             return redirect()->route('worker.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            $ok = Worker::where('id', $id)->where('deleted_at', null)->first();
+            $ok->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+
+            DB::commit();
+            return redirect()->route('worker.index')->with(['message' => 'Eliminado exitosamente...', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // return 0;
+            return redirect()->route('worker.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+
+    public function show($id)
+    {
+        // return $id;
+        $data = Worker::with(['people', 'category'=>function($q)
+        {
+            $q->where('deleted_at', null);
+        }])
+            ->where('id', $id)->where('deleted_at', NULL)->orderBy('id', 'DESC')->first();
+            // return $data;
+        $category = CategoriesWorker::where('deleted_at', null)->get();
+        return view('worker.read', compact('data', 'category'));
+    }
+
+    public function storeCategory(Request $request)
+    {
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $ok = WorkersCategory::where('worker_id', $request->worker_id)->where('categoryWorker_id', $request->category_id)->where('deleted_at', null)->first();
+            if($ok)
+            {
+                return redirect()->route('worker.show', ['worker' => $request->worker_id])->with(['message' => 'El personal ya se encuenta registrado.', 'alert-type' => 'error']);
+            }
+            
+            WorkersCategory::create([
+                'worker_id'=>$request->worker_id,
+                'categoryWorker_id'=>$request->category_id,
+                'observation'=>$request->observation,
+                'registerUser_id'=>Auth::user()->id
+            ]);
+
+            DB::commit();
+            return redirect()->route('worker.show', ['worker' => $request->worker_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // return 0;
+            return redirect()->route('worker.show', ['worker' => $request->worker_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }       
+    }
+    public function deleteCategory(Request $request, $worker)
+    {
+        DB::beginTransaction();
+        try {
+            $ok = WorkersCategory::where('id', $worker)->where('deleted_at', null)->first();
+            $ok->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+
+            DB::commit();
+            return redirect()->route('worker.show', ['worker' => $request->worker_id])->with(['message' => 'Eliminado exitosamente...', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // return 0;
+            return redirect()->route('worker.show', ['worker' => $request->worker_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
 }

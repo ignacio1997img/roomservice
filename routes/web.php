@@ -41,6 +41,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('worker', WorkerController::class);
     Route::get('worker/ajax/list/{search?}', [WorkerController::class, 'list']);
     Route::get('worker/people/ajax', [WorkerController::class, 'ajaxPeople']);//para poder obtener los particulos o productos
+    Route::post('worker/category/store', [WorkerController::class, 'storeCategory'])->name('worker-category.store');
+    Route::delete('worker/{worker?}/category/delete', [WorkerController::class, 'deleteCategory'])->name('worker-category.delete');
 
 
 

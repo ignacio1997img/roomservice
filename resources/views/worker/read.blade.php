@@ -1,11 +1,11 @@
 @extends('voyager::master')
 
-@section('page_title', 'Ver Persona')
+@section('page_title', 'Ver Personal')
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-people"></i> Viendo Persona
-        <a href="{{ route('voyager.people.index') }}" class="btn btn-warning">
+        <i class="fa-solid fa-person"></i> Viendo Personal
+        <a href="{{ route('worker.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             Volver a la lista
         </a>
@@ -23,7 +23,7 @@
                                 <h3 class="panel-title">Nombre(s)</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->first_name }}</p>
+                                <p>{{ $data->people->first_name }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -32,7 +32,7 @@
                                 <h3 class="panel-title">Apellidos</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->last_name }}</p>
+                                <p>{{ $data->people->last_name }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -41,7 +41,7 @@
                                 <h3 class="panel-title">CI</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->ci }}</p>
+                                <p>{{ $data->people->ci }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -51,20 +51,11 @@
                             </div>
                             @php
                                 $now = \Carbon\Carbon::now();
-                                $birthday = new \Carbon\Carbon($person->birthday);
+                                $birthday = new \Carbon\Carbon($data->people->birth_date);
                                 $age = $birthday->diffInYears($now);
                             @endphp
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ date('d/m/Y', strtotime($person->birthday)) }} - {{ $age }} años</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Profesión</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->profession }}</p>
+                                <p>{{ date('d/m/Y', strtotime($data->people->birth_date)) }} - {{ $age }} años</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -73,7 +64,7 @@
                                 <h3 class="panel-title">Telefono</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->phone ?? 'No definido' }}</p>
+                                <p>{{ $data->people->phone ?? 'No definido' }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -82,7 +73,7 @@
                                 <h3 class="panel-title">Dirección</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->address }}</p>
+                                <p>{{ $data->people->address }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -91,7 +82,7 @@
                                 <h3 class="panel-title">Email</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->email ?? 'No definido' }}</p>
+                                <p>{{ $data->people->email ?? 'No definido' }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
@@ -100,47 +91,12 @@
                                 <h3 class="panel-title">Género</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->gender }}</p>
+                                <p>{{ $data->people->gender }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
-                        
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Estado civil</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->civil_status == 1 ? 'Soltero(a)' : 'Casado(a)' }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">AFP</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->afp_type->name }} @if($person->afp_status == 0) <label class="label label-danger">Jubilado</label>@endif</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">NUA/CUA</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->nua_cua }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">N&deg; de cuenta</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $person->number_account }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
+                  
+                  
                     </div>
                 </div>
             </div>
@@ -150,141 +106,24 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h3 class="panel-title">Documentación</h3>
-                                    </div>
-                                    <div class="col-md-4 text-right" style="padding-top: 20px">
-                                        @if (auth()->user()->hasPermission('add_file_people'))
-                                        <a href="#" class="btn btn-success btn-add-file" data-url="{{ route('people.file.store', ['id' => $person->id]) }}" data-toggle="modal" data-target="#modal-add-file" ><i class="voyager-plus"></i> <span>Agregar</span></a>
-                                        @endif
-                                    </div>
-                                </div>
+                            <div class="col-md-8" style="padding: 0px">
+                                <h1 class="page-title">
+                                    <i class="fa-solid fa-person-digging"></i> Especialidad Laboral
+                                </h1>
                             </div>
+                            <div class="col-md-4 text-right" style="margin-top: 30px">
+                              
+                                <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
+                                    <i class="voyager-plus"></i> <span>Agregar</span>
+                                </a>
+                            </div>
+                            
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>N&deg;</th>
-                                        <th>Título</th>
-                                        <th>Observaciones</th>
-                                        <th>Registrado</th>
-                                        <th class="text-right">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $cont = 1;
-                                    @endphp
-                                    @forelse ($person->files as $item)
-                                        <tr>
-                                            <td>{{ $cont }}</td>
-                                            <td>{{ $item->title }}</td>
-                                            <td>{{ $item->observations }}</td>
-                                            <td title="Actualizado {{ date('d/m/Y H:i', strtotime($item->updated_at)) }}">
-                                                {{ $item->user ? $item->user->name : '' }} <br>
-                                                {{ date('d/m/Y H:i', strtotime($item->created_at)) }} <br>
-                                                <small>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</small>
-                                            </td>
-                                            <td class="no-sort no-click bread-actions text-right">
-                                                @if (auth()->user()->hasPermission('browse_file_people'))
-                                                <a href="{{ url('storage/'.$item->file) }}" class="btn btn-warning" target="_blank"><i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span></a>
-                                                @endif
-                                                @if (auth()->user()->hasPermission('edit_file_people'))
-                                                <button type="button" data-item='@json($item)' data-url="{{ route('people.file.update', ['id' => $person->id]) }}" data-toggle="modal" data-target="#modal-edit-file" title="Editar" class="btn btn-sm btn-info btn-edit-file">
-                                                    <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>
-                                                </button>
-                                                @endif
-                                                @if (auth()->user()->hasPermission('delete_file_people'))
-                                                <button type="button" onclick="deleteItem('{{ route('people.file.delete', ['people' => $person->id, 'id' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal" title="Eliminar" class="btn btn-sm btn-danger delete">
-                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                                                </button>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $cont++;
-                                        @endphp
-                                    @empty
-                                        <tr>
-                                            <td colspan="5">No hay datos disponible</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-bordered" style="padding-bottom:5px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Historial de inamovilidades</h3>
-                            </div>
-                            <table id="dataTable" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>N&deg;</th>
-                                        <th>Tipo</th>
-                                        <th>Inicio</th>
-                                        <th>Fin</th>
-                                        <th>Observaciones</th>
-                                        <th class="text-right">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $cont = 1;
-                                    @endphp
-                                    @forelse ($person->irremovabilities as $item)
-                                        <tr>
-                                            <td>{{ $cont }}</td>
-                                            <td>{{ $item->type->name }}</td>
-                                            <td>{{ date('d/m/Y', strtotime($item->start)) }}</td>
-                                            <td>{{ $item->finish ? date('d/m/Y', strtotime($item->finish)) : "No definido" }}</td>
-                                            <td>{{ $item->observations }}</td>
-                                            <td class="no-sort no-click bread-actions text-right">
-                                                @if (auth()->user()->hasPermission('delete_irremovability_people'))
-                                                <button type="button" onclick="deleteItem('{{ route('people.irremovability.delete', ['people' => $person->id, 'id' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal" title="Eliminar" class="btn btn-sm btn-danger edit">
-                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                                                </button>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $cont++;
-                                        @endphp
-                                    @empty
-                                        <tr>
-                                            <td colspan="6">No hay datos disponible</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-bordered" style="padding-bottom:5px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Historial de rotaciones</h3>
-                            </div>
-                            <table id="dataTable" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>N&deg;</th>
-                                        <th>Fecha</th>
-                                        <th>Solicitante</th>
-                                        <th>Destino</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
                                         <th class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
@@ -292,32 +131,25 @@
                                     @php
                                         $cont = 0;
                                     @endphp
-                                    @foreach ($person->contracts as $contract)
-                                        @foreach ($contract->rotations as $rotation)
-                                            @php
-                                                $cont++;
-                                            @endphp
-                                            <tr>
-                                                <td>{{ $cont }}</td>
-                                                <td>{{ date('d/m/Y', strtotime($rotation->date)) }}</td>
-                                                <td>{{ $rotation->destiny->first_name }} {{ $rotation->destiny->last_name }}</td>
-                                                <td>{{ $rotation->destiny_dependency }}</td>
-                                                <td class="no-sort no-click bread-actions text-right">
-                                                    <a href="{{ url('admin/people/rotation/'.$rotation->id) }}" class="btn btn-default btn-sm" target="_blank"><i class="glyphicon glyphicon-print"></i> Imprimir</a>
-                                                    @if (auth()->user()->hasPermission('delete_rotation_people'))
-                                                    <button type="button" onclick="deleteItem('{{ route('people.rotation.delete', ['people' => $person->id, 'id' => $rotation->id]) }}')" data-toggle="modal" data-target="#delete-modal" title="Eliminar" class="btn btn-sm btn-danger edit">
-                                                        <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                                                    </button>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endforeach
-                                    @if ($cont == 0)
+                                    @forelse ($data->category as $item)
+                                        @php
+                                            $cont++;
+                                        @endphp
                                         <tr>
-                                            <td colspan="5">No hay datos disponible</td>
+                                            <td>{{ $cont }}</td>
+                                            <td>{{ $item->cate->name }}</td>
+                                            <td>{{ $item->observation }}</td>
+                                            <td class="no-sort no-click bread-actions text-right">
+                                                <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('worker-category.delete', ['worker' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
+                                                </button>
+                                            </td>                                            
                                         </tr>
-                                    @endif
+                                    @empty
+                                        <tr>
+                                            <td style="text-align: center" valign="top" colspan="4" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -327,71 +159,79 @@
         </div>
     </div>
 
-    {{-- Modal add file --}}
-    @include('management.people.partials.modal-add-file')
 
-    {{-- Modal edit file --}}
-    <form class="form-submit" id="edit-file-form" action="#" method="post" enctype="multipart/form-data">
+    <form lass="form-submit" id="irremovability-form" action="{{route('worker-category.store')}}" method="post">
         @csrf
-        @method('PUT')
-        <input type="hidden" name="id">
-        <div class="modal modal-primary fade" tabindex="-1" id="modal-edit-file" role="dialog">
+        <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="voyager-file-text"></i> Editar documentación</h4>
+                        <h4 class="modal-title"><i class="fa-solid fa-person"></i> Registrar Personal</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Título</label>
-                            <input type="text" name="title" class="form-control" required >
-                        </div>
-                        <div class="form-group">
-                            <label>Archivo</label>
-                            <input type="file" name="file" class="form-control" accept="application/pdf">
+                            <input type="hidden" name="worker_id" value="{{$data->id}}">
+                            <label>Personal</label>
+                            <select name="category_id" class="form-control select2" required>
+                                <option value="" selected disabled>--Seleccione una opción--</option>
+                                @foreach ($category as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+
+
                         </div>
                         <div class="form-group">
                             <label>Observaciones</label>
-                            <textarea name="observations" class="form-control" rows="5"></textarea>
+                            <textarea name="observation" class="form-control" rows="5"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <input type="submit" class="btn btn-dark btn-submit" value="Guardar">
+                        <input type="submit" class="btn btn-success btn-submit" value="Guardar">
                     </div>
                 </div>
             </div>
         </div>
     </form>
 
+    <div class="modal modal-danger fade" data-backdrop="static" tabindex="-1" id="delete-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> Desea eliminar el siguiente registro?</h4>
+                </div>
+                <div class="modal-footer">
+                    <form action="#" id="delete_form" method="POST">
+                        {{ method_field('DELETE') }}
+                        {{ csrf_field() }}
+                        <input type="hidden" name="worker_id" value="{{$data->id}}">
+
+
+                            <div class="text-center" style="text-transform:uppercase">
+                                <i class="voyager-trash" style="color: red; font-size: 5em;"></i>
+                                <br>
+                                
+                                <p><b>Desea eliminar el siguiente registro?</b></p>
+                            </div>
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Sí, eliminar">
+                    </form>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 @stop
 
 @section('javascript')
-    <script src="{{ url('js/main.js') }}"></script>
     <script>
-        $(document).ready(function () {
-            $('.btn-edit-file').click(function(e){
-                e.preventDefault();
-                let url = $(this).data('url');
-                let item = $(this).data('item');
-
-                $('#edit-file-form').attr('action', url);
-                $('#edit-file-form input[name="id"]').val(item.id);
-                $('#edit-file-form input[name="title"]').val(item.title);
-                $('#edit-file-form textarea[name="observations"]').val(item.observations);
-            });
-
-            $('.form-submit').submit(function(){
-                $('.btn-submit').val('Guardando...');
-                $('.btn-submit').attr('disabled', 'disabled');
-            });
-
-            $('.btn-add-file').click(function(e){
-                e.preventDefault();
-                let url = $(this).data('url');
-                $('#add-file-form').attr('action', url);
-            });
-        });
+        function deleteItem(url){
+            $('#delete_form').attr('action', url);
+        }
     </script>
 @stop

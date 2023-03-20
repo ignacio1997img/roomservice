@@ -3,7 +3,7 @@
         <table id="dataTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    {{-- <th>ID</th> --}}
                     <th>Nombre completo</th>                    
                     <th>Fecha nac.</th>
                     <th>Telefono</th>
@@ -14,7 +14,7 @@
             <tbody>
                 @forelse ($data as $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
+                    {{-- <td>{{ $item->id }}</td> --}}
                     <td>
                         <table>
                             @php
@@ -48,21 +48,12 @@
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
                        
-                        @if (auth()->user()->hasPermission('read_people'))
-                            <a href="{{ route('voyager.people.show', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
-                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
-                            </a>
-                        @endif
-                        @if (auth()->user()->hasPermission('edit_people'))
-                            <a href="{{ route('voyager.people.edit', ['id' => $item->id]) }}" title="Editar" class="btn btn-sm btn-primary edit">
-                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>
-                            </a>
-                        @endif
-                        {{-- @if (auth()->user()->hasPermission('delete_people'))
-                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('voyager.people.destroy', ['id' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                        <a href="{{ route('worker.show', ['worker' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
+                            <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
+                        </a>
+                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('worker.destroy', ['worker' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                             <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
                         </button>
-                        @endif --}}
                     </td>
                 </tr>
                 @empty

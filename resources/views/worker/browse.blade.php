@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px">
                           
-                            <a href="#" data-toggle="modal" data-target="#modal-irremovability" class="btn btn-success">
+                            <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
                                 <i class="voyager-plus"></i> <span>Crear</span>
                             </a>
                         </div>
@@ -57,7 +57,7 @@
 
     <form lass="form-submit" id="irremovability-form" action="{{route('worker.store')}}" method="post">
         @csrf
-        <div class="modal modal-success fade" id="modal-irremovability" role="dialog">
+        <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -84,6 +84,33 @@
             </div>
         </div>
     </form>
+
+    <div class="modal modal-danger fade" data-backdrop="static" tabindex="-1" id="delete-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> Desea eliminar el siguiente registro?</h4>
+                </div>
+                <div class="modal-footer">
+                    <form action="#" id="delete_form" method="POST">
+                        {{ method_field('DELETE') }}
+                        {{ csrf_field() }}
+                        <input type="hidden" name="id" id="id">
+
+                            <div class="text-center" style="text-transform:uppercase">
+                                <i class="voyager-trash" style="color: red; font-size: 5em;"></i>
+                                <br>
+                                
+                                <p><b>Desea eliminar el siguiente registro?</b></p>
+                            </div>
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Sí, eliminar">
+                    </form>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
    
 
@@ -215,44 +242,10 @@
             });
 
         }
-        var id=0;
-        var phone =0;
-        var name ='';
-        $('#verificar-modal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) //captura valor del data-empresa=""
-            id = button.data('id')
-            phone = button.data('phone')
-            name = button.data('name')
-            var modal = $(this)
-            
-            modal.find('.modal-body #id').val(id)
-            modal.find('.modal-body #name').val(name)
-            modal.find('.modal-body #phone').val(phone)
-        });
 
-
-
-        $('#form-create-customer').submit(function(e){
-                // alert(1)
-                e.preventDefault();
-                $('.btn-save-customer').attr('disabled', true);
-                $('.btn-save-customer').val('Guardando...');
-                $.post($(this).attr('action'), $(this).serialize(), function(data){
-                    if(data.customer){
-                        toastr.success('Solicitud Enviada', 'Éxito');
-                        $(this).trigger('reset');
-                    }else{
-                        toastr.error(data.error, 'Error');
-                    }
-                })
-                .always(function(){
-                    $('.btn-save-customer').attr('disabled', false);
-                    $('.btn-save-customer').text('Guardar');
-                    // $('#modal-create-customer').modal('hide');
-                    $("#verificar-modal").modal('hide');
-
-                });
-            });
+        function deleteItem(url){
+            $('#delete_form').attr('action', url);
+        }
 
        
     </script>

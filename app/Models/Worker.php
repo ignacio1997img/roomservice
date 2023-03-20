@@ -28,4 +28,9 @@ class Worker extends Model
     {
         return $this->belongsTo(People::class, 'people_id');
     }
+
+    public function category()
+    {
+        return $this->hasMany(WorkersCategory::class, 'worker_id');
+    }
 }
