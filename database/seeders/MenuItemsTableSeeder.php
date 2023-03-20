@@ -419,6 +419,22 @@ class MenuItemsTableSeeder extends Seeder
                 'route' => 'income-article.stock',
                 'parameters' => NULL,
             ),
+            25 => 
+            array (
+                'id' => 30,
+                'menu_id' => 1,
+                'title' => 'Partes del Hotel',
+                'url' => '',
+                'target' => '_self',
+                'icon_class' => 'fa-solid fa-list',
+                'color' => '#000000',
+                'parent_id' => 27,
+                'order' => 3,
+                'created_at' => '2023-03-20 17:11:53',
+                'updated_at' => '2023-03-20 17:15:22',
+                'route' => 'voyager.parts-hotels.index',
+                'parameters' => 'null',
+            ),
         ));
         
         

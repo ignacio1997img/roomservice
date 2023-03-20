@@ -181,6 +181,24 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-19 04:20:51',
                 'updated_at' => '2023-03-19 04:27:31',
             ),
+            9 => 
+            array (
+                'id' => 13,
+                'name' => 'parts_hotels',
+                'slug' => 'parts-hotels',
+                'display_name_singular' => 'Partes del Hotel',
+                'display_name_plural' => 'Partes del Hotel',
+                'icon' => 'fa-solid fa-list',
+                'model_name' => 'App\\Models\\PartsHotel',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2023-03-20 17:11:53',
+                'updated_at' => '2023-03-20 17:15:49',
+            ),
         ));
         
         

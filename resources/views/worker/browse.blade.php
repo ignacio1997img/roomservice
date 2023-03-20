@@ -94,7 +94,7 @@
                                             <td colspan="3" style="height: 150px">
                                                 <h4 class="text-center text-muted" style="margin-top: 50px">
                                                     <i class="fa-solid fa-screwdriver-wrench" style="font-size: 50px"></i> <br><br>
-                                                    Lista de venta vacía
+                                                    Lista de detalle vacía
                                                 </h4>
                                             </td>
                                         </tr>
@@ -264,7 +264,7 @@
                                 </tr>
                             `);
                         }else{
-                            toastr.info('EL producto ya está agregado', 'Información')
+                            toastr.info('EL detalle ya está agregado', 'Información')
                         }
                         setNumber();
                     }
