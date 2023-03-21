@@ -14,7 +14,7 @@ class UpdateCatPartTable extends Migration
     public function up()
     {
         Schema::table('categories_rooms_parts', function (Blueprint $table) {
-            $table->decimal('amount', 9,2)->nullable();
+            // $table->decimal('amount', 9,2)->nullable();
         });
     }
 
