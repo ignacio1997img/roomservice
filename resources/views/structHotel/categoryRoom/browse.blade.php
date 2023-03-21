@@ -67,7 +67,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Personal</label>
+                            <label>Tipo Habitación</label>
                             <input type="text" name="name" class="form-control" placeholder="Ingrese la categoria de la habitación" required>
                         </div>
                         <div class="form-group">

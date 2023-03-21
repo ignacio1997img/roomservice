@@ -4,8 +4,8 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="fa-solid fa-person"></i> Viendo Personal
-        <a href="{{ route('worker.index') }}" class="btn btn-warning">
+        <i class="voyager-categories"></i> Viendo Habitación
+        <a href="{{ route('voyager.categories-rooms.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             Volver a la lista
         </a>
@@ -20,83 +20,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Nombre(s)</h3>
+                                <h3 class="panel-title">Tipo de Habitación</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->first_name }}</p>
+                                <p>{{ $data->name }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Apellidos</h3>
+                                <h3 class="panel-title">Descripción</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->last_name }}</p>
+                                <p>{{ $data->description}}</p>
                             </div>
                             <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">CI</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->ci }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Fecha de nacimiento</h3>
-                            </div>
-                            @php
-                                $now = \Carbon\Carbon::now();
-                                $birthday = new \Carbon\Carbon($data->people->birth_date);
-                                $age = $birthday->diffInYears($now);
-                            @endphp
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ date('d/m/Y', strtotime($data->people->birth_date)) }} - {{ $age }} años</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Telefono</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->phone ?? 'No definido' }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Dirección</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->address }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Email</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->email ?? 'No definido' }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Género</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $data->people->gender }}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>
-                  
-                  
+                        </div>     
                     </div>
                 </div>
             </div>
@@ -108,7 +47,7 @@
                         <div class="col-md-12">
                             <div class="col-md-8" style="padding: 0px">
                                 <h1 class="page-title">
-                                    <i class="fa-solid fa-person-digging"></i> Especialidad Laboral
+                                    <i class="fa-solid fa-list"></i> Partes de la Habitación
                                 </h1>
                             </div>
                             <div class="col-md-4 text-right" style="margin-top: 30px">
@@ -124,6 +63,7 @@
                                         <th>N&deg;</th>
                                         <th>Nombre</th>
                                         <th>Descripción</th>
+                                        <th style="width: 150px">Precio</th>
                                         <th class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
@@ -131,16 +71,17 @@
                                     @php
                                         $cont = 0;
                                     @endphp
-                                    @forelse ($data->category as $item)
+                                    @forelse ($data->part as $item)
                                         @php
                                             $cont++;
                                         @endphp
                                         <tr>
                                             <td>{{ $cont }}</td>
-                                            <td>{{ $item->cate->name }}</td>
+                                            <td>{{ $item->name->name }}</td>
                                             <td>{{ $item->observation }}</td>
+                                            <td style="text-align: right"> <small>Bs.</small> {{$item->amount}}</td>
                                             <td class="no-sort no-click bread-actions text-right">
-                                                <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('worker-category.delete', ['worker' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                                                <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('categories-rooms-part.delete', ['part' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                                                     <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
                                                 </button>
                                             </td>                                            
@@ -167,15 +108,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa-solid fa-person-digging"></i> Registrar Especialidad Laboral</h4>
+                        <h4 class="modal-title"><i class="fa-solid fa-person"></i> Registrar Partes de la Habitación</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="hidden" name="worker_id" value="{{$data->id}}">
-                            <label>Tipo de Especialidad</label>
+                            <label>Partes de la Habitación</label>
                             <select name="category_id" class="form-control select2" required>
                                 <option value="" selected disabled>--Seleccione una opción--</option>
-                                @foreach ($category as $item)
+                                @foreach ($part as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
@@ -207,7 +148,7 @@
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field('DELETE') }}
                         {{ csrf_field() }}
-                        <input type="hidden" name="worker_id" value="{{$data->id}}">
+                        <input type="hidden" name="room_id" value="{{$data->id}}">
 
 
                             <div class="text-center" style="text-transform:uppercase">

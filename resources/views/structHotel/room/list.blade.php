@@ -3,23 +3,25 @@
         <table id="dataTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Categoría</th>                    
-                    <th>Descripción</th>
+                    <th style="width: 100px">N° de Habitacion</th>                    
+                    <th>Categorria</th>
+                    <th>Planta</th>
                     {{-- <th>Estado</th> --}}
-                    <th class="text-right">Acciones</th>
+                    <th style="width: 200px" class="text-right">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($data as $item)
                 <tr>                    
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->description }}</td>
+                    <td><small>Pieza N° </small>{{ $item->number }}</td>
+                    <td>{{ $item->caregoryroom->name }}</td>
+                    <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">
                        
                         <a href="{{ route('voyager.categories-rooms.show', ['room' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
                             <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
                         </a>
-                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('categories-rooms.delete', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room.destroy', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                             <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
                         </button>
                     </td>

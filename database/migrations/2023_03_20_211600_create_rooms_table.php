@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesRoomsPartsTable extends Migration
+class CreateRoomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateCategoriesRoomsPartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories_rooms_parts', function (Blueprint $table) {
+        Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('categoryFacility_id')->nullable()->constrained('categories_facilities');
             $table->foreignId('categoryRoom_id')->nullable()->constrained('categories_rooms');
-            $table->foreignId('partHotel_id')->nullable()->constrained('parts_hotels');
-            $table->decimal('amount', 9,2)->nullable();
+            $table->integer('number')->nullable();
 
 
-            $table->text('observation')->nullable();
-            
+            $table->smallInteger('status')->default(1);
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');
             $table->softDeletes();
@@ -36,6 +35,6 @@ class CreateCategoriesRoomsPartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories_rooms_parts');
+        Schema::dropIfExists('rooms');
     }
 }

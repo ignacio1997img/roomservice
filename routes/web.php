@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryRoomController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\WorkerController;
 use App\Models\CategoriesRoom;
 use App\Models\Income;
@@ -49,9 +50,16 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     Route::get('categories-rooms', [CategoryRoomController::class, 'index'])->name('voyager.categories-rooms.index');
+    Route::get('categories-room/{room?}', [CategoryRoomController::class, 'show'])->name('voyager.categories-rooms.show');
     Route::post('categories-rooms/store', [CategoryRoomController::class, 'store'])->name('categories-rooms.store');
+    Route::delete('categories-rooms/{room?}/delete', [CategoryRoomController::class, 'destroy'])->name('categories-rooms.delete');
     Route::get('categories-rooms/parthotel/ajax', [CategoryRoomController::class, 'ajaxPartsHotel']);//para poder obtener las partes que conformara el hotel
     Route::get('categories-rooms/ajax/list/{search?}', [CategoryRoomController::class, 'list']);
+    Route::delete('categories-rooms/{part?}/part/delete', [CategoryRoomController::class, 'deletePart'])->name('categories-rooms-part.delete');
+
+
+    Route::resource('room', RoomController::class);
+    Route::get('room/ajax/list/{search?}', [RoomController::class, 'list']);
 
 
 
