@@ -28,7 +28,7 @@
                 </tr>
                 @empty
                     <tr style="text-align: center">
-                        <td colspan="7" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                        <td colspan="4" class="dataTables_empty">No hay datos disponibles en la tabla</td>
                     </tr>
                 @endforelse
             </tbody>
