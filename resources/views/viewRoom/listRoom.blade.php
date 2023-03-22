@@ -34,7 +34,14 @@
                                 <small style="font-size: 20px; color: red">Habitación Ocupáda</small>
                             @endif
                             <br>
-                            <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$total}}</small>
+                            @if ($item->status==1)
+                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$total}}</small>
+                            @else
+                                @php
+                                    $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->where('status', 1)->first();                                    
+                                @endphp
+                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount:0}}</small>                                
+                            @endif
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categiría: {{$category->name}}</small>
                             @if ($item->status == 0)
