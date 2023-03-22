@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
     Route::get('people', [PeopleController::class, 'index'])->name('voyager.people.index');
+    Route::post('people/store', [PeopleController::class, 'store']);
     Route::get('people/ajax/list/{search?}', [PeopleController::class, 'list']);
 
     Route::resource('incomes', IncomeController::class);

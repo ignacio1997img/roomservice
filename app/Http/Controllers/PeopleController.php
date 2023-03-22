@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\People;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PeopleController extends Controller
 {
@@ -32,5 +33,17 @@ class PeopleController extends Controller
         // dump($data);
 
         return view('people.list', compact('data'));
+    }
+
+    public function store(Request $request){
+        DB::beginTransaction();
+        try {
+            $people = People::create($request->all());
+            DB::commit();
+            return response()->json(['people' => $people]);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
     }
 }

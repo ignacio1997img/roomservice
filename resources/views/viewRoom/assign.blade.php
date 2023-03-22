@@ -62,7 +62,14 @@
                         <div class="col-md-12">
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
-                                <select name="people_id" class="form-control" id="select_people_id" required></select>
+                                <div class="input-group">
+                                    <select name="people_id" class="form-control" id="select_people_id" required></select>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" title="Nuevo cliente" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -130,6 +137,68 @@
     </div>
 
 
+    <form action="{{ url('admin/people/store') }}" id="form-create-customer" method="POST">
+        <div class="modal fade" tabindex="-1" id="modal-create-customer" role="dialog">
+            <div class="modal-dialog modal-primary">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa-solid fa-person"></i> Registrar Persona</h4>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        {{-- <div class="form-group">
+                            <label for="full_name">Nombre completo</label>
+                            <input type="text" name="full_name" class="form-control" placeholder="Juan Perez" required>
+                        </div> --}}
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Nombre</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="Nombre." required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Apellido</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Apellido." required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="full_name">NIT/CI</label>
+                                <input type="text" name="ci" class="form-control" placeholder="123456789" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Celular</label>
+                                <input type="text" name="cell_phone" class="form-control" placeholder="6728591">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Fecha Nacimiento</label>
+                                <input type="date" name="birth_date" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Género</label>
+                                <select name="gender" class="form-control">
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Dirección</label>
+                            <textarea name="address" class="form-control" rows="3" placeholder="C/ 18 de nov. Nro 123 zona central"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-primary btn-save-customer" value="Guardar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
  
 
 
@@ -138,11 +207,16 @@
 
 @section('javascript')
     <script>
+
+
+
+
+
         function deleteItem(url){
             $('#delete_form').attr('action', url);
         }
 
-        $(document).ready(function(){
+            $(document).ready(function(){
                 var productSelected;
                 
                 $('#select_people_id').select2({
@@ -188,6 +262,26 @@
                    
                 });
 
+
+                $('#form-create-customer').submit(function(e){
+                    e.preventDefault();
+                    $('.btn-save-customer').attr('disabled', true);
+                    $('.btn-save-customer').val('Guardando...');
+                    $.post($(this).attr('action'), $(this).serialize(), function(data){
+                        if(data.people.id){
+                            toastr.success('Registrado exitosamente', 'Éxito');
+                            $(this).trigger('reset');
+                        }else{
+                            toastr.error(data.error, 'Error');
+                        }
+                    })
+                    .always(function(){
+                        $('.btn-save-customer').attr('disabled', false);
+                        $('.btn-save-customer').text('Guardar');
+                        $('#modal-create-customer').modal('hide');
+                    });
+                });
+
             })
 
             function formatResultCustomers(option){
@@ -230,40 +324,7 @@
 
 
 
-            function filterFloat(evt,input){
-            // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
-                var key = window.Event ? evt.which : evt.keyCode;    
-                var chark = String.fromCharCode(key);
-                var tempValue = input.value+chark;
-                if(key >= 48 && key <= 57){
-                    if(filter(tempValue)=== false){
-                        return false;
-                    }else{       
-                        return true;
-                    }
-                }else{
-                    if(key == 8 || key == 0) {     
-                        return true;              
-                    }else if(key == 46){
-                            if(filter(tempValue)=== false){
-                                return false;
-                            }else{       
-                                return true;
-                            }
-                    }else{
-                        return false;
-                    }
-                }
-            }
-            function filter(__val__){
-                var preg = /^([0-9]+\.?[0-9]{0,2})$/; 
-                if(preg.test(__val__) === true){
-                    return true;
-                }else{
-                return false;
-                }
-                
-            }
+           
 
 
 
