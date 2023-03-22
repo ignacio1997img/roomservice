@@ -4,9 +4,12 @@ use App\Http\Controllers\CategoryRoomController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ServiceRoomController;
+use App\Http\Controllers\ViewController;
 use App\Http\Controllers\WorkerController;
 use App\Models\CategoriesRoom;
 use App\Models\Income;
+use App\Models\ServiceRoom;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', function () {
     return redirect('admin/login');
-});
+})->name('login');
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -60,6 +63,11 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('room', RoomController::class);
     Route::get('room/ajax/list/{search?}', [RoomController::class, 'list']);
+    
+    Route::get('view/planta/{planta?}', [ViewController::class, 'index'])->name('view.planta');//paar ver todas la habitaciones de cada planta
+    Route::get('view/planta/room/{room?}', [ViewController::class, 'viewAsignar'])->name('view-planta.room');
+
+    Route::post('serviceroom/store', [ServiceRoomController::class, 'store'])->name('serviceroom.store');
 
 
 

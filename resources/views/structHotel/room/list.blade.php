@@ -17,10 +17,6 @@
                     <td>{{ $item->caregoryroom->name }}</td>
                     <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">
-                       
-                        <a href="{{ route('voyager.categories-rooms.show', ['room' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
-                            <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
-                        </a>
                         <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room.destroy', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                             <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
                         </button>
