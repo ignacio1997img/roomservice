@@ -59,7 +59,7 @@
                             <hr style="margin:0;">
                         </div>                  
                   
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
@@ -70,6 +70,18 @@
                                         </button>
                                     </span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel-body">
+                                <label><small>Fecha Inicio</small></label>
+                                <input type="datetime-local" name="start" value="{{date('Y-m-d h:i') }}" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel-body">
+                                <label><small>Fecha Fin</small></label>
+                                <input type="datetime-local" name="finish" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -123,7 +135,7 @@
                                     </tbody>
                                 </table>
                                 <div class="col-md-12" style="padding: 0px">
-                                    <button type="submit" id="btn-submit"  class="btn btn-primary btn-block">Asignar Habitación <i class="voyager-basket"></i></button>
+                                    <button type="submit" id="btn-submit"  class="btn btn-success btn-block"><i class="fa-solid fa-key"></i> Asignar Habitación </button>
                                 </div>
                             </div>
                             

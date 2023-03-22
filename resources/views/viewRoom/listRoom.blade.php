@@ -21,7 +21,7 @@
                     @endphp
                     <div class="col-md-2" class="grid-block ">
                         {{-- <div class="col-md-3"></div> --}}
-                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:250px; @if($item->status == 0) box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif">
+                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:300px; @if($item->status == 0) box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif">
                             <br>
                             {{-- <i class="fa-solid fa-key"></i> --}}
                             

@@ -41,10 +41,11 @@ class ServiceRoomController extends Controller
                 'people_id'=>$request->people_id,
                 'room_id'=>$request->room_id,
                 'number' => $request->number,
-                'category'=>$category->name,
+                'category'=>$category->name,    
                 'facility'=>$facility->name,
                 'amount'=>$request->amount,
-                'start' => Carbon::now(),
+                'start' => $request->start,
+                'finish' => $request->finish,
                 'registerUser_id'=>Auth::user()->id
             ]);
             // return 1;
