@@ -38,6 +38,7 @@
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categiría: {{$category->name}}</small>
                             @if ($item->status == 0)
+                            <br>
                                 <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
                                     <i class="fa-solid fa-eye"></i> Ver</span>
                                 </a>     
