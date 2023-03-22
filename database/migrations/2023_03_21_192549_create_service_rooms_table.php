@@ -17,6 +17,7 @@ class CreateServiceRoomsTable extends Migration
             $table->id();
 
             $table->foreignId('room_id')->nullable()->constrained('rooms');
+            $table->foreignId('people_id')->nullable()->constrained('people');
             $table->integer('number')->nullable();
             $table->string('category')->nullable();
             $table->string('facility')->nullable();

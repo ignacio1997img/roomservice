@@ -13,7 +13,11 @@
                 @foreach ($data as $item)
                     @php
                         $category =  \App\Models\CategoriesRoom::where('id', $item->categoryRoom_id)->first();
-                        // dd($category);
+                        $aux =  \App\Models\CategoriesRoomsPart::where('categoryRoom_id', $item->categoryRoom_id)->where('deleted_at',null)->get();
+                        $total =0;
+                        foreach ($aux as $value) {
+                            $total = $total + $value->amount;
+                        }
                     @endphp
                     <div class="col-md-2" class="grid-block ">
                         {{-- <div class="col-md-3"></div> --}}
@@ -30,7 +34,7 @@
                                 <small style="font-size: 20px; color: red">Habitación Ocupáda</small>
                             @endif
                             <br>
-                            <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$item->amount}}</small>
+                            <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$total}}</small>
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categiría: {{$category->name}}</small>
                             @if ($item->status == 0)

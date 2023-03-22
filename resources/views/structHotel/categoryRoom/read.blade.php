@@ -1,10 +1,10 @@
 @extends('voyager::master')
 
-@section('page_title', 'Ver Personal')
+@section('page_title', 'Ver Categoria de habitaciones')
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-categories"></i> Viendo Habitación
+        <i class="voyager-categories"></i> Categorias de habitaciones
         <a href="{{ route('voyager.categories-rooms.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             Volver a la lista
@@ -101,7 +101,7 @@
     </div>
 
 
-    <form lass="form-submit" id="irremovability-form" action="{{route('worker-category.store')}}" method="post">
+    <form lass="form-submit" id="irremovability-form" action="{{route('categories-rooms-read-part.store')}}" method="post">
         @csrf
         <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
@@ -112,14 +112,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="hidden" name="worker_id" value="{{$data->id}}">
+                            <input type="hidden" name="room_id" value="{{$data->id}}">
                             <label>Partes de la Habitación</label>
-                            <select name="category_id" class="form-control select2" required>
+                            <select name="part" class="form-control select2" required>
                                 <option value="" selected disabled>--Seleccione una opción--</option>
                                 @foreach ($part as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
+
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="number" name="price" min="0" step="1" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+
 
 
                         </div>
@@ -174,5 +182,42 @@
         function deleteItem(url){
             $('#delete_form').attr('action', url);
         }
+
+
+
+        function filterFloat(evt,input){
+            // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+                var key = window.Event ? evt.which : evt.keyCode;    
+                var chark = String.fromCharCode(key);
+                var tempValue = input.value+chark;
+                if(key >= 48 && key <= 57){
+                    if(filter(tempValue)=== false){
+                        return false;
+                    }else{       
+                        return true;
+                    }
+                }else{
+                    if(key == 8 || key == 0) {     
+                        return true;              
+                    }else if(key == 46){
+                            if(filter(tempValue)=== false){
+                                return false;
+                            }else{       
+                                return true;
+                            }
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            function filter(__val__){
+                var preg = /^([0-9]+\.?[0-9]{0,2})$/; 
+                if(preg.test(__val__) === true){
+                    return true;
+                }else{
+                return false;
+                }
+                
+            }
     </script>
 @stop

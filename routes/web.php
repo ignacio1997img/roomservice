@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('categories-rooms', [CategoryRoomController::class, 'index'])->name('voyager.categories-rooms.index');
     Route::get('categories-room/{room?}', [CategoryRoomController::class, 'show'])->name('voyager.categories-rooms.show');
     Route::post('categories-rooms/store', [CategoryRoomController::class, 'store'])->name('categories-rooms.store');
+    Route::post('categories-rooms/read/part/store', [CategoryRoomController::class, 'storePart'])->name('categories-rooms-read-part.store');
     Route::delete('categories-rooms/{room?}/delete', [CategoryRoomController::class, 'destroy'])->name('categories-rooms.delete');
     Route::get('categories-rooms/parthotel/ajax', [CategoryRoomController::class, 'ajaxPartsHotel']);//para poder obtener las partes que conformara el hotel
     Route::get('categories-rooms/ajax/list/{search?}', [CategoryRoomController::class, 'list']);
