@@ -7,6 +7,7 @@ use App\Models\Income;
 use App\Models\IncomesDetail;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Egre;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -143,10 +144,108 @@ class IncomeController extends Controller
                     });
                 }
             })
-            // ->whereRaw($q ? '(name like "%'.$q.'%" )' : 1)
+            ->select('article_id', 'id', 'price', 'expiration',  DB::raw("SUM(cantRestante) as cantRestante"))
             ->where('cantRestante','>', 0)->where('deleted_at', null)->where('expirationStatus', 1)->groupBy('article_id', 'price', 'expiration')->get();
 
         return response()->json($data);
+    }
+
+
+
+    //Para sacar producto del almacen a las oficinas
+    public function storeEgressPieza(Request $request)
+    {
+        return $request;
+
+        if($request->amount<=0)
+        {
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
+        }
+
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $user = Auth::user()->id;
+            $client = Egre::create([
+                    'registerUser_id' => $user,
+                    'people_id' => $request->cashier_id,
+                    'room_id' => $request->room_id,
+                    'amount' => $request->amount,
+            ]);
+
+            $pagar =0;
+            for ($i=0; $i < count($request->income); $i++)
+            {
+                $incomedetail = IncomesDetail::where('article_id',$request->income[$i])->get();
+                return $incomedetail;
+                $cant=0;
+                $ok=false;
+                if($request->cant_stock[$i] <= $wherehouse->item)
+                {
+                    $wherehouse->decrement('item', $request->cant_stock[$i]);
+
+                    Item::create([
+                        'wherehouseDetail_id' => $wherehouse->id,
+                        'item' => $request->cant_stock[$i],
+                        'itemEarnings' => $wherehouse->itemEarnings,
+                        'amount' => $request->total_pagar[$i],
+                        'client_id' => $client_id,
+                        'indice' => $i,
+                        'userRegister_id' => $user,
+
+                    ]);
+                    $pagar+= $request->total_pagar[$i];
+                }
+                else
+                {
+                    // para que pueda sacar productos de varios registro pero del mismo item y del mismo precio
+                    $cant = $request->cant_stock[$i];
+                    while($cant > 0)
+                    {
+                        $des=0;
+                        $aux = WherehouseDetail::where('article_id', $wherehouse->article_id)->where('itemEarnings', $wherehouse->itemEarnings)
+                                ->where('item', '>', 0)
+                                ->where('deleted_at', null)
+                                ->orderBy('id', 'ASC')->first();
+                        $des = $cant > $aux->item ? $aux->item : $cant;
+                        
+                        $aux->decrement('item', $des);
+                        $cant-= $des;
+                        
+                        Item::create([
+                            'wherehouseDetail_id' => $aux->id,
+                            'item' => $des,
+                            'itemEarnings' => $aux->itemEarnings,
+                            'amount' => $des * $aux->itemEarnings,
+                            'client_id' => $client_id,
+                            'indice' => $i,
+                            'userRegister_id' => $user,
+
+
+                        ]);
+                        $pagar = $pagar + ($des * $aux->itemEarnings);
+                    }
+                }
+                        
+                $client->update(['amount'=>$pagar]);
+                
+            }
+            Adition::create([
+                'client_id' => $client_id,
+                'cashier_id' => $request->cashier_id,
+                'cant' => $request->credits? $request->subAmount:$request->amount,
+                'observation' => 'Pago al momento del servicio',
+                'type'=> 'producto',
+                'userRegister_id' => $user
+            ]);
+            // return 'si';
+                DB::commit();
+            return redirect()->route('clients.index')->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('clients.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
     }
 
 

@@ -49,7 +49,7 @@
                                 <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
                                     <i class="fa-solid fa-eye"></i> Ver</span>
                                 </a>     
-                                <a href="#" data-toggle="modal" data-target="#modal_producto" title="Vender producto al almacen" class="btn btn-success">
+                                <a href="#" data-toggle="modal" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </a>
                             @endif
@@ -68,19 +68,24 @@
         </div>
 
 
-        <form lass="form-submit" id="irremovability-form" action="{{route('categories-rooms.store')}}" method="post">
+        <form lass="form-submit" id="irremovability-form" action="{{route('serviceroom-article.store')}}" method="post">
             @csrf
             <div class="modal modal-success fade" id="modal_producto" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title"><i class="voyager-categories"></i> Registrar Categoria</h4>
+                            <h4 class="modal-title"><i class="voyager-categories"></i> Agregar Productos</h4>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
+                                <small id="label-pieza" style="font-size: 15px"></small>
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
+                            </div>
+                            <div class="form-group">
                                 <label>Productos</label>
-                                <select class="form-control" id="select_producto" required></select>
+                                <select class="form-control" id="select_producto"></select>
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive">
@@ -105,6 +110,16 @@
                                                 </td>
                                             </tr>
                                         </tbody>
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">
+                                                Total
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small>Bs.</small> <b id="label-total">0.00</b>
+                                                <input type="hidden" name="amount" id="input-total" value="0">
+                                            </td>
+                                            <td></td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -142,8 +157,28 @@
 @stop
 
 @section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
 <script>
-    $(document).ready(function(){
+
+    $('#modal_producto').on('show.bs.modal', function (event)
+    {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var pieza = button.data('pieza');
+        var planta = button.data('planta');
+        var modal = $(this);
+        modal.find('.modal-body #room_id').val(id);
+        modal.find('.modal-body #planta_id').val(planta);
+        modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+
+        $('#table-body').empty();
+
+        $('#label-total').text(0);
+        $('#input-total').val(0)
+    })
+
+        $(document).ready(function(){
             var productSelected;
 
             $('#select_producto').select2({
@@ -196,15 +231,16 @@
                             <tr class="tr-item" id="tr-item-${product.id}">
                                 <td class="td-item"></td>
                                 <td>
-                                    <b class="label-description" id="description-${product.id}"><small>${product.article.name}</small>
-                                    <input type="hidden" name="category[]" value="${product.id}" />
+                                    <b class="label-description" id="description-${product.id}"><small>${product.article.name}</small><br>
+                                    <b class="label-description" id="description-${product.id}"><small> ${ product.expiration? 'Expira: '+ moment(product.expiration).format('DD-MM-YYYY'):''}</small>
+                                    <input type="hidden" name="income[]" value="${product.article.id}" />
                                 </td>
                                 <td style="text-align: right">
                                     <b class="label-description"><small>Bs. ${product.price}</small>
                                     <input type="hidden" name="price[]" id="select-price-${product.id}" value="${product.price}" />
                                 </td>
                                 <td>
-                                    <input type="number" name="price[]" min="0" max="${product.cantRestante}" step="1" id="select-cant-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                    <input type="number" name="cant[]" min="0" max="${product.cantRestante}" step="1" id="select-cant-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
                                 </td>
                                 <td class="text-right"><h4 class="label-subtotal" id="label-subtotal-${product.id}">0</h4></td>
                                 <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
@@ -241,7 +277,7 @@
                                 <b style="font-size: 16px">${option.article.name} </b> <br>
                                 <small>Stock: </small>${option.cantRestante}<br>
                                 <small>Precio: </small>Bs. ${option.price}<br>
-                                <small>Categoría: </small>${option.article.category.name}
+                                ${ option.expiration? '<small style="color: red">Expira: '+ moment(option.expiration).format('DD-MM-YYYY')+'</small>':''}
                             </div>
                         </div>`);
         }
@@ -265,10 +301,18 @@
                 let price = $(`#select-price-${id}`).val() ? parseFloat($(`#select-price-${id}`).val()) : 0;
                 let quantity = $(`#select-cant-${id}`).val() ? parseFloat($(`#select-cant-${id}`).val()) : 0;
                 $(`#label-subtotal-${id}`).text((price * quantity).toFixed(2));
-                // getTotal();
+                getTotal();
         }
 
 
+        function getTotal(){
+                let total = 0;
+                $(".label-subtotal").each(function(index) {
+                    total += parseFloat($(this).text());
+                });
+                $('#label-total').text(total.toFixed(2));
+                $('#input-total').val(total.toFixed(2));
+            }
 
 
 
@@ -278,6 +322,8 @@
         function removeTr(id){
             $(`#tr-item-${id}`).remove();
             $('#select_producto').val("").trigger("change");
+            setNumber();
+            getTotal();
         }
         
 </script>
