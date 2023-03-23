@@ -92,7 +92,7 @@
                             <div class="panel-body">                            
                                 <div class="form-group">
                                     <label><small>Precio</small></label>
-                                    <input type="number" id="input" name="price" min="1" step="1"  style="text-align: right" class="form-control text">
+                                    <input type="number" id="input" name="price" min="1" step="1" value="{{$room->amount}}" style="text-align: right" class="form-control text">
                                 </div>
                             </div>
                         </div>  
