@@ -17,7 +17,6 @@ class CreateCategoriesRoomsPartsTable extends Migration
             $table->id();
             $table->foreignId('categoryRoom_id')->nullable()->constrained('categories_rooms');
             $table->foreignId('partHotel_id')->nullable()->constrained('parts_hotels');
-            $table->decimal('amount', 9,2)->nullable();
 
 
             $table->text('observation')->nullable();

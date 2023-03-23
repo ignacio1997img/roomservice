@@ -130,4 +130,24 @@ class IncomeController extends Controller
     }
 
 
+    //para obntener los articulos con stock del almacen
+    public function ajaxProductExists()
+    {
+        $q = request('q');
+        
+        $data = IncomesDetail::with(['article'])
+            ->where(function($query) use ($q){
+                if($q){
+                    $query->OrwhereHas('article', function($query) use($q){
+                        $query->whereRaw("(name like '%$q%')");
+                    });
+                }
+            })
+            // ->whereRaw($q ? '(name like "%'.$q.'%" )' : 1)
+            ->where('cantRestante','>', 1)->where('deleted_at', null)->where('expirationStatus', 1)->get();
+
+        return response()->json($data);
+    }
+
+
 }

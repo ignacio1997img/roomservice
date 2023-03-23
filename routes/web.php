@@ -43,6 +43,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('income/article/ajax', [IncomeController::class, 'ajaxArticle']);//para poder obtener los particulos o productos
     Route::get('incomes/article/stock', [IncomeController::class, 'indexStock'])->name('income-article.stock');
     Route::get('incomes/article/stock/ajax/list/{search?}', [IncomeController::class, 'listStock']);
+    // Para obtener la lista de article en stock
+    Route::get('incomes/article/stock/ajax', [IncomeController::class, 'ajaxProductExists']);//para poder obtener los particulos o productos
+
 
 
     Route::resource('worker', WorkerController::class);

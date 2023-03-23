@@ -13,7 +13,7 @@
                 @php
                     $pdf =  \App\Models\CategoriesFacility::where('deleted_at',null)->get();
                 @endphp
-                @foreach ($pdf as $item)
+                @forelse ($pdf as $item)
                     <div class="col-md-4" style="text-align: center">
                         <div class="col-md-2"></div>
                         <div class="col-md-8" id="myDiv" style="background-color: #DFDFDF; margin-top: 2em; border-radius: 20px; height:320px">
@@ -38,8 +38,12 @@
                         <div class="col-md-2"></div>
 
                     </div>
-                @endforeach
-                
+               
+                @empty
+                    <tr style="text-align: center">
+                        <td colspan="7" style="font-size: 50px" class="dataTables_empty">No hay planta de habitaciones disponibles</td>
+                    </tr>
+                @endforelse
 
             </div>
             

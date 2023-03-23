@@ -18,7 +18,7 @@
         @csrf
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-bordered" style="padding-bottom:5px;">
+                <div class="panel panel-bordered">
                     <div class="row">
                         <input type="hidden" name="room_id" value="{{$room->id}}">
                         <div class="col-md-3">
@@ -54,24 +54,49 @@
                                 <h3 class="panel-title">Estado</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{ $room->categoryfacility->name }}</p>
+                                @if ($room->status == 1)
+                                    <span class="label label-success">Habitacion Libre</span>
+                                @else
+                                    <span class="label label-danger">Habitacion Ocuṕada</span>
+                                @endif
                             </div>
                             <hr style="margin:0;">
                         </div>                  
                   
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
                                     <select name="people_id" class="form-control" id="select_people_id" required></select>
                                     <span class="input-group-btn">
-                                        <button class="btn btn-primary" title="Nuevo cliente" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
+                                        <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                         </button>
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div>    
+                        <div class="col-md-3">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label><small>Monto</small></label>
+                                    <select name="amount" class="form-control" id="select_amount" required>
+                                        <option value="{{$room->amount}}" selected>1 día Bs.{{$room->amount}}</option>
+                                        <option value="personalizado">Monto Personalizado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>       
+                        
+                        <div class="col-md-2" id="div_price" style="display:none">
+                            <div class="panel-body">                            
+                                <div class="form-group">
+                                    <label><small>Precio</small></label>
+                                    <input type="number" id="input" name="price" min="1" step="1"  style="text-align: right" class="form-control text">
+                                </div>
+                            </div>
+                        </div>  
+                                  
                         <div class="col-md-3">
                             <div class="panel-body">
                                 <label><small>Fecha Inicio</small></label>
@@ -81,25 +106,18 @@
                         <div class="col-md-3">
                             <div class="panel-body">
                                 <label><small>Fecha Fin</small></label>
-                                <input type="datetime-local" name="finish" class="form-control" required>
+                                <input type="datetime-local" id="finish" name="finish" value="{{date('Y-m-d h:i',strtotime(date('Y-m-d h:i')."+ 1 days"))}}" class="form-control" required>
                             </div>
                         </div>
+                       
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="col-md-8" style="padding: 0px">
-                                    <h1 class="page-title">
-                                        <i class="fa-solid fa-list"></i> Partes de la Habitación
-                                    </h1>
-                                </div>
-                                
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>N&deg;</th>
                                             <th>Nombre</th>
                                             <th>Descripción</th>
-                                            <th style="width: 150px">Precio</th>
-                                            {{-- <th style="width:150px" class="text-right">Acciones</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -118,20 +136,13 @@
                                                     <input type="hidden" name="part[]" value="{{ $item->name->name}}">
                                                 </td>
                                                 <td>{{ $item->name->Description}}</td>
-                                                <td style="text-align: right"> <small>
-                                                    <input type="number" name="price[]" min="0" step="1" value="{{$item->amount}}"  class="form-control text select-price" onkeyup="getTotal()" onchange="getSubtotal()" onkeypress="return filterFloat(event,this);" style="text-align: right" required>
-                                                    </small> </td>
+                                               
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td style="text-align: center" valign="top" colspan="4" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                <td style="text-align: center" valign="top" colspan="3" class="dataTables_empty">No hay datos disponibles en la tabla</td>
                                             </tr>
                                         @endforelse
-                                        <tr>
-                                            <td colspan="3" style="text-align: right"><b>TOTAL</b></td>
-                                            <td style="text-align: right"><b><small id="total-label">{{ number_format($total, 2, ',', '.') }}</small></b></td>
-                                            <input type="hidden" value="{{$total}}" name="amount" id="total-input">
-                                        </tr>
                                     </tbody>
                                 </table>
                                 <div class="col-md-12" style="padding: 0px">
@@ -175,7 +186,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="full_name">NIT/CI</label>
+                                <label for="full_name">CI / Pasaporte</label>
                                 <input type="text" name="ci" class="form-control" placeholder="123456789" required>
                             </div>
                             <div class="form-group col-md-6">
@@ -219,8 +230,19 @@
 
 @section('javascript')
     <script>
-
-
+        $(document).ready(function() {
+            $('#select_amount').change(function(e) {
+                // alert( $(this).val())
+                if ($(this).val() === "personalizado") {
+                    $('#div_price').fadeIn();
+                    $('#input').attr('required', 'required');
+                    // $("#finish").val("");
+                } else {
+                    $('#div_price').fadeOut();
+                    $('#input').removeAttr('required');
+                }
+            })
+        });
 
 
 
@@ -322,17 +344,17 @@
 
 
 
-            function getTotal(){
-                // alert(1)
-                let total = 0;
-                $(".select-price").each(function(index) {
-                    total += parseFloat($(this).val());
-                });
-                // alert(total)
-                $('#total-label').text(total.toFixed(2));
-                $('#total-input').val(total.toFixed(2));
+            // function getTotal(){
+            //     // alert(1)
+            //     let total = 0;
+            //     $(".select-price").each(function(index) {
+            //         total += parseFloat($(this).val());
+            //     });
+            //     // alert(total)
+            //     $('#total-label').text(total.toFixed(2));
+            //     $('#total-input').val(total.toFixed(2));
                 
-            }
+            // }
 
 
 

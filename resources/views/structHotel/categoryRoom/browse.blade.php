@@ -86,13 +86,12 @@
                                         <tr>
                                             <th style="width: 30px">N&deg;</th>
                                             <th style="text-align: center">Detalle</th>  
-                                            <th style="text-align: center; width: 150px">Precio</th>  
                                             <th width="15px">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-body">
                                         <tr id="tr-empty">
-                                            <td colspan="4" style="height: 150px">
+                                            <td colspan="3" style="height: 150px">
                                                 <h4 class="text-center text-muted" style="margin-top: 50px">
                                                     <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
                                                     Lista de detalle vacía
@@ -216,9 +215,6 @@
                                     <td>
                                         <b class="label-description" id="description-${product.id}"><small>${product.name}</small>
                                         <input type="hidden" name="category[]" value="${product.id}" />
-                                    </td>
-                                    <td>
-                                        <input type="number" name="price[]" min="0" step="1" id="select-price-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
                                     </td>
                                     <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
                                 </tr>

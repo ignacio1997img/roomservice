@@ -49,7 +49,6 @@ class CategoryRoomController extends Controller
                     CategoriesRoomsPart::create([
                         'categoryRoom_id'=>$cat->id,
                         'partHotel_id'=>$request->category[$i],
-                        'amount'=>$request->price[$i],
                         'registerUser_id'=>Auth::user()->id
                     ]);
                 }
@@ -109,7 +108,6 @@ class CategoryRoomController extends Controller
                 CategoriesRoomsPart::create([
                     'categoryRoom_id'=>$request->room_id,
                     'partHotel_id'=>$request->part,
-                    'amount'=>$request->price,
                     'registerUser_id'=>Auth::user()->id,
                     'observation'=>$request->observation
                 ]);   

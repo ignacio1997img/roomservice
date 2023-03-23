@@ -124,13 +124,7 @@
 
                         </div>
 
-                        <div class="form-group">
-                            <label>Precio</label>
-                            <input type="number" name="price" min="0" step="1" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
-
-
-
-                        </div>
+                        
                         <div class="form-group">
                             <label>Observaciones</label>
                             <textarea name="observation" class="form-control" rows="5"></textarea>

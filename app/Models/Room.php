@@ -13,6 +13,7 @@ class Room extends Model
         'categoryFacility_id',
         'categoryRoom_id',
         'number',
+        'amount',
         'status',
         'registerUser_id',
         'deletedUser_id',

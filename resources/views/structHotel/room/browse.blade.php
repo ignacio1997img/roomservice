@@ -66,9 +66,19 @@
                         <h4 class="modal-title"><i class="fa-solid fa-person-booth"></i> Registrar Habitación</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nro de Habitación</label>
-                            <input type="number" min="1" step="1" onkeypress="return filterFloat(event,this);" style="text-align: right" name="number" class="form-control" autocomplete="off" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nro de Habitación</label>
+                                    <input type="number" min="1" step="1"  style="text-align: right" name="number" class="form-control" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Precio</label>
+                                    <input type="number" name="price" min="1" step="1"  style="text-align: right" class="form-control text" required>
+                                </div>
+                            </div>                            
                         </div>
                         <div class="form-group">
                             <label>Categoría de Habitación</label>

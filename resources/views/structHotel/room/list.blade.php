@@ -4,8 +4,9 @@
             <thead>
                 <tr>
                     <th style="width: 100px">N° de Habitacion</th>                    
-                    <th>Categorria</th>
-                    <th>Planta</th>
+                    <th style="width: 100px; text-align: center">Precio</th>                    
+                    <th style="text-align: center">Categorria</th>
+                    <th style="text-align: center">Planta</th>
                     {{-- <th>Estado</th> --}}
                     <th style="width: 200px" class="text-right">Acciones</th>
                 </tr>
@@ -14,6 +15,7 @@
                 @forelse ($data as $item)
                 <tr>                    
                     <td><small>Pieza N° </small>{{ $item->number }}</td>
+                    <td style="text-align: right"><small>Bs. {{ $item->amount }}</small></td>
                     <td>{{ $item->caregoryroom->name }}</td>
                     <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">

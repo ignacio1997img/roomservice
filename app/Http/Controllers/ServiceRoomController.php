@@ -11,6 +11,7 @@ use App\Models\ServiceRoom;
 use App\Models\ServiceRoomsDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\IncomesDetail;
 
 class ServiceRoomController extends Controller
 {
@@ -26,7 +27,11 @@ class ServiceRoomController extends Controller
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'La habitación se encuentra asignada.', 'alert-type' => 'warning']);
             }
 
-            if($request->amount<=0)
+            if($request->amount<=0 && $request->amount != 'personalizado')
+            {
+                return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Error al registrar...', 'alert-type' => 'warning']);
+            }
+            if($request->price<=0 && $request->amount == 'personalizado')
             {
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Error al registrar...', 'alert-type' => 'warning']);
             }
@@ -43,7 +48,7 @@ class ServiceRoomController extends Controller
                 'number' => $request->number,
                 'category'=>$category->name,    
                 'facility'=>$facility->name,
-                'amount'=>$request->amount,
+                'amount'=>$request->price?$request->price:$request->amount,
                 'start' => $request->start,
                 'finish' => $request->finish,
                 'registerUser_id'=>Auth::user()->id
@@ -53,7 +58,6 @@ class ServiceRoomController extends Controller
                 ServiceRoomsDetail::create([
                     'serviceRoom_id'=>$ser->id,
                     'name'=>$request->part[$i],
-                    'amount'=>$request->price[$i],
                     'registerUser_id'=>Auth::user()->id
                 ]);
             }
@@ -66,5 +70,8 @@ class ServiceRoomController extends Controller
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
+
+
+    
 
 }

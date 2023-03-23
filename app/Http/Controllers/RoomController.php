@@ -54,6 +54,7 @@ class RoomController extends Controller
             }
             Room::create([
                 'number'=>$request->number,
+                'amount'=>$request->price,
                 'categoryFacility_id'=>$request->facility,
                 'categoryRoom_id'=>$request->category,
                 'registerUser_id'=>Auth::user()->id
