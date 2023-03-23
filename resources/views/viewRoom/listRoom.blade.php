@@ -162,7 +162,7 @@
                 quietMillis: 250,
                 minimumInputLength: 2,
                 ajax: {
-                    url: "{{ url('admin/categories-rooms/parthotel/ajax') }}",        
+                    url: "{{ url('admin/incomes/article/stock/ajax') }}",        
                     processResults: function (data) {
                         let results = [];
                         data.map(data =>{
@@ -177,12 +177,12 @@
                     },
                     cache: true
                 },
-                templateResult: formatResultWorker,
+                templateResult: formatResultCustomers,
                 templateSelection: (opt) => {
                     productSelected = opt;
 
                     
-                    return opt.name?opt.name:'<i class="fa fa-search"></i> Buscar... ';
+                    return opt.id?opt.article.name:'<i class="fa fa-search"></i> Buscar... ';
                 }
             }).change(function(){
                 // alert(2)
@@ -219,37 +219,24 @@
             if (option.loading) {
                 return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
             }
-            let image = "{{ asset('image/default.jpg') }}";
-            if(option.image){
-                image = "{{ asset('storage') }}/"+option.image.replace('.', '-cropped.');
-                // alert(image)
-            }
+            // let image = "{{ asset('image/default.jpg') }}";
+            // if(option.image){
+            //     image = "{{ asset('storage') }}/"+option.image.replace('.', '-cropped.');
+            //     // alert(image)
+            // }
             
             // Mostrar las opciones encontradas
             return $(`  <div style="display: flex">
                             <div style="margin: 0px 10px">
-                                <img src="${image}" width="50px" />
+                                <img src="" width="50px" />
                             </div>
                             <div>
-                                <small>CI: </small>${option.ci}<br>
-                                <b style="font-size: 16px">${option.first_name} ${option.last_name}
+                                <b style="font-size: 16px">${option.article.name} 
                             </div>
                         </div>`);
         }
 
-        function formatResultWorker(option){
-        // Si está cargando mostrar texto de carga
-            if (option.loading) {
-                return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
-            }
-            
-            // Mostrar las opciones encontradas
-            return $(`  <div style="display: flex">
-                            <div>
-                                <b style="font-size: 16px">${option.name}
-                            </div>
-                        </div>`);
-        }
+        
 
         function setNumber(){
             var length = 0;
