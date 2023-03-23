@@ -89,14 +89,15 @@
                                             <tr>
                                                 <th style="width: 30px">N&deg;</th>
                                                 <th style="text-align: center">Detalle</th>  
-                                                <th style="text-align: center; width: 150px">Cantidad</th>  
-                                                <th style="text-align: center; width: 150px">Precio</th>  
+                                                <th style="text-align: center; width: 80px">Precio</th>  
+                                                <th style="text-align: center; width: 80px">Cantidad</th>  
+                                                <th style="text-align: center; width: 80px">Sub Total</th>
                                                 <th width="15px">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="table-body">
                                             <tr id="tr-empty">
-                                                <td colspan="5" style="height: 150px">
+                                                <td colspan="6" style="height: 150px">
                                                     <h4 class="text-center text-muted" style="margin-top: 50px">
                                                         <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
                                                         Lista de detalle vacía
@@ -195,12 +196,17 @@
                             <tr class="tr-item" id="tr-item-${product.id}">
                                 <td class="td-item"></td>
                                 <td>
-                                    <b class="label-description" id="description-${product.id}"><small>${product.name}</small>
+                                    <b class="label-description" id="description-${product.id}"><small>${product.article.name}</small>
                                     <input type="hidden" name="category[]" value="${product.id}" />
                                 </td>
-                                <td>
-                                    <input type="number" name="price[]" min="0" step="1" id="select-price-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                <td style="text-align: right">
+                                    <b class="label-description"><small>Bs. ${product.price}</small>
+                                    <input type="hidden" name="price[]" id="select-price-${product.id}" value="${product.price}" />
                                 </td>
+                                <td>
+                                    <input type="number" name="price[]" min="0" max="${product.cantRestante}" step="1" id="select-cant-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                </td>
+                                <td class="text-right"><h4 class="label-subtotal" id="label-subtotal-${product.id}">0</h4></td>
                                 <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
                             </tr>
                         `);
@@ -208,6 +214,7 @@
                         toastr.info('EL detalle ya está agregado', 'Información')
                     }
                     setNumber();
+                    getSubtotal(product.id);
                 }
             });
             
@@ -254,6 +261,20 @@
                 $('#tr-empty').fadeIn('fast');
             }
         }
+        function getSubtotal(id){
+                let price = $(`#select-price-${id}`).val() ? parseFloat($(`#select-price-${id}`).val()) : 0;
+                let quantity = $(`#select-cant-${id}`).val() ? parseFloat($(`#select-cant-${id}`).val()) : 0;
+                $(`#label-subtotal-${id}`).text((price * quantity).toFixed(2));
+                // getTotal();
+        }
+
+
+
+
+
+
+
+
         function removeTr(id){
             $(`#tr-item-${id}`).remove();
             $('#select_producto').val("").trigger("change");
