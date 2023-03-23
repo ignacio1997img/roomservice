@@ -232,8 +232,9 @@
                                 <td class="td-item"></td>
                                 <td>
                                     <b class="label-description" id="description-${product.id}"><small>${product.article.name}</small><br>
-                                    <b class="label-description" id="description-${product.id}"><small> ${ product.expiration? 'Expira: '+ moment(product.expiration).format('DD-MM-YYYY'):''}</small>
+                                    <b class="label-description"><small> ${ product.expiration? 'Expira: '+ moment(product.expiration).format('DD-MM-YYYY'):''}</small>
                                     <input type="hidden" name="income[]" value="${product.article.id}" />
+                                    <input type="hidden" name="expiration[]" value="${product.expiration}" />
                                 </td>
                                 <td style="text-align: right">
                                     <b class="label-description"><small>Bs. ${product.price}</small>

@@ -21,7 +21,7 @@ class CreateIncomesDetailsTable extends Migration
             $table->double('cantRestante', 9.2)->nullable();
             $table->double('price', 9.2)->nullable();
             $table->double('amount', 9.2)->nullable();
-            $table->datetime('expiration')->nullable();
+            $table->date('expiration')->nullable();
             $table->smallInteger('expirationStatus')->default(1);
 
             $table->timestamps();

@@ -155,8 +155,6 @@ class IncomeController extends Controller
     //Para sacar producto del almacen a las oficinas
     public function storeEgressPieza(Request $request)
     {
-        return $request;
-
         if($request->amount<=0)
         {
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
@@ -176,8 +174,14 @@ class IncomeController extends Controller
             $pagar =0;
             for ($i=0; $i < count($request->income); $i++)
             {
-                $incomedetail = IncomesDetail::where('article_id',$request->income[$i])->get();
+                $expiration = 1;
+                if(!$request->expiration[$i])
+                {
+                    $expiration = 'expiration ='.$request->expiration[$i];
+                }
+                $incomedetail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('deleted_at', null)->get();
                 return $incomedetail;
+                
                 $cant=0;
                 $ok=false;
                 if($request->cant_stock[$i] <= $wherehouse->item)
