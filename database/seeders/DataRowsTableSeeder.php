@@ -377,7 +377,7 @@ class DataRowsTableSeeder extends Seeder
                 'data_type_id' => 4,
                 'field' => 'ci',
                 'type' => 'text',
-                'display_name' => 'Ci',
+                'display_name' => 'Ci / Pasaporte',
                 'required' => 0,
                 'browse' => 1,
                 'read' => 1,
