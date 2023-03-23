@@ -135,7 +135,7 @@ class IncomeController extends Controller
     {
         $q = request('q');
         
-        $data = IncomesDetail::with(['article'])
+        $data = IncomesDetail::with(['article','article.category'])
             ->where(function($query) use ($q){
                 if($q){
                     $query->OrwhereHas('article', function($query) use($q){
@@ -144,7 +144,7 @@ class IncomeController extends Controller
                 }
             })
             // ->whereRaw($q ? '(name like "%'.$q.'%" )' : 1)
-            ->where('cantRestante','>', 1)->where('deleted_at', null)->where('expirationStatus', 1)->get();
+            ->where('cantRestante','>', 0)->where('deleted_at', null)->where('expirationStatus', 1)->groupBy('article_id', 'price', 'expiration')->get();
 
         return response()->json($data);
     }

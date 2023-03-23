@@ -219,19 +219,22 @@
             if (option.loading) {
                 return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
             }
-            // let image = "{{ asset('image/default.jpg') }}";
-            // if(option.image){
-            //     image = "{{ asset('storage') }}/"+option.image.replace('.', '-cropped.');
-            //     // alert(image)
-            // }
+            let image = "{{ asset('image/default.jpg') }}";
+            if(option.article.image){
+                image = "{{ asset('storage') }}/"+option.article.image.replace('.', '-cropped.');
+                // alert(image)
+            }
             
             // Mostrar las opciones encontradas
             return $(`  <div style="display: flex">
                             <div style="margin: 0px 10px">
-                                <img src="" width="50px" />
+                                <img src="${image}" width="50px" />
                             </div>
                             <div>
-                                <b style="font-size: 16px">${option.article.name} 
+                                <b style="font-size: 16px">${option.article.name} </b> <br>
+                                <small>Stock: </small>${option.cantRestante}<br>
+                                <small>Precio: </small>Bs. ${option.price}<br>
+                                <small>Categoría: </small>${option.article.category.name}
                             </div>
                         </div>`);
         }
