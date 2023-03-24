@@ -24,6 +24,14 @@
                                 if($item->status==0)
                                 {
                                     $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->where('status', 1)->where('deleted_at',null)->first();  
+                                    $egre = \DB::table('egres as e')
+                                            ->join('egres_deatils as d', 'd.egre_id', 'e.id')
+                                            ->join('articles as a', 'a.id', 'd.article_id')
+                                            ->where('e.serviceRoom_id', $service->id)
+                                            ->where('e.deleted_at', null)
+                                            ->where('d.deleted_at', null)
+                                            ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price',DB::raw("SUM(d.cantSolicitada) as cantSolicitada"))->groupBy('name', 'article_id', 'egre_id', 'price')->get();
+                                    $totalaux = $egre->SUM('cantSolicitada');
                                 }
                             @endphp
                             
@@ -38,8 +46,9 @@
                             <br>
                             @if ($item->status==1)
                                 <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
-                            @else                                
-                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount:0}}</small>                                
+                            @else  
+
+                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux:0}}</small>                                
                             @endif
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>

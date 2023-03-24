@@ -40,4 +40,9 @@ class SaleController extends Controller
         // dump($data);
         return view('sale.list', compact('data'));
     }
+
+    public function create()
+    {
+        return view('sale.add');
+    }
 }

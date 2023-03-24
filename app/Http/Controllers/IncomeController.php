@@ -165,15 +165,16 @@ class IncomeController extends Controller
         // return $request;
         DB::beginTransaction();
         try {
+
             $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
 
             $user = Auth::user()->id;
             $egre = Egre::create([
                     'registerUser_id' => $user,
-                    'people_id' => $service->people_id,
-                    'room_id' => $request->room_id,
+                    'people_id' => $request->people_id?$request->people_id:$service->people_id,
+                    'room_id' => $request->people_id?null:$request->room_id,
                     'amount' => $request->amount,
-                    'serviceRoom_id'=> $service->id
+                    'serviceRoom_id'=> $request->people_id?null: $service->id
             ]);
 
             $pagar =0;
@@ -230,6 +231,10 @@ class IncomeController extends Controller
                 
             }
             DB::commit();
+            if($request->people_id)
+            {
+                return redirect()->route('sales.index')->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
+            }
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
 
         } catch (\Throwable $th) {
