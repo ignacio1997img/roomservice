@@ -18,4 +18,9 @@ class Egre extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+
+    public function detail()
+    {
+        return $this->hasMany(EgresDeatil::class, 'egre_id');
+    }
 }

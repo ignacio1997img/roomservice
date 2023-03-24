@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', 'Ver Personal')
+@section('page_title', 'Asignar habitación')
 
 @section('page_header')
     <h1 class="page-title">

@@ -33,4 +33,8 @@ class ServiceRoom extends Model
     {
         return $this->hasMany(ServiceRoomsDetail::class, 'serviceRoom_id');
     }
+    public function people()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 }

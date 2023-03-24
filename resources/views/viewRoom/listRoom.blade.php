@@ -23,7 +23,7 @@
                             @php
                                 if($item->status==0)
                                 {
-                                    $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->where('status', 1)->first();  
+                                    $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->where('status', 1)->where('deleted_at',null)->first();  
                                 }
                             @endphp
                             
@@ -46,7 +46,7 @@
                             
                             @if ($item->status == 0)
                             <br>
-                                <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
+                                <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
                                     <i class="fa-solid fa-eye"></i> Ver</span>
                                 </a>     
                                 <a href="#" data-toggle="modal" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">

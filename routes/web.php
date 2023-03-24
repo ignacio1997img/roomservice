@@ -71,6 +71,7 @@ Route::group(['prefix' => 'admin'], function () {
     
     Route::get('view/planta/{planta?}', [ViewController::class, 'index'])->name('view.planta');//paar ver todas la habitaciones de cada planta
     Route::get('view/planta/room/{room?}', [ViewController::class, 'viewAsignar'])->name('view-planta.room');
+    Route::get('view/planta/room/{room?}/read', [ViewController::class, 'readAsignar'])->name('view-planta-room.read');
 
     Route::post('serviceroom/store', [ServiceRoomController::class, 'store'])->name('serviceroom.store');
     // para agregar productos a una pieza o habitacion

@@ -20,4 +20,9 @@ class EgresDeatil extends Model
         'dleeted_at',
         'deletedUser_id'
     ];
+
+    public function article()
+    {
+        return $this->belongsTo(Article::class, 'article_id');
+    }
 }

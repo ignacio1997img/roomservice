@@ -12,6 +12,7 @@ use App\Models\EgresDeatil;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ServiceRoom;
 
 class IncomeController extends Controller
 {
@@ -161,15 +162,18 @@ class IncomeController extends Controller
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
         }
 
-        return $request;
+        // return $request;
         DB::beginTransaction();
         try {
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+
             $user = Auth::user()->id;
             $egre = Egre::create([
                     'registerUser_id' => $user,
                     'people_id' => $request->cashier_id,
                     'room_id' => $request->room_id,
                     'amount' => $request->amount,
+                    'serviceRoom_id'=> $service->id
             ]);
 
             $pagar =0;
