@@ -16,6 +16,8 @@ class CreateEgresTable extends Migration
         Schema::create('egres', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_id')->nullable()->constrained('rooms');
+            $table->foreignId('serviceRoom_id')->nullable()->constrained('service_rooms');
+
             $table->foreignId('people_id')->nullable()->constrained('people');
 
             $table->decimal('amount', 9,2)->nullable();

@@ -8,6 +8,7 @@ use App\Models\IncomesDetail;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Egre;
+use App\Models\EgresDeatil;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -160,11 +161,11 @@ class IncomeController extends Controller
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
         }
 
-        // return $request;
+        return $request;
         DB::beginTransaction();
         try {
             $user = Auth::user()->id;
-            $client = Egre::create([
+            $egre = Egre::create([
                     'registerUser_id' => $user,
                     'people_id' => $request->cashier_id,
                     'room_id' => $request->room_id,
@@ -179,76 +180,57 @@ class IncomeController extends Controller
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                $incomedetail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('deleted_at', null)->get();
-                return $incomedetail;
-                
+                // return $request;
+                $total = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->get()->SUM('cantRestante');
+                //por si falta item en el almacenn se retornara
+                if($request->cant[$i] > $total)
+                {
+                    DB::rollBack();
+                    return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
+                }
+
+                $cantTotal = $request->cant[$i];
                 $cant=0;
                 $ok=false;
-                if($request->cant_stock[$i] <= $wherehouse->item)
-                {
-                    $wherehouse->decrement('item', $request->cant_stock[$i]);
+                // $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
 
-                    Item::create([
-                        'wherehouseDetail_id' => $wherehouse->id,
-                        'item' => $request->cant_stock[$i],
-                        'itemEarnings' => $wherehouse->itemEarnings,
-                        'amount' => $request->total_pagar[$i],
-                        'client_id' => $client_id,
-                        'indice' => $i,
-                        'userRegister_id' => $user,
+                while($cantTotal>0)
+                {
+                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
+                    $aux = 0;
+                    // cuando el total es mayor o igual se le saca todo del almacen de ese detalle
+                    if($cantTotal >= $detail->cantRestante)
+                    {
+                        $cantTotal=$cantTotal-$detail->cantRestante;
+                        $aux = $detail->cantRestante;
+                    }
+                    else
+                    {
+                        $aux = $cantTotal;
+                        $cantTotal=0;
+                    }
+                    // return $detail;
+                    $detail->decrement('cantRestante', $aux);
+
+                    EgresDeatil::create([
+                        'egre_id'=>$egre->id,
+                        'cantSolicitada'=>$aux,
+                        'price'=>$detail->price,
+                        'amount'=>$aux * $detail->price,
+                        'article_id'=>$detail->article_id,
+                        'incomeDetail_id'=>$detail->id,
+                        'registerUser_id' => Auth::user()->id
 
                     ]);
-                    $pagar+= $request->total_pagar[$i];
                 }
-                else
-                {
-                    // para que pueda sacar productos de varios registro pero del mismo item y del mismo precio
-                    $cant = $request->cant_stock[$i];
-                    while($cant > 0)
-                    {
-                        $des=0;
-                        $aux = WherehouseDetail::where('article_id', $wherehouse->article_id)->where('itemEarnings', $wherehouse->itemEarnings)
-                                ->where('item', '>', 0)
-                                ->where('deleted_at', null)
-                                ->orderBy('id', 'ASC')->first();
-                        $des = $cant > $aux->item ? $aux->item : $cant;
-                        
-                        $aux->decrement('item', $des);
-                        $cant-= $des;
-                        
-                        Item::create([
-                            'wherehouseDetail_id' => $aux->id,
-                            'item' => $des,
-                            'itemEarnings' => $aux->itemEarnings,
-                            'amount' => $des * $aux->itemEarnings,
-                            'client_id' => $client_id,
-                            'indice' => $i,
-                            'userRegister_id' => $user,
-
-
-                        ]);
-                        $pagar = $pagar + ($des * $aux->itemEarnings);
-                    }
-                }
-                        
-                $client->update(['amount'=>$pagar]);
                 
             }
-            Adition::create([
-                'client_id' => $client_id,
-                'cashier_id' => $request->cashier_id,
-                'cant' => $request->credits? $request->subAmount:$request->amount,
-                'observation' => 'Pago al momento del servicio',
-                'type'=> 'producto',
-                'userRegister_id' => $user
-            ]);
-            // return 'si';
-                DB::commit();
-            return redirect()->route('clients.index')->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
+            DB::commit();
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('clients.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
 
