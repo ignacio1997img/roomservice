@@ -80,6 +80,8 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     Route::resource('sales', SaleController::class);
+    Route::get('sales/ajax/list/{search?}', [SaleController::class, 'list']);
+
 
 
 

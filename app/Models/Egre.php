@@ -23,4 +23,13 @@ class Egre extends Model
     {
         return $this->hasMany(EgresDeatil::class, 'egre_id');
     }
+
+    public function serviceroom()
+    {
+        return $this->belongsTo(ServiceRoom::class, 'serviceRoom_id');
+    }
+    public function people()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 }

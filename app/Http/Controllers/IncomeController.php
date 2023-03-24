@@ -170,7 +170,7 @@ class IncomeController extends Controller
             $user = Auth::user()->id;
             $egre = Egre::create([
                     'registerUser_id' => $user,
-                    'people_id' => $request->cashier_id,
+                    'people_id' => $service->people_id,
                     'room_id' => $request->room_id,
                     'amount' => $request->amount,
                     'serviceRoom_id'=> $service->id

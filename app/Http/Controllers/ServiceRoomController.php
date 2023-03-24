@@ -45,7 +45,7 @@ class ServiceRoomController extends Controller
             $ser = ServiceRoom::create([
                 'people_id'=>$request->people_id,
                 'room_id'=>$request->room_id,
-                'number' => $request->number,
+                'number' => $ok->number,
                 'category'=>$category->name,    
                 'facility'=>$facility->name,
                 'amount'=>$request->price?$request->price:$request->amount,
