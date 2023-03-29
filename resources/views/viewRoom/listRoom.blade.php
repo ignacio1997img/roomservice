@@ -32,6 +32,9 @@
                                             ->where('d.deleted_at', null)
                                             ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price',DB::raw("SUM(d.cantSolicitada) as cantSolicitada"))->groupBy('name', 'article_id', 'egre_id', 'price')->get();
                                     $totalaux = $egre->SUM('cantSolicitada');
+
+                                    $menu =  \App\Models\EgresMenu::where('serviceRoom_id', $service->id)->where('deleted_at',null)->get()->SUM('amount');
+                                    // dd($menu);
                                 }
                             @endphp
                             
@@ -48,7 +51,7 @@
                                 <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
                             @else  
 
-                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux:0}}</small>                                
+                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux+$menu:0}}</small>                                
                             @endif
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>
@@ -147,7 +150,7 @@
 
         {{-- para la venta de comidas ala pieza o habitacion --}}
 
-        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-article.store')}}" method="post">
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-foodmenu.store')}}" method="post">
             @csrf
             <div class="modal  fade" id="modal_menu" role="dialog">
                 <div class="modal-dialog">
@@ -163,12 +166,12 @@
                                 <input type="hidden" name="planta_id" id="planta_id">
                             </div>
                             <div class="form-group">
-                                <label>Productos</label>
-                                <select class="form-control" id="select_producto"></select>
+                                <label>Menú</label>
+                                <select class="form-control" id="select_menu"></select>
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive">
-                                    <table id="dataTable" class="tables table-bordered table-hover">
+                                    <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th style="width: 30px">N&deg;</th>
@@ -179,8 +182,8 @@
                                                 <th width="15px">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="table-body">
-                                            <tr id="tr-empty">
+                                        <tbody id="table-bodyMenu">
+                                            <tr id="tr-emptyMenu">
                                                 <td colspan="6" style="height: 150px">
                                                     <h4 class="text-center text-muted" style="margin-top: 50px">
                                                         <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
@@ -194,8 +197,8 @@
                                                 Total
                                             </td>
                                             <td style="text-align: right">
-                                                <small>Bs.</small> <b id="label-total">0.00</b>
-                                                <input type="hidden" name="amount" id="input-total" value="0">
+                                                <small>Bs.</small> <b id="label-totalMenu">0.00</b>
+                                                <input type="hidden" name="amount" id="input-totalMenu" value="0">
                                             </td>
                                             <td></td>
                                         </tr>
@@ -240,22 +243,42 @@
 
 <script>
 
-    $('#modal_producto').on('show.bs.modal', function (event)
-    {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        var pieza = button.data('pieza');
-        var planta = button.data('planta');
-        var modal = $(this);
-        modal.find('.modal-body #room_id').val(id);
-        modal.find('.modal-body #planta_id').val(planta);
-        modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+        $('#modal_producto').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
 
-        $('#table-body').empty();
+            $('#table-body').empty();
 
-        $('#label-total').text(0);
-        $('#input-total').val(0)
-    })
+            $('#label-total').text(0);
+            $('#input-total').val(0)
+            $('#select_producto').val("").trigger("change");
+
+        })
+
+        $('#modal_menu').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+
+            $('#table-bodyMenu').empty();
+
+            $('#label-totalMenu').text(0);
+            $('#input-totalMenu').val(0)
+            $('#select_menu').val("").trigger("change");
+        })
 
         $(document).ready(function(){
             var productSelected;
@@ -333,6 +356,80 @@
                     getSubtotal(product.id);
                 }
             });
+
+
+            //para la seleccion del menu del dia
+            $('#select_menu').select2({
+            // tags: true,
+                placeholder: '<i class="fa fa-search"></i> Buscar...',
+                escapeMarkup : function(markup) {
+                    return markup;
+                },
+                language: {
+                    inputTooShort: function (data) {
+                        return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
+                    },
+                    noResults: function () {
+                        return `<i class="far fa-frown"></i> No hay resultados encontrados`;
+                    }
+                },
+                quietMillis: 250,
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ url('admin/food/menu/list/ajax') }}",        
+                    processResults: function (data) {
+                        let results = [];
+                        data.map(data =>{
+                            results.push({
+                                ...data,
+                                disabled: false
+                            });
+                        });
+                        return {
+                            results
+                        };
+                    },
+                    cache: true
+                },
+                templateResult: formatResultMenu,
+                templateSelection: (opt) => {
+                    productSelected = opt;
+
+                    
+                    return opt.id?opt.food.name:'<i class="fa fa-search"></i> Buscar... ';
+                }
+            }).change(function(){
+                // alert(1)
+                if($('#select_menu option:selected').val()){
+                    let product = productSelected;
+                    if($('.tablesMenu').find(`#tr-item-menu-${product.id}`).val() === undefined){
+                    // alert(product.name);
+
+                        $('#table-bodyMenu').append(`
+                            <tr class="tr-item" id="tr-item-menu-${product.id}">
+                                <td class="td-itemMenu"></td>
+                                <td>
+                                    <b class="label-description" id="description-${product.id}"><small>${product.food.name}</small><br>
+                                    <input type="hidden" name="food[]" value="${product.food.id}" />
+                                </td>
+                                <td style="text-align: right">
+                                    <b class="label-description"><small>Bs. ${product.amount}</small>
+                                    <input type="hidden" name="price[]" id="select-amount-${product.id}" value="${product.amount}" />
+                                </td>
+                                <td>
+                                    <input type="number" name="cant[]" min="0" step="1" id="select-cant-menu-${product.id}" onkeyup="getSubtotalMenu(${product.id})" onchange="getSubtotalMenu(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                </td>
+                                <td class="text-right"><h4 class="label-subtotal-menu" id="label-subtotal-menu-${product.id}">0</h4></td>
+                                <td class="text-right"><button type="button" onclick="removeTrMenu(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
+                            </tr>
+                        `);
+                    }else{
+                        toastr.info('EL detalle ya está agregado', 'Información')
+                    }
+                    setNumberMenu();
+                    getSubtotalMenu(product.id);
+                }
+            });
             
 
         })
@@ -362,6 +459,29 @@
                         </div>`);
         }
 
+        function formatResultMenu(option){
+        // Si está cargando mostrar texto de carga
+            if (option.loading) {
+                return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
+            }
+            let image = "{{ asset('image/default.jpg') }}";
+            if(option.food.image){
+                image = "{{ asset('storage') }}/"+option.food.image.replace('.', '-cropped.');
+                // alert(image)
+            }
+            
+            // Mostrar las opciones encontradas
+            return $(`  <div style="display: flex">
+                            <div style="margin: 0px 10px">
+                                <img src="${image}" width="50px" />
+                            </div>
+                            <div>
+                                <b style="font-size: 16px">${option.food.name} </b> <br>
+                                <small>Precio: </small>Bs. ${option.amount}
+                            </div>
+                        </div>`);
+        }
+
         
 
         function setNumber(){
@@ -383,8 +503,6 @@
                 $(`#label-subtotal-${id}`).text((price * quantity).toFixed(2));
                 getTotal();
         }
-
-
         function getTotal(){
                 let total = 0;
                 $(".label-subtotal").each(function(index) {
@@ -392,18 +510,48 @@
                 });
                 $('#label-total').text(total.toFixed(2));
                 $('#input-total').val(total.toFixed(2));
-            }
-
-
-
-
-
-
+        }
         function removeTr(id){
             $(`#tr-item-${id}`).remove();
             $('#select_producto').val("").trigger("change");
             setNumber();
             getTotal();
+        }
+
+        //para la opcion de menu
+        function setNumberMenu(){
+            var length = 0;
+            $(".td-itemMenu").each(function(index) {
+                $(this).text(index +1);
+                length++;
+            });
+
+            if(length > 0){
+                $('#tr-emptyMenu').css('display', 'none');
+            }else{
+                $('#tr-emptyMenu').fadeIn('fast');
+            }
+        }
+
+        function getSubtotalMenu(id){
+                let price = $(`#select-amount-${id}`).val() ? parseFloat($(`#select-amount-${id}`).val()) : 0;
+                let quantity = $(`#select-cant-menu-${id}`).val() ? parseFloat($(`#select-cant-menu-${id}`).val()) : 0;
+                $(`#label-subtotal-menu-${id}`).text((price * quantity).toFixed(2));
+                getTotalMenu();
+        }
+        function getTotalMenu(){
+                let total = 0;
+                $(".label-subtotal-menu").each(function(index) {
+                    total += parseFloat($(this).text());
+                });
+                $('#label-totalMenu').text(total.toFixed(2));
+                $('#input-totalMenu').val(total.toFixed(2));
+        }
+        function removeTrMenu(id){
+            $(`#tr-item-menu-${id}`).remove();
+            $('#select_menu').val("").trigger("change");
+            setNumberMenu();
+            getTotalMenu();
         }
         
 </script>

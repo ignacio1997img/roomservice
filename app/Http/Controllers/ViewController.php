@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoriesRoomsPart;
 use App\Models\Egre;
 use App\Models\EgresDeatil;
+use App\Models\EgresMenu;
 use App\Models\PartsHotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class ViewController extends Controller
     }
     public function readAsignar($room)
     {
-        // return $room;
+        //  return $room;
         $room = Room::with(['caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         
@@ -64,9 +65,12 @@ class ViewController extends Controller
             ->where('d.deleted_at', null)
             ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price',DB::raw("SUM(d.cantSolicitada) as cantSolicitada"))->groupBy('name', 'article_id', 'egre_id', 'price')->get();
 
+        $menu = EgresMenu::with(['food'])
+            ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
+
 
         // return $egre;        
 
-        return view('viewRoom.readAssign', compact('room', 'service', 'egre'));
+        return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu'));
     }
 }

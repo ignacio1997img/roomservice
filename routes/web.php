@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryRoomController;
+use App\Http\Controllers\FoodMenuController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\RoomController;
@@ -76,7 +77,10 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::post('serviceroom/store', [ServiceRoomController::class, 'store'])->name('serviceroom.store');
     // para agregar productos a una pieza o habitacion
-    Route::post('serviceroom/article/store', [IncomeController::class, 'storeEgressPieza'])->name('serviceroom-article.store');
+    Route::post('serviceroom/article/store', [IncomeController::class, 'storeEgressPieza'])->name('serviceroom-article.store');//para agregar un producto a la venta en una habitacion
+    Route::post('serviceroom/foodmenu/store', [FoodMenuController::class, 'storeEgressPieza'])->name('serviceroom-foodmenu.store');//para agregar una comida a la venta en una habitacion
+    Route::get('food/menu/list/ajax', [FoodMenuController::class, 'ajaxMenuExists']);//para poder obtene el menu del dia
+
 
 
     Route::resource('sales', SaleController::class);
