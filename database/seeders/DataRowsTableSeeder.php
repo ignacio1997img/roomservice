@@ -1587,6 +1587,22 @@ class DataRowsTableSeeder extends Seeder
                 'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\Food","table":"food","type":"belongsTo","column":"food_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
                 'order' => 2,
             ),
+            98 => 
+            array (
+                'id' => 110,
+                'data_type_id' => 14,
+                'field' => 'image',
+                'type' => 'image',
+                'display_name' => 'Imagen',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 0,
+                'details' => '{"display":{"width":12},"resize":{"width":"1000","height":null},"quality":"70%","upsize":true,"thumbnails":[{"name":"medium","scale":"50%"},{"name":"small","scale":"25%"},{"name":"cropped","crop":{"width":"300","height":"250"}}]}',
+                'order' => 9,
+            ),
         ));
         
         
