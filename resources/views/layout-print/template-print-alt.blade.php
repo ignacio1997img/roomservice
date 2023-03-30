@@ -51,7 +51,11 @@
         <button class="btn-print" onclick="window.print()"> Imprimir <i class="fa fa-print"></i></button>
     </div>
     <div id="watermark">
-        <img src="{{ asset('image/icon.png') }}" /> 
+        @if($admin_favicon == '')
+            <img src="{{ asset('image/icon.png') }}" /> 
+        @else
+            <img src="{{ Voyager::image($admin_favicon) }}" /> 
+        @endif        
     </div>
     
     <div class="content">
