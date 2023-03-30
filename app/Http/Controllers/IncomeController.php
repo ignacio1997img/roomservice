@@ -154,7 +154,7 @@ class IncomeController extends Controller
 
 
 
-    //Para sacar producto del almacen a las oficinas
+    //Para sacar producto del almacen para la ventas de articulos a las habitaciones y a las personas
     public function storeEgressPieza(Request $request)
     {
         if($request->amount<=0)
@@ -174,7 +174,8 @@ class IncomeController extends Controller
                     'people_id' => $request->people_id?$request->people_id:$service->people_id,
                     'room_id' => $request->people_id?null:$request->room_id,
                     'amount' => $request->amount,
-                    'serviceRoom_id'=> $request->people_id?null: $service->id
+                    'serviceRoom_id'=> $request->people_id?null: $service->id,
+                    'sale'=>1
             ]);
 
             $pagar =0;
