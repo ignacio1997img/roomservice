@@ -9,32 +9,41 @@
 
     <table width="100%">
         <tr>
-            <td style="width: 20%"><img src="{{ asset('images/icon.png') }}" alt="CAPRESI" width="70px"></td>
+            <td style="width: 20%">
+                <?php $admin_favicon = Voyager::setting('admin.icon_image'); ?>
+                @if($admin_favicon == '')
+                    <img src="{{ asset('image/icon.png') }}" alt="{{strtoupper(setting('admin.title'))}}" width="70px">
+                @else
+                @php
+                    // dd($admin_favicon);
+                @endphp
+                    <img src="{{ Voyager::image($admin_favicon) }}" alt="{{strtoupper(setting('admin.title'))}}" width="70px">
+                @endif
+            </td>
             <td style="text-align: center;  width:50%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
-                    EMPRESA "CAPRESI"<br>
+                    {{strtoupper(setting('admin.title'))}}<br>
                 </h3>
                 <h4 style="margin-bottom: 0px; margin-top: 5px">
-                    REPORTE DETALLADO DE RECAUDACION DIARIA
+                    REPORTE DETALLADO DE VENTA DE PRODUCTOS
                     {{-- Stock Disponible {{date('d/m/Y', strtotime($start))}} Hasta {{date('d/m/Y', strtotime($finish))}} --}}
                 </h4>
-                <small style="margin-bottom: 0px; margin-top: 5px; font-size: 10px">
-                        {{ date('d', strtotime($date)) }} DE {{ strtoupper($months[intval(date('m', strtotime($date)))] )}} DE {{ date('Y', strtotime($date)) }}
-                </small>
-                <br>
-                <small style="font-size: 10px">
-                    COBRADO POR: {{strtoupper($agent)}}
-                </small>
-                <br>
-                <small style="font-size: 10px">
-                    <b>TOTAL COBRADO Bs.</b> {{ number_format($amount,2, ',', '.') }}
-                </small>
+                @if ($start == $finish)
+                    <small style="margin-bottom: 0px; margin-top: 5px; font-size: 10px">
+                            {{ date('d', strtotime($start)) }} DE {{ strtoupper($months[intval(date('m', strtotime($start)))] )}} DE {{ date('Y', strtotime($start)) }}
+                    </small>
+                @else
+                    <small style="margin-bottom: 0px; margin-top: 5px; font-size: 10px">
+                        {{ date('d', strtotime($start)) }} DE {{ strtoupper($months[intval(date('m', strtotime($start)))] )}} DE {{ date('Y', strtotime($start)) }} HASTA {{ date('d', strtotime($finish)) }} DE {{ strtoupper($months[intval(date('m', strtotime($finish)))] )}} DE {{ date('Y', strtotime($finish)) }}
+                    </small>
+                @endif
+                
             </td>
             <td style="text-align: right; width:30%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
-                    <div id="qr_code">
+                    {{-- <div id="qr_code">
                         {!! QrCode::size(80)->generate('Total Cobrado: Bs'.number_format($amount,2, ',', '.').', Cobrado Por: '.$agent.', Recaudado en Fecha '.date('d', strtotime($date)).' de '.strtoupper($months[intval(date('m', strtotime($date)))] ).' de '.date('Y', strtotime($date))); !!}
-                    </div>
+                    </div> --}}
                     <small style="font-size: 8px; font-weight: 100">Impreso por: {{ Auth::user()->name }} {{ date('d/M/Y H:i:s') }}</small>
                 </h3>
             </td>
@@ -43,88 +52,59 @@
     <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
         <thead>
             <tr>
-                <th rowspan="2" style="width:5px">N&deg;</th>   
-                <th rowspan="2" style="text-align: center">CI</th>
-                <th rowspan="2" style="text-align: center">CLIENTE</th>
-                <th colspan="3" style="text-align: center">DETALLE DEL PRESTAMOS</th>
-                <th colspan="3" style="text-align: center">DETALLE DE PAGO</th>
-            </tr>
-            <tr>
-                <th style="text-align: center; width:5px">CODIGO PRESTAMO</th>
-                <th style="text-align: center; width:5px">FECHA DE PRESTAMO</th>
-                <th style="text-align: center; width:5px">TOTAL DEL PRESTAMO</th>
+                <th style="width:5px">N&deg;</th>
+                <th style="text-align: center">CLIENTE</th>
+                <th style="text-align: center">ATENDIDO POR</th>
+                <th style="text-align: center">FECHA</th>
+                <th style="text-align: center">PRODUCTO</th>
+                <th style="text-align: center; width:5px">CANTIDAD</th>
+                <th style="text-align: center; width:5px">PRECIO</th>
 
-                <th style="text-align: center; width:5px">N. TRANS.</th>
-                <th style="text-align: center; width:5px">FECHA DE PAGO</th>
-                <th style="text-align: center; width:70px">TOTAL PAGADO</th>
+                <th style="text-align: center; width:80px">TOTAL</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $count = 1;
-                $total = 0;
-            @endphp
-            @forelse ($data as $item)
-                <tr>
-                    <td>{{ $count }}</td>
-                    <td><b>CI:</b> {{ $item->ci}}</td>
-                    <td>                        
-                        <b>{{strtoupper($item->first_name)}} {{ strtoupper($item->last_name1)}} {{ strtoupper($item->last_name2)}}</b>
-                    </td>
-                    <td style="text-align: center"><b>{{ $item->code}}</b></td>
-                    <td style="text-align: center">{{date('d/m/Y', strtotime($item->dateDay))}}</td>
-                    <td style="text-align: right">{{ number_format($item->amountTotal, 2, ',', '.') }}</td>
-                    <td style="text-align: right">{{ $item->transaction}}</td>
-                    <td style="text-align: center">{{date('d/m/Y', strtotime($item->loanDayAgent_fecha))}}</td>
-                    <td style="text-align: right">{{ number_format($item->amount,2, ',', '.') }}</td>                              
-                                                                            
-                </tr>
-                @php
-                    $count++;                 
-                    $total+= $item->amount;                    
-                @endphp
-            @empty
-                <tr style="text-align: center">
-                    <td colspan="9">No se encontraron registros.</td>
-                </tr>
-            @endforelse
-            <tr>
-                <th colspan="8" style="text-align: right">Total</th>
-                <td style="text-align: right"><strong>Bs. {{ number_format($total,2, ',', '.') }}</strong></td>
-            </tr>
+                    @php
+                        $count = 1;
+                        $total = 0;
+                    @endphp
+                    @forelse ($data as $item)
+                        <tr>
+                            <td>{{ $count }}</td>
+                            <td>
+                                <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
+                                <small>Nro Habitación:</small> {{ $item->number}}
+                            </td>
+                            <td style="text-align: center">{{$item->user}}</td>
+                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
+                            <td style="text-align: right">{{ $item->name}}</td>
+                            <td style="text-align: right">{{ number_format($item->cantSolicitada,2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</td>
+                                                                                
+                            
+                        </tr>
+                        @php
+                            $count++;
+                            $total = $total + ($item->cantSolicitada * $item->price);                            
+                        @endphp
+                        
+                    @empty
+                        <tr style="text-align: center">
+                            <td colspan="10">No se encontraron registros.</td>
+                        </tr>
+                    @endforelse
+
+                    <tr>
+                        <td colspan="7" style="text-align: right"><b>TOTAL</b></td>
+                        <td style="text-align: right"><b><small>Bs. </small>{{ number_format($total, 2, ',', '.') }}</b></td>
+                    </tr>
         </tbody>       
        
 
     </table>
 
-    <br>
-    <br>
-    <table width="100%" style="font-size: 9px">
-        <tr>
-            <td style="text-align: center">
-                ______________________
-                <br>
-                <b>Entregado Por</b><br>
-                <b>{{ Auth::user()->name }}</b><br>
-                <b>CI: {{ Auth::user()->ci }}</b>
-            </td>
-            <td style="text-align: center">
-                {{-- ______________________
-                <br>
-                <b>Firma Responsable</b> --}}
-            </td>
-            <td style="text-align: center">
-                ______________________
-                <br>
-                <b>Recibido Por</b><br>
-                <b>................................................</b><br>
-                <b>CI: ........................</b>
-            </td>
-        </tr>
-    </table>
-    <script>
 
-    </script>
 
 @endsection
 @section('css')

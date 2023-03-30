@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Reporte de egreso diario de producto diario del almacen')
-@if(auth()->user()->hasPermission('browse_printloanCollection'))
+{{-- @if(auth()->user()->hasPermission('browse_printloanCollection')) --}}
 
 
 @section('page_header')
@@ -18,25 +18,25 @@
                         </div>
                         <div class="col-md-4" style="margin-top: 30px">
                             <form name="form_search" id="form-search" action="{{ route('report-egreserviceroom.list') }}" method="post">
-
                                 @csrf
                                 <input type="hidden" name="print">
                                 
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="date" name="date" class="form-control">
-                                        <small>Fecha</small>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="date" name="start" class="form-control" required>
+                                                <small>Fecha Inicio</small>
+                                            </div>
+                                        </div>                                        
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <select name="agent_id" class="form-control select2" required>
-                                            <option value=""disabled selected>--- Seleccione una opcion ---</option>
-                                            @foreach ($user as $item)
-                                                <option value="{{$item->id}}">{{$item->name}}</option>
-                                            @endforeach                                             
-                                        </select>
-                                        <small>Persona</small>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="date" name="finish" class="form-control" required>
+                                                <small>Fecha Fin</small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -199,9 +199,8 @@
         }
     </script>
 @stop
-@else
+{{-- @else
     @section('content')
-        {{-- @include('errors.403') --}}
         <h1>403</h1>
     @stop
-@endif
+@endif --}}

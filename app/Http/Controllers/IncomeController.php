@@ -124,9 +124,9 @@ class IncomeController extends Controller
         $paginate = request('paginate') ?? 10;
 
         $data = IncomesDetail::with(['article.category'])
-                ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price')->paginate($paginate);
+                ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'expiration', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price', 'expiration')->paginate($paginate);
 
-        
+        // return $data;
         // dump($data);
         return view('store.stock.list', compact('data'));
 

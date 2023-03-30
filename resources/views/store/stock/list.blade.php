@@ -26,7 +26,11 @@
                             </div>
                             <div>
                                 <b style="font-size: 16px">{{ $item->article->name }}</b><br>
-                                <small>Categoría: </small>{{ $item->article->category->name }}
+                                <small>Categoría: </small>{{ $item->article->category->name }} 
+                                @if ($item->expiration)
+                                    <br>
+                                    <small style="color: red">Expiración: </small>{{ $item->expiration }}
+                                @endif
                             </div>
                         </div>
                     </td>

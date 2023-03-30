@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     Route::get('report/egreserviceroom', [ReportController::class, 'egreServiceRoom'])->name('report.egreserviceroom');
-    Route::get('report/egreserviceroom/list', [ReportController::class, 'egreServiceRoomList'])->name('report-egreserviceroom.list');
+    Route::post('report/egreserviceroom/list', [ReportController::class, 'egreServiceRoomList'])->name('report-egreserviceroom.list');
 
 
 

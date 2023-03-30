@@ -9,23 +9,18 @@
 <div class="panel panel-bordered">
     <div class="panel-body">
         <div class="table-responsive">
-            <table id="dataStyle" style="width:100%"  class="table table-bordered table-striped table-sm">
+            <table id="dataTable" style="width:100%"  class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:5px">N&deg;</th>
-                        <th rowspan="2" style="text-align: center">CLIENTE</th>
-                        <th rowspan="4" style="text-align: center">ATENDIDO POR</th>
-                        <th colspan="3" style="text-align: center">DETALLE DEL PRESTAMOS</th>
-                        <th colspan="3" style="text-align: center">DETALLE DE PAGO</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align: center">CODIGO PRESTAMO</th>
-                        <th style="text-align: center">FECHA DE PRESTAMO</th>
-                        <th style="text-align: center">TOTAL DEL PRESTAMO</th>
+                        <th style="width:5px">N&deg;</th>
+                        <th style="text-align: center">CLIENTE</th>
+                        <th style="text-align: center">ATENDIDO POR</th>
+                        <th style="text-align: center">FECHA</th>
+                        <th style="text-align: center">PRODUCTO</th>
+                        <th style="text-align: center; width:5px">CANTIDAD</th>
+                        <th style="text-align: center; width:5px">PRECIO</th>
 
-                        <th style="text-align: center">N. TRANSACCION</th>
-                        <th style="text-align: center">FECHA DE PAGO</th>
-                        <th style="text-align: center">TOTAL PAGADO</th>
+                        <th style="text-align: center; width:80px">TOTAL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,22 +32,21 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td>
-                                <small>CI:</small> {{ $item->ci}} <br>
-                                <p>{{ $item->first_name}} {{ $item->last_name1}} {{ $item->last_name2}}</p>
+                                <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
+                                <small>Nro Habitación:</small> {{ $item->number}}
                             </td>
+                            <td style="text-align: center">{{$item->user}}</td>
+                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
                             <td style="text-align: right">{{ $item->name}}</td>
-                            <td style="text-align: right">{{ $item->code}}</td>
-                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->dateDay))}}</td>
-                            <td style="text-align: right">{{ number_format($item->amountTotal,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ $item->transaction}}</td>
-                            <td style="text-align: center">{{date('d/m/Y H:m:s', strtotime($item->loanDayAgent_fecha))}}</td>
-                            <td style="text-align: right"><small>Bs. </small> {{ number_format($item->amount,2, ',', '.') }}</td>
-                                                                                  
+                            <td style="text-align: right">{{ number_format($item->cantSolicitada,2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</td>
+                                                                                
                             
                         </tr>
                         @php
                             $count++;
-                            $total = $total + $item->amount;                            
+                            $total = $total + ($item->cantSolicitada * $item->price);                            
                         @endphp
                         
                     @empty
@@ -62,7 +56,7 @@
                     @endforelse
 
                     <tr>
-                        <td colspan="8" style="text-align: right"><b>TOTAL</b></td>
+                        <td colspan="7" style="text-align: right"><b>TOTAL</b></td>
                         <td style="text-align: right"><b><small>Bs. </small>{{ number_format($total, 2, ',', '.') }}</b></td>
                     </tr>
                 </tbody>
