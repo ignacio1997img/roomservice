@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryRoomController;
 use App\Http\Controllers\FoodMenuController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ServiceRoomController;
@@ -85,6 +86,10 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('sales', SaleController::class);
     Route::get('sales/ajax/list/{search?}', [SaleController::class, 'list']);
+
+
+    Route::get('report/egreserviceroom', [ReportController::class, 'egreServiceRoom'])->name('report.egreserviceroom');
+    Route::get('report/egreserviceroom/list', [ReportController::class, 'egreServiceRoomList'])->name('report-egreserviceroom.list');
 
 
 
