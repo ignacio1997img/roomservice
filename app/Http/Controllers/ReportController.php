@@ -17,6 +17,10 @@ use App\Models\FoodMenu;
 
 class ReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //####################################Para ver la salida o ventas  de producto del almacen para las habitaciones o personas ########################
     //############################################################################################################################
     public function saleProductServiceRoom()

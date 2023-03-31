@@ -16,6 +16,11 @@ use App\Models\ServiceRoom;
 
 class IncomeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         return view('store.income.browse');

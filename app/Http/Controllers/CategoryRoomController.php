@@ -12,6 +12,12 @@ use Illuminate\Support\Carbon;
 
 class CategoryRoomController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    
     public function index()
     {
         // return 1;

@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+    //para trabajadores del hotel
     public function index()
     {
         return view('worker.browse');

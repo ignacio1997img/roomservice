@@ -16,6 +16,11 @@ use App\Models\ServiceRoom;
 
 class FoodMenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     //para obntener los articulos con stock del almacen
     public function ajaxMenuExists()
     {

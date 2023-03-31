@@ -13,6 +13,10 @@ use App\Models\CategoriesFacility;
 
 class RoomController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $category = CategoriesRoom::where('deleted_at',null)->orderBy('name', 'ASC')->get();
