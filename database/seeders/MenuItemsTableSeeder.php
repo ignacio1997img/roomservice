@@ -527,9 +527,9 @@ class MenuItemsTableSeeder extends Seeder
                 'parent_id' => 35,
                 'order' => 1,
                 'created_at' => '2023-03-30 10:23:56',
-                'updated_at' => '2023-03-30 10:30:49',
-                'route' => 'report.egreserviceroom',
-                'parameters' => NULL,
+                'updated_at' => '2023-03-30 16:13:53',
+                'route' => 'report.saleproductserviceroom',
+                'parameters' => 'null',
             ),
             32 => 
             array (
@@ -545,6 +545,22 @@ class MenuItemsTableSeeder extends Seeder
                 'created_at' => '2023-03-30 10:30:39',
                 'updated_at' => '2023-03-30 10:31:02',
                 'route' => 'sales.index',
+                'parameters' => NULL,
+            ),
+            33 => 
+            array (
+                'id' => 38,
+                'menu_id' => 1,
+                'title' => 'Ventas De Comida',
+                'url' => '',
+                'target' => '_self',
+                'icon_class' => 'fa-solid fa-print',
+                'color' => '#000000',
+                'parent_id' => 35,
+                'order' => 2,
+                'created_at' => '2023-03-30 16:40:10',
+                'updated_at' => '2023-03-30 16:40:31',
+                'route' => 'report.salefoodserviceroom',
                 'parameters' => NULL,
             ),
         ));

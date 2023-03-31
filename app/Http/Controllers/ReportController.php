@@ -17,7 +17,7 @@ use App\Models\FoodMenu;
 
 class ReportController extends Controller
 {
-    //####################################Para ver la salida de producto del almacen para las habitaciones########################
+    //####################################Para ver la salida o ventas  de producto del almacen para las habitaciones o personas ########################
     //############################################################################################################################
     public function saleProductServiceRoom()
     {     
@@ -50,6 +50,40 @@ class ReportController extends Controller
             return view('report.saleProductServiceRoom.print', compact('data', 'start', 'finish'));
         }else{
             return view('report.saleProductServiceRoom.list', compact('data'));
+        }
+        
+    }
+
+    //################################### Para la venta de comida "servivio a la habitacion" ###############################################
+    public function saleFoodServiceRoom()
+    {    
+        return view('report.saleFoodServiceRoom.report');
+    }
+
+    public function saleFoodServiceRoomList(Request $request)
+    {
+        $data = DB::table('egres_menus as em')
+            ->join('users as u', 'u.id', 'em.registerUser_id')
+
+             ->join('food as f', 'f.id', 'em.food_id')
+            ->leftJoin('service_rooms as sr', 'sr.id', 'em.serviceRoom_id')
+            ->leftJoin('rooms as r', 'r.id', 'sr.room_id')
+            ->leftJoin('people as p', 'p.id', 'em.people_id')
+            ->where('em.deleted_at', null)
+
+            ->whereDate('em.created_at', '>=', date('Y-m-d', strtotime($request->start)))
+            ->whereDate('em.created_at', '<=', date('Y-m-d', strtotime($request->finish)))
+            
+            ->select('sr.number', 'u.name as user', 'em.price', 'em.cant', 'em.amount', 'em.created_at', 'f.name as food', 'sr.category', 'sr.facility', 'p.first_name', 'p.last_name')
+            ->get();
+        // return $data;
+        // dump($data);
+        if($request->print){
+            $start = $request->start;
+            $finish = $request->finish;
+            return view('report.saleFoodServiceRoom.print', compact('data', 'start', 'finish'));
+        }else{
+            return view('report.saleFoodServiceRoom.list', compact('data'));
         }
         
     }

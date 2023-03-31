@@ -22,7 +22,8 @@ class CreateEgresMenusTable extends Migration
 
             $table->foreignId('people_id')->nullable()->constrained('people');
 
-
+            $table->decimal('price', 9,2)->nullable();
+            $table->decimal('cant', 9,2)->nullable();
             $table->decimal('amount', 9,2)->nullable();
 
 

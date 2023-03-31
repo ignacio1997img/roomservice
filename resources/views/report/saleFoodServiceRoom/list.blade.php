@@ -16,7 +16,7 @@
                         <th style="text-align: center">CLIENTE</th>
                         <th style="text-align: center">ATENDIDO POR</th>
                         <th style="text-align: center">FECHA</th>
-                        <th style="text-align: center">PRODUCTO</th>
+                        <th style="text-align: center">COMIDA</th>
                         <th style="text-align: center; width:5px">CANTIDAD</th>
                         <th style="text-align: center; width:5px">PRECIO</th>
 
@@ -33,22 +33,19 @@
                             <td>{{ $count }}</td>
                             <td>
                                 <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
-                                @if ($item->number)
-                                    <small>Nro Habitación:</small> {{ $item->number}}
-                                @endif
+                                <small>Nro Habitación:</small> {{ $item->number}}
                             </td>
                             <td style="text-align: center">{{$item->user}}</td>
                             <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
-                            <td style="text-align: right">{{ $item->name}}</td>
-                            <td style="text-align: right">{{ number_format($item->cantSolicitada,2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ $item->food}}</td>
+                            <td style="text-align: right">{{ number_format($item->cant,2, ',', '.') }}</td>
                             <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</td>
-                                                                                
+                            <td style="text-align: right">{{ number_format(($item->cant * $item->price),2, ',', '.') }}</td>                                                                                
                             
                         </tr>
                         @php
                             $count++;
-                            $total = $total + ($item->cantSolicitada * $item->price);                            
+                            $total = $total + ($item->cant * $item->price);                            
                         @endphp
                         
                     @empty
