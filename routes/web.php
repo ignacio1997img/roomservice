@@ -89,12 +89,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     //para los reportes de ventas de productos habitaciones o personas invidual
-    Route::get('report/saleproductserviceroom', [ReportController::class, 'saleProductServiceRoom'])->name('report.saleproductserviceroom');
-    Route::post('report/saleproductserviceroom/list', [ReportController::class, 'saleProductServiceRoomList'])->name('report-saleproductserviceroom.list');
+    Route::get('report-saleproductserviceroom', [ReportController::class, 'saleProductServiceRoom'])->name('report.saleproductserviceroom');
+    Route::post('report-saleproductserviceroom/list', [ReportController::class, 'saleProductServiceRoomList'])->name('report-saleproductserviceroom.list');
 
     //Para los reportes de ventas de comidas o menu al hotel habitacione
-    Route::get('report/salefoodserviceroom', [ReportController::class, 'saleFoodServiceRoom'])->name('report.salefoodserviceroom');
-    Route::post('report/salefoodserviceroom/list', [ReportController::class, 'saleFoodServiceRoomList'])->name('report-salefoodserviceroom.list');
+    Route::get('report-salefoodserviceroom', [ReportController::class, 'saleFoodServiceRoom'])->name('report.salefoodserviceroom');
+    Route::post('report-salefoodserviceroom/list', [ReportController::class, 'saleFoodServiceRoomList'])->name('report-salefoodserviceroom.list');
 
 
 

@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
-@section('page_title', 'Viendo ventas')
+@section('page_title', 'Viendo ventas de producto')
+@if (auth()->user()->hasPermission('browse_sales'))                    
 
 @section('page_header')
     <div class="container-fluid">
@@ -14,11 +15,11 @@
                             </h1>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px">
-                            {{-- @if (auth()->user()->hasPermission('add_people')) --}}
-                            <a href="{{ route('sales.create') }}" class="btn btn-success">
-                                <i class="voyager-plus"></i> <span>Crear</span>
-                            </a>
-                            {{-- @endif --}}
+                            @if (auth()->user()->hasPermission('add_sales'))
+                                <a href="{{ route('sales.create') }}" class="btn btn-success">
+                                    <i class="voyager-plus"></i> <span>Crear</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -228,3 +229,4 @@
        
     </script>
 @stop
+@endif

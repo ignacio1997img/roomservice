@@ -2,7 +2,8 @@
 
 @section('page_title', 'Registar Ventas')
 
-{{-- @if (auth()->user()->hasPermission('add_loans')) --}}
+@if (auth()->user()->hasPermission('add_sales'))
+
 
     @section('page_header')
         <h1 id="titleHead" class="page-title">
@@ -456,4 +457,4 @@
         </script>
     @stop
 
-{{-- @endif --}}
+@endif

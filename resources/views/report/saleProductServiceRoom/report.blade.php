@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Reporte de egreso diario de producto diario del almacen')
-{{-- @if(auth()->user()->hasPermission('browse_printloanCollection')) --}}
+@if(auth()->user()->hasPermission('browse_report-saleproductserviceroom'))
 
 
 @section('page_header')

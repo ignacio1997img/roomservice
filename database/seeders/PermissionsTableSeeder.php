@@ -45,18 +45,48 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('settings');
 
 
-        Permission::generateFor('people');
+        Permission::generateFor('people');//para las personas
+
         Permission::generateFor('categories');
         Permission::generateFor('articles');
-
-
-        Permission::generateFor('categories_workers');
         Permission::generateFor('categories_facilities');
         Permission::generateFor('categories_rooms');
         Permission::generateFor('parts_hotels');
-
         Permission::generateFor('food');
         Permission::generateFor('food_menus');
+
+
+        $keys = [
+            'browse_sales',
+            'add_sales',
+            'print_sales',
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'salesProducto',
+            ]);
+        }
+
+
+
+
+        $keys = [
+            'browse_report-saleproductserviceroom',
+            'browse_report-salefoodserviceroom',
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'reports',
+            ]);
+        }
+
+        // Permission::generateFor('categories_workers');
+
+
 
         
     }

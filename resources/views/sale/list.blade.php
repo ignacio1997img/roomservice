@@ -40,12 +40,11 @@
                     <td>{{ date('d/m/Y', strtotime($item->created_at)) }} </td>
                     <td style="text-align: right"><small>Bs. {{ number_format($item->amount,2, ',', '.') }}</small></td>
                     <td class="no-sort no-click bread-actions text-right">
-                       
-                    
+                        @if (auth()->user()->hasPermission('print_sales'))                    
                             <a href="{{ route('voyager.people.show', ['id' => $item->id]) }}" title="Imprimir" class="btn btn-sm btn-dark view">
                                 <i class="fa-solid fa-print"></i>
                             </a>
-                
+                        @endif
                     </td>
                 </tr>
                 @empty

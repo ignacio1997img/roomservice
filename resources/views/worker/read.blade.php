@@ -157,6 +157,62 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-bordered" style="padding-bottom:5px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-8" style="padding: 0px">
+                                <h1 class="page-title">
+                                    <i class="fa-solid fa-person-digging"></i> Especialidad Laboral
+                                </h1>
+                            </div>
+                            <div class="col-md-4 text-right" style="margin-top: 30px">
+                              
+                                <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
+                                    <i class="voyager-plus"></i> <span>Agregar</span>
+                                </a>
+                            </div>
+                            
+                            <table id="dataTable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>N&deg;</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th class="text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $cont = 0;
+                                    @endphp
+                                    @forelse ($data->category as $item)
+                                        @php
+                                            $cont++;
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $cont }}</td>
+                                            <td>{{ $item->cate->name }}</td>
+                                            <td>{{ $item->observation }}</td>
+                                            <td class="no-sort no-click bread-actions text-right">
+                                                <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('worker-category.delete', ['worker' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
+                                                </button>
+                                            </td>                                            
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td style="text-align: center" valign="top" colspan="4" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 

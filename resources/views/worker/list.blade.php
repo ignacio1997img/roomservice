@@ -47,7 +47,9 @@
                         @endif                       
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
-                       
+                        <a href="{{ route('worker.show', ['worker' => $item->id]) }}" title="Ver" class="btn btn-sm btn-primary view">
+                            <i class="fa-solid fa-person-booth"></i> <span class="hidden-xs hidden-sm">Asignacion de Habitación</span>
+                        </a>
                         <a href="{{ route('worker.show', ['worker' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
                             <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
                         </a>

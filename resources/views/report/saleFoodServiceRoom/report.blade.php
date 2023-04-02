@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
-@section('page_title', 'Reporte de egreso diario de producto diario del almacen')
-{{-- @if(auth()->user()->hasPermission('browse_printloanCollection')) --}}
+@section('page_title', 'Reporte de ventas de comidas')
+@if(auth()->user()->hasPermission('browse_report-salefoodserviceroom'))
 
 
 @section('page_header')
@@ -199,8 +199,8 @@
         }
     </script>
 @stop
-{{-- @else
+@else
     @section('content')
         <h1>403</h1>
     @stop
-@endif --}}
+@endif

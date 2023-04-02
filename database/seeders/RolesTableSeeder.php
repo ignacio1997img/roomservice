@@ -19,11 +19,34 @@ class RolesTableSeeder extends Seeder
             ])->save();
         }
 
-        // $role = Role::firstOrNew(['name' => 'user']);
-        // if (!$role->exists) {
-        //     $role->fill([
-        //         'display_name' => __('voyager::seeders.roles.user'),
-        //     ])->save();
-        // }
+        $role = Role::firstOrNew(['name' => 'administrador']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Administrador'])->save();
+        }
+
+        $role = Role::firstOrNew(['name' => 'gerente']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Gerente'])->save();
+        }
+
+        $role = Role::firstOrNew(['name' => 'recepcionista']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Recepcionistas'])->save();
+        }
+
+        $role = Role::firstOrNew(['name' => 'limpieza']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Limpieza'])->save();
+        }
+
+        $role = Role::firstOrNew(['name' => 'cocina']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Cocina'])->save();
+        }
+
+        $role = Role::firstOrNew(['name' => 'reporte']);
+        if (!$role->exists) {
+            $role->fill(['display_name' => 'Reporte'])->save();
+        }
     }
 }
