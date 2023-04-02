@@ -61,18 +61,20 @@
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
                                 ?>
                                 @foreach(Voyager::model('Permission')->all()->groupBy('table_name') as $table => $permission)
-                                    <li>
-                                        <input type="checkbox" id="{{$table}}" class="permission-group">
-                                        <label for="{{$table}}"><strong>{{\Illuminate\Support\Str::title(str_replace('_',' ', $table))}}</strong></label>
-                                        <ul>
-                                            @foreach($permission as $perm)
-                                                <li>
-                                                    <input type="checkbox" id="permission-{{$perm->id}}" name="permissions[{{$perm->id}}]" class="the-permission" value="{{$perm->id}}" @if(in_array($perm->key, $role_permissions)) checked @endif>
-                                                    <label for="permission-{{$perm->id}}">{{\Illuminate\Support\Str::title(str_replace('_', ' ', $perm->key))}}</label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
+                                    @if ($table != 'tools' && $table != 'menus')
+                                        <li>
+                                            <input type="checkbox" id="{{$table}}" class="permission-group">
+                                            <label for="{{$table}}"><strong>{{\Illuminate\Support\Str::title(str_replace('_',' ', $table))}}</strong></label>
+                                            <ul>
+                                                @foreach($permission as $perm)
+                                                    <li>
+                                                        <input type="checkbox" id="permission-{{$perm->id}}" name="permissions[{{$perm->id}}]" class="the-permission" value="{{$perm->id}}" @if(in_array($perm->key, $role_permissions)) checked @endif>
+                                                        <label for="permission-{{$perm->id}}">{{\Illuminate\Support\Str::title(str_replace('_', ' ', $perm->key))}}</label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </div><!-- panel-body -->

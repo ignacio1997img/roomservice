@@ -15,24 +15,32 @@ class PermissionsTableSeeder extends Seeder
     {
         DB::table('permissions')->delete();
 
-        Permission::firstOrCreate([
-            'key'        => 'browse_admin',
-            'table_name' => 'admin',
-        ]);
+
+        $keys = [
+            'browse_admin',
+            'browse_clear-cache'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'admin'
+            ]);
+        }
+        
         // return 1;
         $keys = [
             // 'browse_admin',
             'browse_bread',
             'browse_database',
             'browse_media',
-            'browse_compass',
-            'browse_clear-cache',
+            'browse_compass'
         ];
 
         foreach ($keys as $key) {
             Permission::firstOrCreate([
                 'key'        => $key,
-                'table_name' => null,
+                'table_name' => 'tools'
             ]);
         }
 
@@ -64,7 +72,7 @@ class PermissionsTableSeeder extends Seeder
         foreach ($keys as $key) {
             Permission::firstOrCreate([
                 'key'        => $key,
-                'table_name' => 'salesProducto',
+                'table_name' => 'sales_Producto',
             ]);
         }
 
