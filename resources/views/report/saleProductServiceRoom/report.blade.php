@@ -199,8 +199,8 @@
         }
     </script>
 @stop
-{{-- @else
+@else
     @section('content')
         <h1>403</h1>
     @stop
-@endif --}}
+@endif
