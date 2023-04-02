@@ -101,144 +101,165 @@
                         </div>        
                   
                         
-                       
+                       @php
+                           $deuda =0;
+                       @endphp
                         <div class="col-md-4">
                             <div class="panel-body">
-                                <table id="dataTable" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="3" style="text-align: center">Accesorios</th>
-                                        </tr>
-                                        <tr>
-                                            <th>N&deg;</th>
-                                            <th>Nombre</th>
-                                            <th>Descripción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $cont = 0;
-                                            $total = 0;
-                                        @endphp
-                                        @forelse ($room->caregoryroom->part as $item)
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="3" style="text-align: center">Accesorios</th>
+                                            </tr>
+                                            <tr>
+                                                <th>N&deg;</th>
+                                                <th>Nombre</th>
+                                                <th>Descripción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             @php
-                                                $cont++;
-                                                $total = $total + $item->amount;
+                                                $cont = 0;
+                                                $total = 0;
                                             @endphp
-                                            <tr>
-                                                <td>{{ $cont }}</td>
-                                                <td>{{ $item->name->name}}
-                                                    <input type="hidden" name="part[]" value="{{ $item->name->name}}">
-                                                </td>
-                                                <td>{{ $item->name->Description}}</td>
-                                               
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td style="text-align: center" valign="top" colspan="3" class="dataTables_empty">No hay datos disponibles en la tabla</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                            @forelse ($room->caregoryroom->part as $item)
+                                                @php
+                                                    $cont++;
+                                                    $total = $total + $item->amount;
+                                                    $deuda=$deuda+$total;
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $cont }}</td>
+                                                    <td>{{ $item->name->name}}
+                                                        <input type="hidden" name="part[]" value="{{ $item->name->name}}">
+                                                    </td>
+                                                    <td>{{ $item->name->Description}}</td>
+                                                
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td style="text-align: center" valign="top" colspan="3" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>                            
                             </div>                            
                         </div>
                         <div class="col-md-4">
                             <div class="panel-body">
-                                <table id="dataTable" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="6" style="text-align: center"><i class="fa-solid fa-cart-shopping"></i> Pedidos del Hotel</th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 50px">N&deg;</th>
-                                            <th>Nombre</th>
-                                            <th style="width: 50px">Precio</th>
-                                            <th style="width: 50px">Cantidad</th>
-                                            <th style="width: 50px">Sub Total</th>
-                                            {{-- <th style="width: 50px">Acción</th> --}}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $cont = 0;
-                                            $total = 0;
-                                        @endphp
-                                        @forelse ($egre as $item)               
-                                                @php
-                                                    $cont++;
-                                                    $total = $total + ($item->price * $item->cantSolicitada);
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $cont }}</td>
-                                                    <td>{{ $item->name}}</td>
-                                                    <td style="text-align: right">{{ $item->price}}</td>
-                                                    <td style="text-align: right">{{ $item->cantSolicitada}}</td>
-                                                    <td style="text-align: right">{{ $item->price * $item->cantSolicitada}}</td>
-                                                    {{-- <td>{{ $item->name->Description}}</td> --}}
-                                                
-                                                </tr>
-                                            
-                                        @empty
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
                                             <tr>
-                                                <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                <th colspan="6" style="text-align: center"><i class="fa-solid fa-cart-shopping"></i> Pedidos del Hotel</th>
                                             </tr>
-                                        @endforelse
-                                        <tr>
-                                            <td colspan="3" style="text-align: right">Total</td>
-                                            <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <tr>
+                                                <th style="width: 50px">N&deg;</th>
+                                                <th>Nombre</th>
+                                                <th style="width: 50px">Precio</th>
+                                                <th style="width: 50px">Cantidad</th>
+                                                <th style="width: 50px">Sub Total</th>
+                                                {{-- <th style="width: 50px">Acción</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $cont = 0;
+                                                $total = 0;
+                                            @endphp
+                                            @forelse ($egre as $item)               
+                                                    @php
+                                                        $cont++;
+                                                        $total = $total + ($item->price * $item->cantSolicitada);
+                                                        $deuda=$deuda+$total;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $cont }}</td>
+                                                        <td>{{ $item->name}}</td>
+                                                        <td style="text-align: right">{{ $item->price}}</td>
+                                                        <td style="text-align: right">{{ $item->cantSolicitada}}</td>
+                                                        <td style="text-align: right">{{ $item->price * $item->cantSolicitada}}</td>
+                                                        {{-- <td>{{ $item->name->Description}}</td> --}}
+                                                    
+                                                    </tr>
+                                                
+                                            @empty
+                                                <tr>
+                                                    <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                </tr>
+                                            @endforelse
+                                            <tr>
+                                                <td colspan="3" style="text-align: right">Total</td>
+                                                <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>                            
                             </div>                            
                         </div>
                         <div class="col-md-4">
                             <div class="panel-body">
-                                <table id="dataTable" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="6" style="text-align: center"><i class="fa-solid fa-bowl-food"></i> Pedidos del Hotel</th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 50px">N&deg;</th>
-                                            <th>Nombre</th>
-                                            <th style="width: 50px">Precio</th>
-                                            <th style="width: 50px">Cantidad</th>
-                                            <th style="width: 50px">Sub Total</th>
-                                            {{-- <th style="width: 50px">Acción</th> --}}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $cont = 0;
-                                            $total = 0;
-                                        @endphp
-                                        @forelse ($menu as $item)               
-                                                @php
-                                                    $cont++;
-                                                    $total = $total + ($item->price * $item->cant);
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $cont }}</td>
-                                                    <td>{{ $item->food->name}}</td>
-                                                    <td style="text-align: right">{{ $item->price}}</td>
-                                                    <td style="text-align: right">{{ $item->cant}}</td>
-                                                    <td style="text-align: right">{{ $item->price * $item->cant}}</td>
-                                                    {{-- <td>{{ $item->name->Description}}</td> --}}
-                                                
-                                                </tr>
-                                            
-                                        @empty
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
                                             <tr>
-                                                <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                <th colspan="6" style="text-align: center"><i class="fa-solid fa-bowl-food"></i> Pedidos del Hotel</th>
                                             </tr>
-                                        @endforelse
-                                        <tr>
-                                            <td colspan="3" style="text-align: right">Total</td>
-                                            <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <tr>
+                                                <th style="width: 50px">N&deg;</th>
+                                                <th>Nombre</th>
+                                                <th style="width: 50px">Precio</th>
+                                                <th style="width: 50px">Cantidad</th>
+                                                <th style="width: 50px">Sub Total</th>
+                                                {{-- <th style="width: 50px">Acción</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $cont = 0;
+                                                $total = 0;
+                                            @endphp
+                                            @forelse ($menu as $item)               
+                                                    @php
+                                                        $cont++;
+                                                        $total = $total + ($item->price * $item->cant);
+                                                        $deuda=$deuda+$total;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $cont }}</td>
+                                                        <td>{{ $item->food->name}}</td>
+                                                        <td style="text-align: right">{{ $item->price}}</td>
+                                                        <td style="text-align: right">{{ $item->cant}}</td>
+                                                        <td style="text-align: right">{{ $item->price * $item->cant}}</td>
+                                                        {{-- <td>{{ $item->name->Description}}</td> --}}
+                                                    
+                                                    </tr>
+                                                
+                                            @empty
+                                                <tr>
+                                                    <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                </tr>
+                                            @endforelse
+                                            <tr>
+                                                <td colspan="3" style="text-align: right">Total</td>
+                                                <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>                            
                             </div>                            
+                        </div>                            
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-10">                            
+                            <div class="alert alert-success">
+                                <strong>Deudas:</strong>
+                                <p>Total a pagar de los servicios: {{NumerosEnLetras::convertir($deuda,'Bolivianos',true,'Centavos')}} </p>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
                         </div>
                     </div>
                 </div>

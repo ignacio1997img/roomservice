@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18b2044f52dec43b465cc7d3e59e8348",
+    "content-hash": "6066acd2617516d668459db516fac204",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -5970,6 +5970,43 @@
             "time": "2023-01-03T09:29:04+00:00"
         },
         {
+            "name": "villca/numeros-en-letras",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/villca/Numeros-en-Letras.git",
+                "reference": "15b78a2cec778f2ec9cc742656836ae43ca3ce5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/villca/Numeros-en-Letras/zipball/15b78a2cec778f2ec9cc742656836ae43ca3ce5c",
+                "reference": "15b78a2cec778f2ec9cc742656836ae43ca3ce5c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "NumerosEnLetras": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jesus Villca",
+                    "email": "24villca@gmail.com",
+                    "homepage": "https://24villca.blogspot.com"
+                }
+            ],
+            "description": "Convierte cualquier número en letras con el valor correspondiente.",
+            "time": "2018-01-13T23:20:14+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.5.0",
             "source": {
@@ -8474,5 +8511,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "1.1.0"
 }
