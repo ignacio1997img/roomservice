@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Asignar habitación')
+@if (auth()->user()->hasPermission('add_assign'))
 
 @section('page_header')
     <h1 class="page-title">
@@ -366,3 +367,5 @@
             
     </script>
 @stop
+
+@endif

@@ -2,7 +2,7 @@
 
 @section('page_title', 'Viendo Ingreso')
 
-{{-- @if (auth()->user()->hasPermission('browse_loans')) --}}
+@if (auth()->user()->hasPermission('browse_incomes'))
 
 @section('page_header')
     <div class="container-fluid">
@@ -121,4 +121,4 @@
 
     </script>
 @stop
-{{-- @endif --}}
+@endif

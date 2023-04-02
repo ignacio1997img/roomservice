@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Viendo Habitaciones')
-
+@if (auth()->user()->hasPermission('browse_room'))
 @section('page_header')
     <div class="container-fluid">
         <div class="row">
@@ -14,10 +14,11 @@
                             </h1>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px">
-                          
-                            <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
-                                <i class="voyager-plus"></i> <span>Crear</span>
-                            </a>
+                            @if (auth()->user()->hasPermission('add_room'))                          
+                                <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
+                                    <i class="voyager-plus"></i> <span>Crear</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -237,3 +238,4 @@
             }
     </script>
 @stop
+@endif

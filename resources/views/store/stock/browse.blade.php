@@ -2,7 +2,7 @@
 
 @section('page_title', 'Viendo stock disponible')
 
-{{-- @if (auth()->user()->hasPermission('browse_loans')) --}}
+@if (auth()->user()->hasPermission('browse_incomes-articlestock'))
 
 @section('page_header')
     <div class="container-fluid">
@@ -117,4 +117,4 @@
 
     </script>
 @stop
-{{-- @endif --}}
+@endif

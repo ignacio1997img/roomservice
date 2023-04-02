@@ -40,9 +40,11 @@
                             
                             <p style="font-size: 22px; color: #ffffff;"><small>Pieza N° {{$item->number}}</small></p>                            
                             @if ($item->status == 1)
-                                <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-success" data-toggle="modal">
-                                    <i class="fa-solid fa-key" style="color:rgb(46, 46, 46)"></i> Asignar</span>
-                                </a>     
+                                @if (auth()->user()->hasPermission('add_assign'))
+                                    <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-success" data-toggle="modal">
+                                        <i class="fa-solid fa-key" style="color:rgb(46, 46, 46)"></i> Asignar</span>
+                                    </a>     
+                                @endif
                             @else
                                 <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }} <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish)) }}</small>
                             @endif
@@ -58,15 +60,21 @@
                             
                             @if ($item->status == 0)
                             <br>
-                                <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
-                                    <i class="fa-solid fa-eye"></i> Ver</span>
-                                </a>     
-                                <a href="#" data-toggle="modal" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </a>
-                                <a href="#" data-toggle="modal" data-target="#modal_menu" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Comidas del menú" class="btn btn-primary">
-                                    <i class="fa-solid fa-bowl-food"></i>
-                                </a>
+                                @if (auth()->user()->hasPermission('read_assign'))
+                                    <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
+                                        <i class="fa-solid fa-eye"></i> Ver</span>
+                                    </a>     
+                                @endif
+                                @if (auth()->user()->hasPermission('add_product'))
+                                    <a href="#" data-toggle="modal" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </a>
+                                @endif
+                                @if (auth()->user()->hasPermission('add_food'))
+                                    <a href="#" data-toggle="modal" data-target="#modal_menu" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Comidas del menú" class="btn btn-primary">
+                                        <i class="fa-solid fa-bowl-food"></i>
+                                    </a>
+                                @endif
                             @endif
 
 

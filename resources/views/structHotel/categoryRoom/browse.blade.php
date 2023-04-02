@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
-@section('page_title', 'Viendo Personal Del Hotel')
+@section('page_title', 'Viendo categoria')
+@if (auth()->user()->hasPermission('browse_categories_rooms'))
 
 @section('page_header')
     <div class="container-fluid">
@@ -14,10 +15,11 @@
                             </h1>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px">
-                          
-                            <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
-                                <i class="voyager-plus"></i> <span>Crear</span>
-                            </a>
+                            @if (auth()->user()->hasPermission('add_categories_rooms'))                          
+                                <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
+                                    <i class="voyager-plus"></i> <span>Crear</span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -366,3 +368,4 @@
             }
     </script>
 @stop
+@endif

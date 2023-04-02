@@ -19,9 +19,11 @@
                     <td>{{ $item->caregoryroom->name }}</td>
                     <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">
-                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room.destroy', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
-                            <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                        </button>
+                        @if (auth()->user()->hasPermission('delete_room'))
+                            <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room.destroy', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
+                            </button>
+                        @endif
                     </td>
                 </tr>
                 @empty

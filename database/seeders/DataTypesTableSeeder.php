@@ -129,24 +129,6 @@ class DataTypesTableSeeder extends Seeder
             ),
             6 => 
             array (
-                'id' => 10,
-                'name' => 'categories_workers',
-                'slug' => 'categories-workers',
-                'display_name_singular' => 'Categoría de Personal',
-                'display_name_plural' => 'Categorías de Personales',
-                'icon' => 'voyager-categories',
-                'model_name' => 'App\\Models\\CategoriesWorker',
-                'policy_name' => NULL,
-                'controller' => NULL,
-                'description' => NULL,
-                'generate_permissions' => 1,
-                'server_side' => 0,
-                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2023-03-18 23:49:02',
-                'updated_at' => '2023-03-19 00:18:15',
-            ),
-            7 => 
-            array (
                 'id' => 11,
                 'name' => 'categories_facilities',
                 'slug' => 'categories-facilities',
@@ -163,7 +145,7 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-19 00:04:50',
                 'updated_at' => '2023-03-19 00:10:48',
             ),
-            8 => 
+            7 => 
             array (
                 'id' => 12,
                 'name' => 'categories_rooms',
@@ -181,7 +163,7 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-19 00:20:51',
                 'updated_at' => '2023-03-19 00:27:31',
             ),
-            9 => 
+            8 => 
             array (
                 'id' => 13,
                 'name' => 'parts_hotels',
@@ -199,7 +181,7 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-20 13:11:53',
                 'updated_at' => '2023-03-20 13:15:49',
             ),
-            10 => 
+            9 => 
             array (
                 'id' => 14,
                 'name' => 'food',
@@ -217,7 +199,7 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-29 00:37:44',
                 'updated_at' => '2023-03-29 01:31:48',
             ),
-            11 => 
+            10 => 
             array (
                 'id' => 15,
                 'name' => 'food_menus',

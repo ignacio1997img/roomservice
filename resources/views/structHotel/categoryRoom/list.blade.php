@@ -15,13 +15,21 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->description }}</td>
                     <td class="no-sort no-click bread-actions text-right">
-                       
-                        <a href="{{ route('voyager.categories-rooms.show', ['room' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
-                            <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
-                        </a>
-                        <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('categories-rooms.delete', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
-                            <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
-                        </button>
+                        @if (auth()->user()->hasPermission('edit_categories_rooms'))                          
+                            <a href="{{ route('voyager.categories-rooms.edit', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-primary view">
+                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>
+                            </a>
+                        @endif
+                        @if (auth()->user()->hasPermission('read_categories_rooms'))                          
+                            <a href="{{ route('voyager.categories-rooms.show', ['room' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
+                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
+                            </a>
+                        @endif
+                        @if (auth()->user()->hasPermission('delete_categories_rooms'))                          
+                            <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('categories-rooms.delete', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
+                            </button>
+                        @endif
                     </td>
                 </tr>
                 @empty

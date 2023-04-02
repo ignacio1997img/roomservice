@@ -26,9 +26,11 @@
                         @endif     
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
-                        <a href="{{route('incomes.show',$item->id)}}" title="Ver" target="_blank" class="btn btn-sm btn-dark view">
-                            <i class="glyphicon glyphicon-print"></i>
-                        </a>     
+                        @if (auth()->user()->hasPermission('print_incomes'))
+                            <a href="{{route('incomes.show',$item->id)}}" title="Ver" target="_blank" class="btn btn-sm btn-dark view">
+                                <i class="glyphicon glyphicon-print"></i>
+                            </a>     
+                        @endif
                         @if($item->status == 1)
                             {{-- <div class="btn-group" style="margin-right: 3px">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">

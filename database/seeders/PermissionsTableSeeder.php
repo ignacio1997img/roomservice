@@ -50,7 +50,6 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('categories');
         Permission::generateFor('articles');
         Permission::generateFor('categories_facilities');
-        Permission::generateFor('categories_rooms');
         Permission::generateFor('parts_hotels');
         Permission::generateFor('food');
         Permission::generateFor('food_menus');
@@ -69,6 +68,64 @@ class PermissionsTableSeeder extends Seeder
             ]);
         }
 
+        $keys = [
+            'browse_incomes',
+            'print_incomes',
+            'browse_incomes-articlestock'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'incomes',
+            ]);
+        }
+
+
+        //Para la estructura del hotel
+        $keys = [
+            'browse_categories_rooms',
+            'add_categories_rooms',
+            'edit_categories_rooms',
+            'read_categories_rooms',
+            'delete_categories_rooms'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'categories_rooms',
+            ]);
+        }
+
+        $keys = [
+            'browse_room',
+            'add_room',
+            'delete_room'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'room',
+            ]);
+        }
+        
+
+        //Para el index voyager 
+        $keys = [
+            'add_assign',
+            'read_assign',
+            'add_product',
+            'add_food',
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'services',
+            ]);
+        }
 
 
 
