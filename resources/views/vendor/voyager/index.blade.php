@@ -33,9 +33,18 @@
 
 
                 //para obtener los productos vendido del dia
-                $foodDay = App\Models\EgresMenu::with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
-                    ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id')
-                    ->groupBy('food_id')->orderBy('total', 'DESC')->limit(5)->get();
+                $productDay = App\Models\EgresDeatil::WhereHas('egres', function($query) {
+                                $query->where('sale',1);
+                            })->with('article')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
+                    ->selectRaw('COUNT(article_id) as count,SUM(amount) as total, article_id')
+                    ->groupBy('article_id')->orderBy('total', 'DESC')->get();
+
+                    //para obtener las comidas vendidas del dia
+                $foodDay = App\Models\EgresMenu::WhereHas('egres', function($query) {
+                                $query->where('sale',1);
+                            })->with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
+                    ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id, egre_id')
+                    ->groupBy('food_id')->orderBy('total', 'DESC')->get();
                 // dd($products);
 
             @endphp
@@ -92,13 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="panel">
-                    <div class="panel-body" style="height: 250px">
-                        <canvas id="line-chart"></canvas>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-md-4">
                 <div class="panel">
                     <div class="panel-body" style="height: 250px">
@@ -109,7 +112,14 @@
             <div class="col-md-4">
                 <div class="panel">
                     <div class="panel-body" style="height: 250px">
-                        <canvas id="doughnut-chart"></canvas>
+                        <canvas id="product-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body" style="height: 250px">
+                        <canvas id="food-chart"></canvas>
                     </div>
                 </div>
             </div>
@@ -236,13 +246,13 @@
             );
 
             // ==============================================
-            let foodDay = @json($foodDay);
+            let productDay = @json($productDay);
             labels = [];
             values = [];
             color = [];
 
-            foodDay.map(item => {
-                labels.push(item.food.name);
+            productDay.map(item => {
+                labels.push(item.article.name);
                 values.push(parseInt(item.total));
 
                 color.push(colorRGB());
@@ -262,7 +272,38 @@
                 data
             };
             var myChart = new Chart(
-                document.getElementById('doughnut-chart'),
+                document.getElementById('product-chart'),
+                config
+            );
+
+            // ==============================================
+            let foodDay = @json($foodDay);
+            labels = [];
+            values = [];
+            color = [];
+
+            foodDay.map(item => {
+                labels.push(item.food.name);
+                values.push(parseInt(item.total));
+
+                color.push(colorRGB());
+            });
+
+            var data = {
+                labels,
+                datasets: [{
+                    label: 'Comida más vendidos',
+                    data: values,
+                    backgroundColor: color,
+                    hoverOffset: 4
+                }]
+            };
+            var config = {
+                type: 'doughnut',
+                data
+            };
+            var myChart = new Chart(
+                document.getElementById('food-chart'),
                 config
             );
             

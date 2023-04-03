@@ -193,7 +193,7 @@ class IncomeController extends Controller
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
                 // return $request;
-                $total = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->get()->SUM('cantRestante');
+                $total = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where('expiration',$request->expiration[$i]??null)->where('cantRestante', '>', 0)->where('deleted_at', null)->get()->SUM('cantRestante');
                 //por si falta item en el almacenn se retornara
                 if($request->cant[$i] > $total)
                 {
@@ -204,11 +204,11 @@ class IncomeController extends Controller
                 $cantTotal = $request->cant[$i];
                 $cant=0;
                 $ok=false;
-                // $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
+                // $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
 
                 while($cantTotal>0)
                 {
-                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
+                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where('expiration',$request->expiration[$i]??null)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
                     $aux = 0;
                     // cuando el total es mayor o igual se le saca todo del almacen de ese detalle
                     if($cantTotal >= $detail->cantRestante)
