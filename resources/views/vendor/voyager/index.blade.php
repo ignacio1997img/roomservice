@@ -2,12 +2,125 @@
 
 @section('content')
     <div class="page-content">
-        {{-- @include('voyager::alerts')
-        @include('voyager::dimmers') --}}
-        
-        <div class="analytics-container">
-            
+        @include('voyager::alerts')
+        <div class="col-md-12">
+            <div class="panel panel-bordered">
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <h3>Hola, {{ Auth::user()->name }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        @if(auth()->user()->hasPermission('graphic'))
+            @php
+                // $date = date()
+                $saleproduct = App\Models\EgresDeatil::WhereHas('egres', function($query) {
+                                $query->where('sale',1);
+                            })
+                    ->whereDate('created_at', '=', date('Y-m-d'))->where('deleted_at', null)->get();
+                $saleproduct = $saleproduct->SUM('amount');
+                
+                $saleproduct = App\Models\EgresDeatil::WhereHas('egres', function($query) {
+                                $query->where('sale',1);
+                            })
+                    ->whereDate('created_at', '=', date('Y-m-d'))->where('deleted_at', null)->get();
+                $saleproduct = $saleproduct->SUM('amount');
+
+            @endphp
+
+            <div class="col-md-3">
+                <div class="panel panel-bordered" style="border-left: 5px solid #52BE80">
+                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
+                        <div class="col-md-9">
+                            <h5><i class="fa-solid fa-cart-shopping"></i> Ventas de productos del día</h5>
+                            <h2><small>Bs.</small>{{ number_format($saleproduct, 2, ',', '.') }}</h2>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <i class="icon voyager-dollar" style="color: #52BE80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-bordered" style="border-left: 5px solid #52BE80">
+                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
+                        <div class="col-md-9">
+                            <h5><i class="fa-solid fa-bowl-food"></i> Ventas de comida del día</h5>
+                            {{-- <h2><small>Bs.</small>{{ number_format($sales_today->sum('total') - $sales_today->sum('discount'), 2, ',', '.') }}</h2> --}}
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <i class="icon voyager-dollar" style="color: #52BE80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="col-md-3">
+                <div class="panel panel-bordered" style="border-left: 5px solid #3498DB">
+                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
+                        <div class="col-md-9">
+                            <h5>Clientes con deuda</h5>
+                            <h2>{{ $sales->where('status', 'pendiente')->count() }}</h2>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <i class="icon voyager-people" style="color: #3498DB"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-bordered" style="border-left: 5px solid #E74C3C">
+                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
+                        <div class="col-md-9">
+                            <h5>Deuda total</h5>
+                            <h2><small>Bs.</small>{{ number_format($total_debt, 2, ',', '.') }}</h2>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <i class="icon voyager-book" style="color: #E74C3C"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-bordered" style="border-left: 5px solid #E67E22">
+                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
+                        <div class="col-md-9">
+                            <h5>Producto en escasez</h5>
+                            <h2>{{ $products->where('stock', '<', 10)->count() }}</h2>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <i class="icon voyager-archive" style="color: #E67E22"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body" style="height: 250px">
+                        <canvas id="line-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body" style="height: 250px">
+                        <canvas id="bar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body" style="height: 250px">
+                        <canvas id="doughnut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+         --}}
+        
+        {{-- <div class="analytics-container"> --}}
+            
+        @endif
         
             <div class="row" style="text-align: center">
                 @php
@@ -49,7 +162,7 @@
             
             
             
-        </div>
+        {{-- </div> --}}
     </div>
 @stop
 @section('css')
@@ -70,33 +183,7 @@
 @section('javascript')
 <script>   
 
-    $(document).on('change','.imageLengthpdf',function(){
-        var fileName = this.files[0].name;
-        var fileSize = this.files[0].size;
-
-            if(fileSize > 10000000){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'El archivo no debe superar los 10 MB!'
-                })
-                this.value = '';
-                this.files[0].name = '';
-            }
-            var ext = fileName.split('.').pop();
-            ext = ext.toLowerCase();
-            switch (ext) {
-                case 'pdf': break;
-                default:
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'El archivo no tiene la extensión adecuada!'
-                    })
-                    this.value = ''; // reset del valor
-                    this.files[0].name = '';
-            }
-    });
+ 
 </script>
     
 

@@ -122,6 +122,7 @@ class PermissionsTableSeeder extends Seeder
 
         //Para el index voyager 
         $keys = [
+            'graphic',
             'add_assign',
             'read_assign',
             'add_product',

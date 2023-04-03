@@ -25,4 +25,9 @@ class EgresDeatil extends Model
     {
         return $this->belongsTo(Article::class, 'article_id');
     }
+
+    public function egres()
+    {
+        return $this->belongsTo(Egre::class, 'egre_id');
+    }
 }

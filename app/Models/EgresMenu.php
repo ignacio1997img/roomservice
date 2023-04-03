@@ -9,10 +9,9 @@ class EgresMenu extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'egre_id',
         'food_id',
-        'room_id',
-        'serviceRoom_id',
-        'people_id',
+      
         'price',
         'cant',
         'amount',

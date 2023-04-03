@@ -14,6 +14,7 @@ class Egre extends Model
         'serviceRoom_id',
         'people_id',
         'amount',
+        'type',
         'sale',
         'registerUser_id',
         'deleted_at',

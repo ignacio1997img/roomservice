@@ -22,6 +22,9 @@ class CreateEgresTable extends Migration
 
             $table->decimal('amount', 9,2)->nullable();
 
+            $table->string('type')->nullable();
+            $table->smallInteger('sale')->nullable();
+
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');
             $table->softDeletes();

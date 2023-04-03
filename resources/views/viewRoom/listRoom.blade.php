@@ -33,7 +33,7 @@
                                             ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price',DB::raw("SUM(d.cantSolicitada) as cantSolicitada"))->groupBy('name', 'article_id', 'egre_id', 'price')->get();
                                     $totalaux = $egre->SUM('cantSolicitada');
 
-                                    $menu =  \App\Models\EgresMenu::where('serviceRoom_id', $service->id)->where('deleted_at',null)->get()->SUM('amount');
+                                    // $menu =  \App\Models\EgresMenu::where('serviceRoom_id', $service->id)->where('deleted_at',null)->get()->SUM('amount');
                                     // dd($menu);
                                 }
                             @endphp
@@ -53,7 +53,7 @@
                                 <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
                             @else  
 
-                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux+$menu:0}}</small>                                
+                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux:0}}</small>                                
                             @endif
                             <br>
                             <small style="font-size: 15px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>

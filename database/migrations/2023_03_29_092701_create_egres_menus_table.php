@@ -15,12 +15,12 @@ class CreateEgresMenusTable extends Migration
     {
         Schema::create('egres_menus', function (Blueprint $table) {
             $table->id();            
+
+            $table->foreignId('egre_id')->nullable()->constrained('egres');
+
+
             $table->foreignId('food_id')->nullable()->constrained('food');
             
-            $table->foreignId('room_id')->nullable()->constrained('rooms');
-            $table->foreignId('serviceRoom_id')->nullable()->constrained('service_rooms');
-
-            $table->foreignId('people_id')->nullable()->constrained('people');
 
             $table->decimal('price', 9,2)->nullable();
             $table->decimal('cant', 9,2)->nullable();

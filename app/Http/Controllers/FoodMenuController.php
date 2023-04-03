@@ -13,6 +13,7 @@ use App\Models\People;
 use App\Models\Room;
 use App\Models\ServiceRoomsDetail;
 use App\Models\ServiceRoom;
+use App\Models\Egre;
 
 class FoodMenuController extends Controller
 {
@@ -51,15 +52,28 @@ class FoodMenuController extends Controller
         try {
 
             $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+            $user = Auth::user()->id;
+
+            $egre = Egre::create([
+                'registerUser_id' => $user,
+                'people_id' => $service->people_id,
+                'room_id' => $request->room_id,
+                'amount' => $request->amount,
+                'serviceRoom_id'=> $service->id,
+                'sale'=>1,
+                'type'=>'food'
+            ]);
+            // return $egre->id;
+
+
+
             for ($i=0; $i < count($request->food) ; $i++) { 
-                $egre = EgresMenu::create([
-                    'registerUser_id' => Auth::user()->id,
-                    'people_id' =>$service->people_id,
-                    'room_id' => $request->room_id,
+                EgresMenu::create([
+                    'egre_id'=>$egre->id,
+                    'registerUser_id' => $user,
                     'price' => $request->price[$i],
                     'cant' => $request->cant[$i],
                     'amount' => $request->price[$i]*$request->cant[$i],
-                    'serviceRoom_id'=>  $service->id,
                     'food_id'=>$request->food[$i]
                 ]);
             }

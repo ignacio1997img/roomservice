@@ -180,7 +180,8 @@ class IncomeController extends Controller
                     'room_id' => $request->people_id?null:$request->room_id,
                     'amount' => $request->amount,
                     'serviceRoom_id'=> $request->people_id?null: $service->id,
-                    'sale'=>1
+                    'sale'=>1,
+                    'type'=>'product'
             ]);
 
             $pagar =0;
