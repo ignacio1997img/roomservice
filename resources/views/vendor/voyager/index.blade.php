@@ -94,21 +94,21 @@
             </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px">
                         <canvas id="line-chart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px">
                         <canvas id="bar-chart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px">
                         <canvas id="doughnut-chart"></canvas>
                     </div>
                 </div>
