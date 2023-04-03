@@ -364,7 +364,7 @@
                                     <input type="hidden" name="price[]" id="select-price-${product.id}" value="${product.price}" />
                                 </td>
                                 <td>
-                                    <input type="number" name="cant[]" min="0" max="${product.cantRestante}" step="1" id="select-cant-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                    <input type="number" name="cant[]" min="0" max="${product.cantRestante}"  id="select-cant-${product.id}" onkeyup="getSubtotal(${product.id})" onchange="getSubtotal(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
                                 </td>
                                 <td class="text-right"><h4 class="label-subtotal" id="label-subtotal-${product.id}">0</h4></td>
                                 <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
@@ -438,7 +438,7 @@
                                     <input type="hidden" name="price[]" id="select-amount-${product.id}" value="${product.amount}" />
                                 </td>
                                 <td>
-                                    <input type="number" name="cant[]" min="0" step="1" id="select-cant-menu-${product.id}" onkeyup="getSubtotalMenu(${product.id})" onchange="getSubtotalMenu(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
+                                    <input type="number" name="cant[]" min="0"  id="select-cant-menu-${product.id}" onkeyup="getSubtotalMenu(${product.id})" onchange="getSubtotalMenu(${product.id})" onkeypress="return filterFloat(event,this);" style="text-align: right" class="form-control text" required>
                                 </td>
                                 <td class="text-right"><h4 class="label-subtotal-menu" id="label-subtotal-menu-${product.id}">0</h4></td>
                                 <td class="text-right"><button type="button" onclick="removeTrMenu(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
