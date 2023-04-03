@@ -85,41 +85,27 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-3">
-                <div class="panel panel-bordered" style="border-left: 5px solid #E67E22">
-                    <div class="panel-body" style="height: 100px;padding: 15px 20px">
-                        <div class="col-md-9">
-                            <h5>Producto en escasez</h5>
-                            <h2>{{ $products->where('stock', '<', 10)->count() }}</h2>
-                        </div>
-                        <div class="col-md-3 text-right">
-                            <i class="icon voyager-archive" style="color: #E67E22"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px    ">
                         <canvas id="line-chart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px">
                         <canvas id="bar-chart"></canvas>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel">
-                    <div class="panel-body" style="height: 250px">
+                    <div class="panel-body" style="height: 300px    ">
                         <canvas id="doughnut-chart"></canvas>
                     </div>
                 </div>
             </div>
-         --}}
         
         {{-- <div class="analytics-container"> --}}
             
@@ -184,10 +170,68 @@
 @stop
 
 @section('javascript')
-<script>   
-
  
-</script>
+    <script src="{{ asset('js/plugins/chart.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            
+
+            // ==============================================
+       
+            labels = [];
+            values = [];
+
+        
+            labels.push('Ingreso del Día');
+            values.push({{$saleproduct + $salefood}});
+      
+
+            var data = {
+                labels,
+                datasets: [{
+                    label: 'Bs. Productos & Comidas del día',
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(39, 174, 96, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(235, 152, 78, 1)',
+                        'rgba(52, 73, 94, 1)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(39, 174, 96, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(235, 152, 78, 1)',
+                        'rgba(52, 73, 94, 1)'
+                    ],
+                }]
+            };
+            var config = {
+                type: 'bar',
+                data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                },
+            };
+            var myChart = new Chart(
+                document.getElementById('bar-chart'),
+                config
+            );
+
+            // ==============================================
+            
+        });
+    </script>
     
 
 @stop
