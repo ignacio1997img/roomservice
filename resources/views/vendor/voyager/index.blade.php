@@ -28,6 +28,9 @@
                     ->whereDate('created_at', '=', date('Y-m-d'))->where('deleted_at', null)->get();
                 $salefood = $salefood->SUM('amount');
 
+                $room = App\Models\Room::where('status',1)->where('deleted_at', null)->get();
+                // $room = $room->SUM('amount');
+
             @endphp
 
             <div class="col-md-3">
@@ -56,12 +59,12 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-3">
+            <div class="col-md-3">
                 <div class="panel panel-bordered" style="border-left: 5px solid #3498DB">
                     <div class="panel-body" style="height: 100px;padding: 15px 20px">
                         <div class="col-md-9">
-                            <h5>Clientes con deuda</h5>
-                            <h2>{{ $sales->where('status', 'pendiente')->count() }}</h2>
+                            <h5><i class="fa-solid fa-person-booth"></i> Habitaciones Libres</h5>
+                            <h2>{{ $room->where('status', 1)->count() }}</h2>
                         </div>
                         <div class="col-md-3 text-right">
                             <i class="icon voyager-people" style="color: #3498DB"></i>
@@ -74,7 +77,7 @@
                     <div class="panel-body" style="height: 100px;padding: 15px 20px">
                         <div class="col-md-9">
                             <h5>Deuda total</h5>
-                            <h2><small>Bs.</small>{{ number_format($total_debt, 2, ',', '.') }}</h2>
+                            {{-- <h2><small>Bs.</small>{{ number_format($total_debt, 2, ',', '.') }}</h2> --}}
                         </div>
                         <div class="col-md-3 text-right">
                             <i class="icon voyager-book" style="color: #E74C3C"></i>
@@ -82,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            {{-- <div class="col-md-3">
                 <div class="panel panel-bordered" style="border-left: 5px solid #E67E22">
                     <div class="panel-body" style="height: 100px;padding: 15px 20px">
                         <div class="col-md-9">
