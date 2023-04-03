@@ -21,12 +21,12 @@
                             })
                     ->whereDate('created_at', '=', date('Y-m-d'))->where('deleted_at', null)->get();
                 $saleproduct = $saleproduct->SUM('amount');
-                
-                $saleproduct = App\Models\EgresDeatil::WhereHas('egres', function($query) {
+
+                $salefood = App\Models\EgresMenu::WhereHas('egres', function($query) {
                                 $query->where('sale',1);
                             })
                     ->whereDate('created_at', '=', date('Y-m-d'))->where('deleted_at', null)->get();
-                $saleproduct = $saleproduct->SUM('amount');
+                $salefood = $salefood->SUM('amount');
 
             @endphp
 
@@ -48,7 +48,7 @@
                     <div class="panel-body" style="height: 100px;padding: 15px 20px">
                         <div class="col-md-9">
                             <h5><i class="fa-solid fa-bowl-food"></i> Ventas de comida del día</h5>
-                            {{-- <h2><small>Bs.</small>{{ number_format($sales_today->sum('total') - $sales_today->sum('discount'), 2, ',', '.') }}</h2> --}}
+                            <h2><small>Bs.</small>{{ number_format($salefood, 2, ',', '.') }}</h2>
                         </div>
                         <div class="col-md-3 text-right">
                             <i class="icon voyager-dollar" style="color: #52BE80"></i>

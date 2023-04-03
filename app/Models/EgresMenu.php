@@ -24,4 +24,8 @@ class EgresMenu extends Model
     {
         return $this->belongsTo(Food::class, 'food_id');
     }
+    public function egres()
+    {
+        return $this->belongsTo(Egre::class, 'egre_id');
+    }
 }
