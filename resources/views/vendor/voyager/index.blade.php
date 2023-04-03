@@ -31,6 +31,13 @@
                 $room = App\Models\Room::where('status',1)->where('deleted_at', null)->get();
                 // $room = $room->SUM('amount');
 
+
+                //para obtener los productos vendido del dia
+                $foodDay = App\Models\EgresMenu::with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
+                    ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id')
+                    ->groupBy('food_id')->orderBy('total', 'DESC')->limit(5)->get();
+                // dd($products);
+
             @endphp
 
             <div class="col-md-3">
@@ -229,6 +236,38 @@
             );
 
             // ==============================================
+            let foodDay = @json($foodDay);
+            labels = [];
+            values = [];
+
+            foodDay.map(item => {
+                labels.push(item.food.name);
+                values.push(parseInt(item.total));
+            });
+
+            var data = {
+                labels,
+                datasets: [{
+                    label: 'Productos más vendidos',
+                    data: values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(39, 174, 96, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(235, 152, 78, 1)',
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            var config = {
+                type: 'doughnut',
+                data
+            };
+            var myChart = new Chart(
+                document.getElementById('doughnut-chart'),
+                config
+            );
             
         });
     </script>

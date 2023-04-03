@@ -24,11 +24,10 @@ class ViewController extends Controller
     public function index($planta)
     {
 
-        // $data = IncomesDetail::with(['article','article.category'])
-        //     // ->whereRaw($q ? '(name like "%'.$q.'%" )' : 1)
-        //     ->select('article_id', DB::raw("SUM(cantRestante) as cantRestante"))
-        //     ->where('cantRestante','>', 0)->where('deleted_at', null)->where('expirationStatus', 1)->groupBy('article_id', 'price', 'expiration')->get();
-        // return $data;
+        // $foodDay = EgresMenu::with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
+        //             ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id')
+        //             ->groupBy('food_id')->orderBy('total', 'DESC')->limit(5)->get();
+        // return $foodDay;
 
 
         $data = Room::where('categoryFacility_id', $planta)->where('deleted_at', null)->get();
