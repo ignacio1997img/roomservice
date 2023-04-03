@@ -122,13 +122,11 @@
                                             @php
                                                 $cont = 0;
                                                 $total = 0;
+                                                $deuda = $deuda + $service->amount;
+                                                
                                             @endphp
                                             @forelse ($room->caregoryroom->part as $item)
-                                                @php
-                                                    $cont++;
-                                                    $total = $total + $item->amount;
-                                                    $deuda=$deuda+$total;
-                                                @endphp
+                                                
                                                 <tr>
                                                     <td>{{ $cont }}</td>
                                                     <td>{{ $item->name->name}}
@@ -173,7 +171,7 @@
                                                     @php
                                                         $cont++;
                                                         $total = $total + ($item->price * $item->cantSolicitada);
-                                                        $deuda=$deuda+$total;
+                                                        $deuda=$deuda+($item->price * $item->cantSolicitada);
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $cont }}</td>
@@ -225,7 +223,7 @@
                                                     @php
                                                         $cont++;
                                                         $total = $total + $item->amount;
-                                                        $deuda=$deuda+$total;
+                                                        $deuda=$deuda+$item->amount;
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $cont }}</td>
