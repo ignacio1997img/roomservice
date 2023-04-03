@@ -65,8 +65,22 @@ class ViewController extends Controller
             ->where('d.deleted_at', null)
             ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price',DB::raw("SUM(d.cantSolicitada) as cantSolicitada"))->groupBy('name', 'article_id', 'egre_id', 'price')->get();
 
-        $menu = EgresMenu::with(['food'])
-            ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
+        $menu = DB::table('egres as e')
+            ->join('egres_menus as d', 'd.egre_id', 'e.id')
+            ->join('food as f', 'f.id', 'd.food_id')
+            ->where('e.serviceRoom_id', $service->id)
+            ->where('e.deleted_at', null)
+            ->where('d.deleted_at', null)
+            ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
+
+        //     return $menu;
+        // $menu = EgresMenu::with(['food'])
+        //     ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
+
+        // $menu = EgresMenu::orWhereHas('egres', function($query) use ($search) {
+        //         $query->whereRaw('full_name like "%'.$search.'%"');
+        //     })
+        //     ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
 
 
         // return $egre;        

@@ -224,15 +224,15 @@
                                             @forelse ($menu as $item)               
                                                     @php
                                                         $cont++;
-                                                        $total = $total + ($item->price * $item->cant);
+                                                        $total = $total + $item->amount;
                                                         $deuda=$deuda+$total;
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $cont }}</td>
-                                                        <td>{{ $item->food->name}}</td>
+                                                        <td>{{ $item->name}}</td>
                                                         <td style="text-align: right">{{ $item->price}}</td>
                                                         <td style="text-align: right">{{ $item->cant}}</td>
-                                                        <td style="text-align: right">{{ $item->price * $item->cant}}</td>
+                                                        <td style="text-align: right">{{ $item->amount}}</td>
                                                         {{-- <td>{{ $item->name->Description}}</td> --}}
                                                     
                                                     </tr>
@@ -250,16 +250,12 @@
                                     </table>
                                 </div>                            
                             </div>                            
-                        </div>                            
-                        <div class="col-md-1">
-                        </div>
-                        <div class="col-md-10">                            
+                        </div>             
+                        <div class="col-md-12">                            
                             <div class="alert alert-success">
                                 <strong>Deudas:</strong>
                                 <p>Total a pagar de los servicios: {{NumerosEnLetras::convertir($deuda,'Bolivianos',true,'Centavos')}} </p>
                             </div>
-                        </div>
-                        <div class="col-md-1">
                         </div>
                     </div>
                 </div>
