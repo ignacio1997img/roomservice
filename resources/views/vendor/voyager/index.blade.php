@@ -239,10 +239,13 @@
             let foodDay = @json($foodDay);
             labels = [];
             values = [];
+            color = [];
 
             foodDay.map(item => {
                 labels.push(item.food.name);
                 values.push(parseInt(item.total));
+
+                color.push(colorRGB());
             });
 
             var data = {
@@ -250,13 +253,7 @@
                 datasets: [{
                     label: 'Productos más vendidos',
                     data: values,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(39, 174, 96, 1)',
-                        'rgba(255, 205, 86, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(235, 152, 78, 1)',
-                    ],
+                    backgroundColor: color,
                     hoverOffset: 4
                 }]
             };
@@ -270,6 +267,14 @@
             );
             
         });
+
+        function generarNumero(numero){
+            return (Math.random()*numero).toFixed(0);
+        }
+        function colorRGB(){
+            var coolor = "("+generarNumero(255)+"," + generarNumero(255) + "," + generarNumero(255) +")";
+            return "rgb" + coolor;
+        }
     </script>
     
 
