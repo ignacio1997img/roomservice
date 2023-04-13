@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ServiceRoom;
+use PhpParser\Node\Stmt\Return_;
 
 class IncomeController extends Controller
 {
@@ -213,10 +214,10 @@ class IncomeController extends Controller
                 $cant=0;
                 $ok=false;
                 // $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
-
+                // return 1;
                 while($cantTotal>0)
                 {
-                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where('expiration',$request->expiration[$i]??null)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
+                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where('expiration', $expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
                     $aux = 0;
                     // cuando el total es mayor o igual se le saca todo del almacen de ese detalle
                     if($cantTotal >= $detail->cantRestante)
@@ -254,6 +255,7 @@ class IncomeController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollBack();
+            return 10101;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
