@@ -56,8 +56,9 @@
             </div>
         </div>
     </div>
+  
 
-    <form lass="form-submit" id="irremovability-form" action="{{route('room.store')}}" method="post">
+    <form lass="form-submit" id="irremovability-form" action="{{route('room.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
@@ -67,19 +68,13 @@
                         <h4 class="modal-title"><i class="fa-solid fa-person-booth"></i> Registrar Habitación</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Nro de Habitación</label>
-                                    <input type="number" min="1" step="1"  style="text-align: right" name="number" class="form-control" autocomplete="off" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Precio</label>
-                                    <input type="number" name="price" min="1" step="1"  style="text-align: right" class="form-control text" required>
-                                </div>
-                            </div>                            
+                        <div class="form-group">                            
+                            <label>Nro de Habitación</label>
+                            <input type="number" min="1" step="1"  style="text-align: right" name="number" class="form-control" autocomplete="off" required>                                                  
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="number" name="price" min="1" step="1"  style="text-align: right" class="form-control text" required>                          
                         </div>
                         <div class="form-group">
                             <label>Categoría de Habitación</label>
@@ -98,6 +93,10 @@
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagenes de la Habitación</label>
+                            <input type="file" accept="image/jpeg,image/jpg,image/png" multiple name="image[]" class="form-control imageLength">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -152,7 +151,6 @@
 @stop
 
 @section('javascript')
-    {{-- <script src="{{ url('js/main.js') }}"></script> --}}
 
     <script src="{{ asset('vendor/tippy/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/tippy/tippy-bundle.umd.min.js') }}"></script>
@@ -236,6 +234,39 @@
                 }
                 
             }
+    </script>
+
+
+
+    <script>
+        $(document).on('change','.imageLength',function(){
+            var fileName = this.files[0].name;
+            var fileSize = this.files[0].size;
+
+
+            
+                // recuperamos la extensión del archivo
+                var ext = fileName.split('.').pop();
+                
+                // Convertimos en minúscula porque 
+                // la extensión del archivo puede estar en mayúscula
+                ext = ext.toLowerCase();
+                // console.log(ext);
+                switch (ext) {
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png': break;
+                    default:
+                        Swal.fire({
+                            target: document.getElementById('modal_create'),
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'El archivo no tiene la extensión adecuada!'
+                        })
+                        this.value = ''; // reset del valor
+                        this.files[0].name = '';
+                }
+        });
     </script>
 @stop
 @endif

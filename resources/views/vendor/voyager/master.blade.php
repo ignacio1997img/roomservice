@@ -136,6 +136,8 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
 
 <!-- Javascript Libs -->
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
 
@@ -159,6 +161,7 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
     }
     @endif
 </script>
+
 @include('voyager::media.manager')
 @yield('javascript')
 @stack('javascript')

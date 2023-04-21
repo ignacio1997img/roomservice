@@ -18,7 +18,7 @@
                     @endphp
                     <div class="col-md-2" class="grid-block ">
                         {{-- <div class="col-md-3"></div> --}}
-                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:320px; @if($item->status == 0) box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif">
+                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:370px; @if($item->status == 0) box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif">
                             <br>
                             @php
                                 if($item->status==0)
@@ -51,43 +51,48 @@
                                 }
                             @endphp
                             
-                            <p style="font-size: 22px; color: #ffffff;"><small>Pieza N° {{$item->number}}</small></p>                            
+                            <p style="font-size: 20px; color: #ffffff;"><small>Pieza N° {{$item->number}}</small></p>                            
                             @if ($item->status == 1)
                                 @if (auth()->user()->hasPermission('add_assign'))
-                                    <a href="{{route('view-planta.room', ['room'=>$item->id])}}" class="btn btn-success" data-toggle="modal">
+                                    <a href="{{route('view-planta.room', ['room'=>$item->id])}}" style="border-radius: 5px" class="btn btn-success" data-toggle="modal">
                                         <i class="fa-solid fa-key" style="color:rgb(46, 46, 46)"></i> Asignar</span>
                                     </a>     
                                 @endif
                             @else
                                 <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }} <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish)) }}</small>
                             @endif
-                            <br>
+                            
                             @if ($item->status==1)
-                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
+                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
                             @else  
 
-                                <small style="font-size: 20px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux+$totalMenu:0}}</small>                                
+                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux+$totalMenu:0}}</small>                                
                             @endif
-                            <br>
-                            <small style="font-size: 15px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>
+                         
+                            <small style="font-size: 12px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>
                             
                             @if ($item->status == 0)
-                            <br>
+                                <br>
                                 @if (auth()->user()->hasPermission('read_assign'))
-                                    <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" class="btn btn-dark" data-toggle="modal">
+                                    <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" style="border-radius: 5px" class="btn btn-dark" data-toggle="modal">
                                         <i class="fa-solid fa-eye"></i> Ver</span>
                                     </a>     
                                 @endif
                                 @if (auth()->user()->hasPermission('add_product'))
-                                    <a href="#" data-toggle="modal" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </a>
                                 @endif
                                 @if (auth()->user()->hasPermission('add_food'))
-                                    <a href="#" data-toggle="modal" data-target="#modal_menu" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Comidas del menú" class="btn btn-primary">
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_menu" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Comidas del menú" class="btn btn-primary">
                                         <i class="fa-solid fa-bowl-food"></i>
                                     </a>
                                 @endif
+                                {{-- @if (auth()->user()->hasPermission('add_food')) --}}
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
+                                        <i class="fa-solid fa-hourglass-end"></i>
+                                    </a>
+                                {{-- @endif --}}
                             @endif
 
 
@@ -116,8 +121,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <small id="label-pieza" style="font-size: 15px"></small>
-                                <input type="hidden" name="room_id" id="room_id">
-                                <input type="hidden" name="planta_id" id="planta_id">
+                                <input type="text" name="room_id" id="room_id">
+                                <input type="text" name="planta_id" id="planta_id">
                             </div>
                             <div class="form-group">
                                 <label>Productos</label>
@@ -183,8 +188,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <small id="label-pieza" style="font-size: 15px"></small>
-                                <input type="hidden" name="room_id" id="room_id">
-                                <input type="hidden" name="planta_id" id="planta_id">
+                                <input type="text" name="room_id" id="room_id">
+                                <input type="text" name="planta_id" id="planta_id">
                             </div>
                             <div class="form-group">
                                 <label>Menú</label>
@@ -235,6 +240,77 @@
                 </div>
             </div>
         </form>
+
+
+        {{-- Para finalizar el hopedaje --}}
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-foodmenu.store')}}" method="post">
+            @csrf
+            <div class="modal  fade" id="modal_finish" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-danger">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-solid fa-hourglass-end"></i> Finalizar Hospedaje</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <small id="label-pieza" style="font-size: 15px"></small>
+                                <input type="text" name="room_id" id="room_id">
+                                <input type="text" name="planta_id" id="planta_id">
+                            </div>
+                            <div class="form-group">
+                                <label>Menú</label>
+                                <select class="form-control" id="select_menu"></select>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px">N&deg;</th>
+                                                <th style="text-align: center">Detalle</th>  
+                                                <th style="text-align: center; width: 80px">Precio</th>  
+                                                <th style="text-align: center; width: 80px">Cantidad</th>  
+                                                <th style="text-align: center; width: 80px">Sub Total</th>
+                                                <th width="15px">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-bodyMenu">
+                                            <tr id="tr-emptyMenu">
+                                                <td colspan="6" style="height: 150px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 50px">
+                                                        <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
+                                                        Lista de detalle vacía
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">
+                                                Total
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small>Bs.</small> <b id="label-totalMenu">0.00</b>
+                                                <input type="hidden" name="amount" id="input-totalMenu" value="0">
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-danger btn-submit" value="Finalizar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+
     </div>
 @stop
 @section('css')

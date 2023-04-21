@@ -56,13 +56,22 @@ class RoomController extends Controller
             {
                 return redirect()->route('room.index')->with(['message' => 'El numero de habitacion ya se encuentra registrada en esa planta seleccionada.', 'alert-type' => 'warning']);
             }
-            Room::create([
+            $room = Room::create([
                 'number'=>$request->number,
                 'amount'=>$request->price,
                 'categoryFacility_id'=>$request->facility,
                 'categoryRoom_id'=>$request->category,
                 'registerUser_id'=>Auth::user()->id
             ]);
+            
+            // return count($request->image);
+            $file = $request->file('image');
+            if ($file)
+            {
+                for ($i=0; $i < count($request->image); $i++) { 
+                    $image = $this->image($file[$i], $room->id, 'room');
+                }
+            }
             DB::commit();
             return redirect()->route('room.index')->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {

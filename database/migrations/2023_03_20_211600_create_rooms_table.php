@@ -22,6 +22,7 @@ class CreateRoomsTable extends Migration
 
 
 
+
             $table->smallInteger('status')->default(1);
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');
