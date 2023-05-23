@@ -24,6 +24,7 @@ class ServiceRoomController extends Controller
     
     public function store(Request $request)
     {
+        return 1;
         DB::beginTransaction();
         $people = People::where('id', $request->people_id)->first();
         try {
