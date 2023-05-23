@@ -453,9 +453,10 @@
             modal.find('.modal-body #planta_id').val(planta);
             modal.find('.modal-body #amountFinish').val(amountfinish);
 
-     
+            $('#label-roomAmount').empty();
             $('#label-roomAmount').text(room);           
        
+            $('#letra').empty();
             $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+amountfinish+'</small>');
 
       
