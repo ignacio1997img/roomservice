@@ -193,7 +193,7 @@ class IncomeController extends Controller
             $pagar =0;
             for ($i=0; $i < count($request->income); $i++)
             {
-                $expiration = null;
+                $expiration = 1;
                 if(!$request->expiration[$i])
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
