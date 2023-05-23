@@ -209,7 +209,7 @@ class IncomeController extends Controller
                 //por si falta item en el almacenn se retornara
                 if($request->cant[$i] > $total)
                 {
-                    return $total;
+                    return $request->cant[$i];
                     DB::rollBack();
                     return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
                 }
