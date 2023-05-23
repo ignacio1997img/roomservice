@@ -152,7 +152,7 @@ class IncomeController extends Controller
             ->where(function($query) use ($q){
                 if($q){
                     $query->OrwhereHas('article', function($query) use($q){
-                        $query->whereRaw("(names like '%$q%')");
+                        $query->whereRaw("(name like '%$q%')");
                     });
                 }
             })
@@ -198,11 +198,11 @@ class IncomeController extends Controller
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                // return $request;
+                return $expiration;
                 // return $request->expiration[$i];
                 $total = IncomesDetail::where('article_id',$request->income[$i])
                         ->where('price', $request->price[$i])
-                        // ->where('expiration', $expiration)
+                        ->where('expiration', $expiration)
                         ->where('cantRestante', '>', 0)
                         ->where('deleted_at', null)->get();
                 return $total;
