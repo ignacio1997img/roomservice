@@ -167,8 +167,8 @@ class IncomeController extends Controller
     //Para sacar producto del almacen para la ventas de articulos a las habitaciones y a las personas
     public function storeEgressPieza(Request $request)
     {
-        // return $request;
-        if(count($request->income)<=0)
+        return $request;
+        if($request->amount<=0)
         {
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
         }
@@ -209,7 +209,7 @@ class IncomeController extends Controller
                 //por si falta item en el almacenn se retornara
                 if($request->cant[$i] > $total)
                 {
-                    // return $total;
+                    return $total;
                     DB::rollBack();
                     return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
                 }
