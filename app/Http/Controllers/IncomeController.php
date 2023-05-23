@@ -193,23 +193,23 @@ class IncomeController extends Controller
             $pagar =0;
             for ($i=0; $i < count($request->income); $i++)
             {
-                $expiration = null;
+                $expiration = 1;
                 if($request->expiration[$i])
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                return $expiration;
+                // return $request;
                 // return $request->expiration[$i];
                 $total = IncomesDetail::where('article_id',$request->income[$i])
                         ->where('price', $request->price[$i])
-                        ->where('expiration', $expiration)
+                        ->whereRaw($expiration)
                         ->where('cantRestante', '>', 0)
-                        ->where('deleted_at', null)->get();
-                return $total;
+                        ->where('deleted_at', null)->get()->SUM('cantRestante');
+                // return $total;
                 //por si falta item en el almacenn se retornara
                 if($request->cant[$i] > $total)
                 {
-                    return $request->cant[$i];
+                    return $total;
                     DB::rollBack();
                     return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ingrese detalle de producto..', 'alert-type' => 'warning']);
                 }
