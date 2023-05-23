@@ -28,6 +28,7 @@ class ServiceRoomController extends Controller
         DB::beginTransaction();
         $people = People::where('id', $request->people_id)->first();
         try {
+            return $people;
             Http::get('https://api.whatsapp.trabajostop.com/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
             return $request;
 
