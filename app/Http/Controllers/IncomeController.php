@@ -152,7 +152,7 @@ class IncomeController extends Controller
             ->where(function($query) use ($q){
                 if($q){
                     $query->OrwhereHas('article', function($query) use($q){
-                        $query->whereRaw("(name like '%$q%')");
+                        $query->whereRaw("(names like '%$q%')");
                     });
                 }
             })
