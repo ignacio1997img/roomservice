@@ -193,16 +193,16 @@ class IncomeController extends Controller
             $pagar =0;
             for ($i=0; $i < count($request->income); $i++)
             {
-                $expiration = null;
+                $expiration = 1;
                 if(!$request->expiration[$i])
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                // return $request;
+                // return $expiration;
                 // return $request->expiration[$i];
                 $total = IncomesDetail::where('article_id',$request->income[$i])
                         ->where('price', $request->price[$i])
-                        ->where('expiration', $expiration)
+                        ->whereRaw($expiration)
                         ->where('cantRestante', '>', 0)
                         ->where('deleted_at', null)->get()->SUM('cantRestante');
                 // return $total;
@@ -218,10 +218,14 @@ class IncomeController extends Controller
                 $cant=0;
                 $ok=false;
                 // $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
-                // return 1;
                 while($cantTotal>0)
                 {
-                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->where('expiration', $expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
+                    $expiration = 1;
+                    if(!$request->expiration[$i])
+                    {
+                        $expiration = 'expiration ='.$request->expiration[$i];
+                    }
+                    $detail = IncomesDetail::where('article_id',$request->income[$i])->where('price', $request->price[$i])->whereRaw($expiration)->where('cantRestante', '>', 0)->where('deleted_at', null)->first();
                     $aux = 0;
                     // cuando el total es mayor o igual se le saca todo del almacen de ese detalle
                     if($cantTotal >= $detail->cantRestante)
@@ -234,6 +238,7 @@ class IncomeController extends Controller
                         $aux = $cantTotal;
                         $cantTotal=0;
                     }
+
                     // return $detail;
                     $detail->decrement('cantRestante', $aux);
 
