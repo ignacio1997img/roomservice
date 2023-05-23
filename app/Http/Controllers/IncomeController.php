@@ -24,10 +24,10 @@ class IncomeController extends Controller
     
     public function index()
     {
-        return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
-                ->where('deleted_at', null)
-                ->where('type', 'food')
-                ->get();
+        // return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
+        //         ->where('deleted_at', null)
+        //         ->where('type', 'food')
+        //         ->get();
         return view('store.income.browse');
     }
 
