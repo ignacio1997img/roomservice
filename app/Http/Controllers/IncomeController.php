@@ -194,11 +194,11 @@ class IncomeController extends Controller
             for ($i=0; $i < count($request->income); $i++)
             {
                 $expiration = null;
-                if(!$request->expiration[$i])
+                if($request->expiration[$i])
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                return $request;
+                // return $request;
                 // return $request->expiration[$i];
                 $total = IncomesDetail::where('article_id',$request->income[$i])
                         ->where('price', $request->price[$i])
