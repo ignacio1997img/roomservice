@@ -198,14 +198,14 @@ class IncomeController extends Controller
                 {
                     $expiration = 'expiration ='.$request->expiration[$i];
                 }
-                return $request;
+                // return $request;
                 // return $request->expiration[$i];
                 $total = IncomesDetail::where('article_id',$request->income[$i])
                         ->where('price', $request->price[$i])
                         ->where('expiration', $expiration)
                         ->where('cantRestante', '>', 0)
-                        ->where('deleted_at', null)->get()->SUM('cantRestante');
-                // return $total;
+                        ->where('deleted_at', null)->get();
+                return $total;
                 //por si falta item en el almacenn se retornara
                 if($request->cant[$i] > $total)
                 {
