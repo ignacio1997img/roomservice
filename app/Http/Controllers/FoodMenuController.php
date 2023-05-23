@@ -90,4 +90,13 @@ class FoodMenuController extends Controller
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
+
+    public function ajaxFinishPieza($id)
+    {
+        return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
+                ->where('deleted_at', null)
+                ->where('type', 'food')
+                ->where('serviceRoom_id',$id)
+                ->get();
+    }
 }

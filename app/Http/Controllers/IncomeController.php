@@ -24,6 +24,10 @@ class IncomeController extends Controller
     
     public function index()
     {
+        return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
+                ->where('deleted_at', null)
+                ->where('type', 'food')
+                ->get();
         return view('store.income.browse');
     }
 
@@ -258,6 +262,16 @@ class IncomeController extends Controller
             return 10101;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
+    }
+
+
+    public function ajaxFinishPieza($id)
+    {
+        return Egre::with(['detail'=>function($q){$q->where('deleted_at',null);},'detail.article'])
+                ->where('deleted_at', null)
+                ->where('type', 'product')
+                ->where('serviceRoom_id',$id)
+                ->get();
     }
 
 

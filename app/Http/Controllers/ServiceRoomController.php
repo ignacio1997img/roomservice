@@ -12,6 +12,8 @@ use App\Models\ServiceRoomsDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\IncomesDetail;
+use App\Models\People;
+use Illuminate\Support\Facades\Http;
 
 class ServiceRoomController extends Controller
 {
@@ -22,9 +24,12 @@ class ServiceRoomController extends Controller
     
     public function store(Request $request)
     {
-        // return $request;
         DB::beginTransaction();
+        $people = People::where('id', $request->people_id)->first();
         try {
+            Http::get('https://api.whatsapp.trabajostop.com/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
+                // return $request;
+
             $ok = Room::where('id', $request->room_id)->where('deleted_at', null)->first();
             // return $ok;
             if($ok->status == 0)
@@ -73,6 +78,17 @@ class ServiceRoomController extends Controller
             DB::rollBack();
             // return 0;
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+
+    public function closeFinishRoom(Request $request)
+    {
+        return $request;
+        DB::beginTransaction();
+        try {
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
         }
     }
 

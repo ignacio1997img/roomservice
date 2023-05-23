@@ -15,6 +15,7 @@
                         foreach ($aux as $value) {
                             $total = $total + $value->amount;
                         }
+                        $prueba =123;
                     @endphp
                     <div class="col-md-2" class="grid-block ">
                         {{-- <div class="col-md-3"></div> --}}
@@ -46,6 +47,11 @@
                                             ->where('d.deleted_at', null)
                                             ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
                                     $totalMenu = $menu->SUM('amount');
+                                    $totalFinish= $service->amount+$totalaux+$totalMenu;
+                                    // dump($totalFinish);
+
+                                    
+
                                     // $menu =  \App\Models\EgresMenu::where('serviceRoom_id', $service->id)->where('deleted_at',null)->get()->SUM('amount');
                                     // dd($menu);
                                 }
@@ -63,12 +69,13 @@
                             @endif
                             
                             @if ($item->status==1)
+                                <br>
                                 <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
                             @else  
-
-                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$service?$service->amount+$totalaux+$totalMenu:0}}</small>                                
+                                <br>
+                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$service?$totalFinish:0}}</small>                                
                             @endif
-                         
+                            <br>
                             <small style="font-size: 12px; color: rgb(0, 0, 0)">Categoría: {{$category->name}}</small>
                             
                             @if ($item->status == 0)
@@ -89,7 +96,7 @@
                                     </a>
                                 @endif
                                 {{-- @if (auth()->user()->hasPermission('add_food')) --}}
-                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
                                         <i class="fa-solid fa-hourglass-end"></i>
                                     </a>
                                 {{-- @endif --}}
@@ -243,9 +250,9 @@
 
 
         {{-- Para finalizar el hopedaje --}}
-        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-foodmenu.store')}}" method="post">
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-hospedaje-close')}}" method="post">
             @csrf
-            <div class="modal  fade" id="modal_finish" role="dialog">
+            <div class="modal fade" id="modal_finish" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content modal-danger">
                         <div class="modal-header">
@@ -253,14 +260,59 @@
                             <h4 class="modal-title"><i class="fa-solid fa-hourglass-end"></i> Finalizar Hospedaje</h4>
                         </div>
                         <div class="modal-body">
+                            <input type="text" name="room_id" id="room_id">
+                            <input type="text" name="planta_id" id="planta_id">
+
+
                             <div class="form-group">
-                                <small id="label-pieza" style="font-size: 15px"></small>
-                                <input type="text" name="room_id" id="room_id">
-                                <input type="text" name="planta_id" id="planta_id">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables table-bordered table-hover">
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">
+                                                <small>Pagos de la habitacion Bs.</small>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small><b id="label-roomAmount" class="label-roomAmount">0.00</b></small>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
+
+
+
                             <div class="form-group">
-                                <label>Menú</label>
-                                <select class="form-control" id="select_menu"></select>
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px">N&deg;</th>
+                                                <th style="text-align: center">Detalle</th>  
+                                                <th style="text-align: center; width: 80px">Precio</th>  
+                                                <th style="text-align: center; width: 80px">Cantidad</th>  
+                                                <th style="text-align: center; width: 80px">Sub Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-bodyFinish">
+                                            <tr id="tr-emptyMenuFinish">
+                                                <td colspan="5" style="height: 30px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 40px">
+                                                        <i class="fa-solid fa-list" style="font-size: 40px"></i> <br>
+                                                        Lista de detalle vacía
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">
+                                                Total <small>Bs.</small>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small><b id="label-totalDetailFinish" class="label-totalDetailFinish">0.00</b></small>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive">
@@ -272,14 +324,13 @@
                                                 <th style="text-align: center; width: 80px">Precio</th>  
                                                 <th style="text-align: center; width: 80px">Cantidad</th>  
                                                 <th style="text-align: center; width: 80px">Sub Total</th>
-                                                <th width="15px">Acciones</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="table-bodyMenu">
-                                            <tr id="tr-emptyMenu">
-                                                <td colspan="6" style="height: 150px">
-                                                    <h4 class="text-center text-muted" style="margin-top: 50px">
-                                                        <i class="fa-solid fa-list" style="font-size: 50px"></i> <br><br>
+                                        <tbody id="table-bodyFinish1">
+                                            <tr id="tr-emptyMenuFinish1">
+                                                <td colspan="5" style="height: 30px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 40px">
+                                                        <i class="fa-solid fa-list" style="font-size: 40px"></i> <br>
                                                         Lista de detalle vacía
                                                     </h4>
                                                 </td>
@@ -287,16 +338,21 @@
                                         </tbody>
                                         <tr>
                                             <td colspan="4" style="text-align: right">
-                                                Total
+                                                Total <small>Bs.</small>
                                             </td>
                                             <td style="text-align: right">
-                                                <small>Bs.</small> <b id="label-totalMenu">0.00</b>
-                                                <input type="hidden" name="amount" id="input-totalMenu" value="0">
+                                                <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
                                             </td>
-                                            <td></td>
                                         </tr>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">                            
+                            <div class="alert alert-success">
+                                <strong>Pago Total:</strong>
+                                <p id="letra"></p>
+                               
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -376,6 +432,107 @@
             $('#input-totalMenu').val(0)
             $('#select_menu').val("").trigger("change");
         })
+
+        let aux =1;
+        $('#modal_finish').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var room = button.data('room');
+
+            let amountfinish = 0;
+            amountfinish = button.data('amountfinish');
+            amountfinish = parseFloat(amountfinish).toFixed(2);
+
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+
+     
+            $('#label-roomAmount').text(room);           
+       
+            $('#letra').append('Total a pagar de los servicios mas el hospedaje Bs '+amountfinish);
+
+      
+
+
+            $.get('{{route('serviceroom-finish.article')}}/'+id, function (data) {
+                // alert(data);
+                
+                detailTotal=0;
+                for (i = 0; i < data.length; i++) {
+                    if(i==0)
+                    {
+                        $('#table-bodyFinish').empty();
+                    }
+                    for (x = 0; x < data[i].detail.length; x++) {
+                        $('#table-bodyFinish').append(`   
+                            <tr class="tr-item">
+                                <td class="td-itemMenu">${i+1}</td>
+                                <td>
+                                    <small>${data[i].detail[x].article.name}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].detail[x].price}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].detail[x].cantSolicitada}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].detail[x].amount}</small><br>
+                                </td>
+
+                            </tr>
+                        `
+                        );
+                        detailTotal = parseFloat(detailTotal) + parseFloat(data[i].detail[x].amount);
+                    }
+                }     
+                $('#label-totalDetailFinish').text(detailTotal);
+            });
+            $.get('{{route('serviceroom-finish.menu')}}/'+id, function (data) {
+                // alert(data);
+                
+                menuTotal=0;
+                for (i = 0; i < data.length; i++) {
+                    if(i==0)
+                    {
+                        $('#table-bodyFinish1').empty();
+                    }
+                    for (x = 0; x < data[i].menu.length; x++) {
+                        // const element = array[index]xº;
+                        $('#table-bodyFinish1').append(`   
+                            <tr class="tr-item">
+                                <td class="td-itemMenu">${i+1}</td>
+                                <td>
+                                    <small>${data[i].menu[x].food.name}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].menu[x].price}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].menu[x].cant}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].menu[x].amount}</small><br>
+                                </td>
+
+                            </tr>
+                        `
+                        );
+                        menuTotal = parseFloat(menuTotal) + parseFloat(data[i].menu[x].amount);                        
+                    }                    
+                }                            // alert(data)
+                $('#label-totalDetailFinish1').text(menuTotal);
+            });
+
+            // $('#label-totalMenu').text(0);
+            // $('#input-totalMenu').val(0)
+            // $('#select_menu').val("").trigger("change");
+        })
+
+
+
 
         $(document).ready(function(){
             var productSelected;

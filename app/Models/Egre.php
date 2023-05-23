@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EgresMenu;
 
 class Egre extends Model
 {
@@ -24,6 +25,11 @@ class Egre extends Model
     public function detail()
     {
         return $this->hasMany(EgresDeatil::class, 'egre_id');
+    }
+
+    public function menu()
+    {
+        return $this->hasMany(EgresMenu::class, 'egre_id');
     }
 
     public function serviceroom()

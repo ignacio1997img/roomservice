@@ -86,7 +86,7 @@
                                 <h3 class="panel-title">Fecha Inicio</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{$service->people->ci}}</p>
+                                <p>{{ date('d-m-Y h:i', strtotime($service->start)) }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>       
@@ -95,7 +95,7 @@
                                 <h3 class="panel-title">Fecha Fin</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{$service->people->first_name}} {{$service->people->last_name}}</p>
+                                <p>{{$service->finish? date('d-m-Y h:i', strtotime($service->finish)):'' }}</p>
                             </div>
                             <hr style="margin:0;">
                         </div>        
@@ -128,7 +128,7 @@
                                             @forelse ($room->caregoryroom->part as $item)
                                                 
                                                 <tr>
-                                                    <td>{{ $cont }}</td>
+                                                    <td>{{ $cont = $cont +1 }}</td>
                                                     <td>{{ $item->name->name}}
                                                         <input type="hidden" name="part[]" value="{{ $item->name->name}}">
                                                     </td>

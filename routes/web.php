@@ -81,6 +81,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('serviceroom/article/store', [IncomeController::class, 'storeEgressPieza'])->name('serviceroom-article.store');//para agregar un producto a la venta en una habitacion
     Route::post('serviceroom/foodmenu/store', [FoodMenuController::class, 'storeEgressPieza'])->name('serviceroom-foodmenu.store');//para agregar una comida a la venta en una habitacion
     Route::get('food/menu/list/ajax', [FoodMenuController::class, 'ajaxMenuExists']);//para poder obtene el menu del dia
+    Route::get('serviceroom/finish/article/{id?}', [IncomeController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.article');//para poder obtener los detalle de venta producto del dia para finalizar el ospedaje
+    Route::get('serviceroom/finish/menu/{id?}', [FoodMenuController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.menu');//para poder obtener los menu o comida del dia para finalizar el ospedaje
+    Route::post('serviceroom/hospedaje/close', [ServiceRoomController::class, 'closeFinishRoom'])->name('serviceroom-hospedaje-close');    //Para poder finalizar el hospedaje de la habitracion
 
 
 

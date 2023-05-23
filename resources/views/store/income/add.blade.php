@@ -182,9 +182,7 @@
                             if(product.image){
                                 image = "{{ asset('storage') }}/" + product.image.replace('.', '-cropped.');
                                 
-                            }
-
-                            
+                            }                            
 
                             tippy(`#description-${product.id}`, {
                                 content: `  <div style="display: flex; flex-direction: row">
