@@ -83,12 +83,25 @@ class ServiceRoomController extends Controller
 
     public function closeFinishRoom(Request $request)
     {
-        return $request;
+        // return $request;
         DB::beginTransaction();
         try {
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+            $user = Auth::user()->id;
+
+            $room = Room::where('id', $request->room_id)->first();
+            $room->update(['status'=> 1]);
+
+            $service->update(['status'=>0, 'amountFinish'=>$request->amountFinish]);
+
             DB::commit();
+        
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje Finalizado.', 'alert-type' => 'success']);
+
         } catch (\Throwable $th) {
             DB::rollBack();
+            // return 0;
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
 

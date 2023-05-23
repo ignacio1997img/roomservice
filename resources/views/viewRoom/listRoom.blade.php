@@ -128,8 +128,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <small id="label-pieza" style="font-size: 15px"></small>
-                                <input type="text" name="room_id" id="room_id">
-                                <input type="text" name="planta_id" id="planta_id">
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
                             </div>
                             <div class="form-group">
                                 <label>Productos</label>
@@ -195,8 +195,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <small id="label-pieza" style="font-size: 15px"></small>
-                                <input type="text" name="room_id" id="room_id">
-                                <input type="text" name="planta_id" id="planta_id">
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
                             </div>
                             <div class="form-group">
                                 <label>Menú</label>
@@ -260,8 +260,9 @@
                             <h4 class="modal-title"><i class="fa-solid fa-hourglass-end"></i> Finalizar Hospedaje</h4>
                         </div>
                         <div class="modal-body">
-                            <input type="text" name="room_id" id="room_id">
-                            <input type="text" name="planta_id" id="planta_id">
+                            <input type="hidden" name="room_id" id="room_id">
+                            <input type="hidden" name="planta_id" id="planta_id">
+                            <input type="hidden" name="amountFinish" id="amountFinish">
 
 
                             <div class="form-group">
@@ -438,6 +439,9 @@
         {
             var button = $(event.relatedTarget);
             var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+
             var room = button.data('room');
 
             let amountfinish = 0;
@@ -447,11 +451,12 @@
             var modal = $(this);
             modal.find('.modal-body #room_id').val(id);
             modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #amountFinish').val(amountfinish);
 
      
             $('#label-roomAmount').text(room);           
        
-            $('#letra').append('Total a pagar de los servicios mas el hospedaje Bs '+amountfinish);
+            $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+amountfinish+'</small>');
 
       
 
