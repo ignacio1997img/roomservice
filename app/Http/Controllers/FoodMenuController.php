@@ -93,10 +93,13 @@ class FoodMenuController extends Controller
 
     public function ajaxFinishPieza($id)
     {
+        $service =  ServiceRoom::with(['people'])
+            ->where('room_id', $id)->where('status', 1)->where('deleted_at',null)->first();  
+
         return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
                 ->where('deleted_at', null)
                 ->where('type', 'food')
-                ->where('serviceRoom_id',$id)
+                ->where('serviceRoom_id',$service->id)
                 ->get();
     }
 }
