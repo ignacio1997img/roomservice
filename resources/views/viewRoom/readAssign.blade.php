@@ -6,7 +6,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="fa-solid fa-key"></i> Habitación Asignada
-        <a href="{{ route('worker.index') }}" class="btn btn-warning">
+        <a href="{{ route('view.planta', ['planta'=>$room->categoryFacility_id]) }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             Volver a la lista
         </a>
