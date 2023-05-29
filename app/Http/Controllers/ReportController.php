@@ -78,10 +78,13 @@ class ReportController extends Controller
             ->whereDate('em.created_at', '>=', date('Y-m-d', strtotime($request->start)))
             ->whereDate('em.created_at', '<=', date('Y-m-d', strtotime($request->finish)))
             
-            ->select('sr.number', 'u.name as user', 'em.price', 'em.cant', 'em.amount', 'em.created_at', 'f.name as food', 'sr.category', 'sr.facility', 'p.first_name', 'p.last_name')
+            // ->select('sr.number', 'u.name as user', 'em.price', 'em.cant', 'em.amount',
+            //         'em.created_at', 'f.name as food', 'sr.category', 'sr.facility', 'p.first_name', 'p.last_name')
+
+            ->select('*')
             ->get();
         // return $data;
-        // dump($data);
+        dump($data);
         if($request->print){
             $start = $request->start;
             $finish = $request->finish;

@@ -38,7 +38,7 @@ class ViewController extends Controller
     public function viewAsignar($room)
     {
         // return $room;
-        $room = Room::with(['caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
+        $room = Room::with(['file','caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         // return $room;
 
@@ -46,16 +46,13 @@ class ViewController extends Controller
     }
     public function readAsignar($room)
     {
-        //  return $room;
+         return $room;
         $room = Room::with(['caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         
         $service =  ServiceRoom::with(['people'])
             ->where('room_id', $room->id)->where('status', 1)->where('deleted_at',null)->first();  
-            // return $service;
-
-        // $egre = Egre::with(['detail.article'])
-        //     ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
+      
         $egre = DB::table('egres as e')
             ->join('egres_deatils as d', 'd.egre_id', 'e.id')
             ->join('articles as a', 'a.id', 'd.article_id')
@@ -74,17 +71,7 @@ class ViewController extends Controller
             ->where('d.deleted_at', null)
             ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
 
-        //     return $menu;
-        // $menu = EgresMenu::with(['food'])
-        //     ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
-
-        // $menu = EgresMenu::orWhereHas('egres', function($query) use ($search) {
-        //         $query->whereRaw('full_name like "%'.$search.'%"');
-        //     })
-        //     ->where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
-
-
-        // return $egre;        
+    
 
         return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu'));
     }

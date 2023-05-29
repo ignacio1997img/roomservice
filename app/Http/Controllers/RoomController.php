@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\CategoriesRoom;
 use App\Models\CategoriesFacility;
+use App\Models\RoomsFile;
 
 class RoomController extends Controller
 {
@@ -70,6 +71,12 @@ class RoomController extends Controller
             {
                 for ($i=0; $i < count($request->image); $i++) { 
                     $image = $this->image($file[$i], $room->id, 'room');
+                    // return $image;
+                    RoomsFile::create([
+                        'room_id'=>$room->id,
+                        'image' => $image
+                    ]);
+
                 }
             }
             DB::commit();

@@ -111,7 +111,7 @@
                             </div>
                         </div>
                        
-                        <div class="col-md-12">
+                        <div class="col-md-7">
                             <div class="panel-body">
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
@@ -149,8 +149,51 @@
                                 <div class="col-md-12" style="padding: 0px">
                                     <button type="submit" id="btn-submit"  class="btn btn-success btn-block"><i class="fa-solid fa-key"></i> Asignar Habitación </button>
                                 </div>
+                            </div>                            
+                        </div>
+                        <div class="col-md-5 carouselTamano">
+                            <div class="tamano" >
+                                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+                                    <!-- Indicators -->
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    <ol class="carousel-indicators">
+                                        @foreach ($room->file as $item)
+                                            <li data-target="#myCarousel" data-slide-to="{{$i}}" @if ($i==0)class="active"  @endif></li>
+                                            @php
+                                                $i++;
+                                            @endphp
+                                        @endforeach
+                                    </ol>
+
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    <div class="carousel-inner" role="listbox">
+                                        @foreach ($room->file as $item)                                        
+                                            <div @if ($i==0) class="item active" @else class="item" @endif>
+                                                <img src="{{asset('storage/'.$item->image)}}" alt="Facebook" class="img-responsive">
+                                            </div>                                        
+                                            @php
+                                                $i++;
+                                            @endphp
+                                        @endforeach
+                                    </div>
+                                
+                                
+                                    <!-- Left and right controls -->
+                                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
                             </div>
-                            
                         </div>
 
                     </div>
@@ -228,8 +271,25 @@
 
 
 @stop
+@section('css')
+    <style>
+        .carousel-inner img {
+            width: 100%;
+            /* max-height: 460px; */
+        }
+     
+      
+
+        /* .carousel-inner{
+        height: 200px;
+        } */
+    </style>
+@stop
 
 @section('javascript')
+
+
+
     <script>
         $(document).ready(function() {
             $('#select_amount').change(function(e) {
@@ -341,26 +401,6 @@
                                 </div>
                             </div>`);
             }
-
-
-
-
-            // function getTotal(){
-            //     // alert(1)
-            //     let total = 0;
-            //     $(".select-price").each(function(index) {
-            //         total += parseFloat($(this).val());
-            //     });
-            //     // alert(total)
-            //     $('#total-label').text(total.toFixed(2));
-            //     $('#total-input').val(total.toFixed(2));
-                
-            // }
-
-
-
-           
-
 
 
 

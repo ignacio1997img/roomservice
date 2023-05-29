@@ -33,4 +33,9 @@ class Room extends Model
     {
         return $this->belongsTo(User::class, 'registerUser_id');
     }
+
+    public function file()
+    {
+        return $this->hasMany(RoomsFile::class, 'room_id');
+    }
 }
