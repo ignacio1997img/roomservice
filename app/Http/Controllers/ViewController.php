@@ -46,7 +46,7 @@ class ViewController extends Controller
     }
     public function readAsignar($room)
     {
-         return $room;
+        //  return $room;
         $room = Room::with(['caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         

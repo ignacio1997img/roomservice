@@ -156,8 +156,20 @@
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
                                     <!-- Indicators -->
+                                    @if (count($room->file) == 0)
+                                        <ol class="carousel-indicators">
+                                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                        </ol>
+
+                                        <div class="carousel-inner" role="listbox">                                     
+                                            <div class="item active">
+                                                <img src="{{asset('image/default.jpg')}}" alt="Facebook" class="img-responsive">
+                                            </div> 
+                                        </div>
+                                    @endif
                                     @php
                                         $i = 0;
+                                        // dump();
                                     @endphp
                                     <ol class="carousel-indicators">
                                         @foreach ($room->file as $item)
