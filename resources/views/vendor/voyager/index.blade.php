@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        @if(auth()->user()->hasPermission('graphic'))
+        @if(auth()->user()->hasPermission('graphic') || 1==1)
             @php
                 // $date = date()
                 $saleproduct = App\Models\EgresDeatil::WhereHas('egres', function($query) {
