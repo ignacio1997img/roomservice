@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateServiceRonTable extends Migration
+class UpdateUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class UpdateServiceRonTable extends Migration
      */
     public function up()
     {
-        Schema::table('service_rooms', function (Blueprint $table) {
-            $table->smallInteger('reserve')->nullable();
-            
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('status')->default(1);
+            $table->softDeletes();
         });
     }
 

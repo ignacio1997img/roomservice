@@ -88,6 +88,17 @@
                             }
 
                             @endphp
+
+                            @if ($dataTypeContent->id && auth()->user()->hasRole('admin'))
+                                <div class="form-group" style="display: block">
+                                    <input type="checkbox" name="status" class="form-control"
+                                    data-on="si" data-toggle="toggle" {!! $dataTypeContent->status ? 'checked="checked"' : '' !!}>
+                                </div>
+                            @endif
+                            
+
+
+                            
                             <div class="form-group" style="display: none">
                                 <label for="locale">{{ __('voyager::generic.locale') }}</label>
                                 <select class="form-control select2" id="locale" name="locale">
