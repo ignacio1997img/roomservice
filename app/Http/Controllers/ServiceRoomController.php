@@ -111,6 +111,27 @@ class ServiceRoomController extends Controller
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
+
+    public function hospedajeCancel(Request $request)
+    {
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $room = Room::where('id', $request->room_id)->first();
+            $room->update(['status'=> 1]);
+
+            $service = ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at', null)->first();
+            // return $service;
+            $service->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+
+            DB::commit();       
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje cancelada exitosamente.', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
     
 
     //Para la reserva 

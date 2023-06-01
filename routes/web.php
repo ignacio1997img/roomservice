@@ -85,6 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::get('serviceroom/finish/menu/{id?}', [FoodMenuController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.menu');//para poder obtener los menu o comida del dia para finalizar el ospedaje
     Route::post('serviceroom/hospedaje/close', [ServiceRoomController::class, 'closeFinishRoom'])->name('serviceroom-hospedaje-close');    //Para poder finalizar el hospedaje de la habitracion
 
+    Route::post('serviceroom/hospedaje/cancel', [ServiceRoomController::class, 'hospedajeCancel'])->name('serviceroom-hospedaje.cancel');    //Para poder cancelar el hospedaje de las habitaciones hospedaje
     Route::post('serviceroom/hospedaje/reserva/cancel', [ServiceRoomController::class, 'reservaCancelar'])->name('serviceroom-hospedaje-reserva.cancel');    //Para poder cancelar la reserva de una habitacion en el hotel
     Route::post('serviceroom/hospedaje/reserva/start', [ServiceRoomController::class, 'reservaStart'])->name('serviceroom-hospedaje-reserva.start');    //Para poder cancelar la reserva de una habitacion en el hotel
 

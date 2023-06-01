@@ -93,6 +93,9 @@
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
                                         <i class="fa-solid fa-hourglass-end"></i> 
                                     </a>
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modelFinish_cancelar"  data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Cancelar Hospedaje" class="btn btn-danger">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </a>
                                 @endif
                                 @if ( $service->status == 'reservado')
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_start" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Iniciar Hospedaje" class="btn btn-success">
@@ -367,6 +370,37 @@
             </div>
         </form>
 
+        {{-- Para cancelar el hospedaje cuando esta asignada la habitacion --}}
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-hospedaje.cancel')}}" method="post">
+            @csrf
+            <div class="modal fade" id="modelFinish_cancelar" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-danger">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-solid fa-ban"></i> Cancelar Hospedaje</h4>
+                        </div>
+                        <div class="modal-body">
+                            <small id="label-pieza" style="font-size: 15px"></small>
+                            <input type="text" name="room_id" id="room_id">
+                            <input type="text" name="planta_id" id="planta_id">
+
+                            
+                        </div>
+                        <div class="modal-footer">        
+                            <div class="text-center" style="text-transform:uppercase">
+                                <i class="fa-solid fa-ban" style="color: red; font-size: 5em;"></i>
+                                <br>                                        
+                                <p><b>Desea cancelar la reserva de la siguiente habitacion?</b></p>
+                            </div>
+                            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Sí, cancelar hospedaje">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
 
 
         <form lass="form-submit" id="menu-form" action="{{route('serviceroom-foodmenu.store')}}" method="post">
@@ -626,6 +660,18 @@
                 }                            // alert(data)
                 $('#label-totalDetailFinish1').text(menuTotal);
             });
+        })
+        
+        $('#modelFinish_cancelar').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
         })
 
 
