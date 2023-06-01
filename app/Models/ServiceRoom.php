@@ -19,6 +19,7 @@ class ServiceRoom extends Model
         'amountFinish',
         'observation',
         'status',
+        'reserve',
         'start',
         'finish',
         'registerUser_id',

@@ -25,6 +25,7 @@ class ServiceRoomController extends Controller
     public function store(Request $request)
     {
         // return 1;
+        // return $request;
         DB::beginTransaction();
         $people = People::where('id', $request->people_id)->first();
         try {
@@ -64,6 +65,8 @@ class ServiceRoomController extends Controller
                 'amount'=>$request->price?$request->price:$request->amount,
                 'start' => $request->start,
                 'finish' => $request->finish,
+                'status' => $request->type,
+                'reserve'=> $request->type=='asignado'?0:1,
                 'registerUser_id'=>Auth::user()->id
             ]);
             // return 1;
@@ -89,13 +92,14 @@ class ServiceRoomController extends Controller
         // return $request;
         DB::beginTransaction();
         try {
-            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first(); 
+            // return $service;
             $user = Auth::user()->id;
 
             $room = Room::where('id', $request->room_id)->first();
             $room->update(['status'=> 1]);
 
-            $service->update(['status'=>0, 'amountFinish'=>$request->amountFinish]);
+            $service->update(['status'=>'finalizado', 'amountFinish'=>$request->amountFinish]);
 
             DB::commit();
         
@@ -107,7 +111,45 @@ class ServiceRoomController extends Controller
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
+    
 
+    //Para la reserva 
+    public function reservaCancelar(Request $request)
+    {        // return $request;
+        DB::beginTransaction();
+        try {
+            $room = Room::where('id', $request->room_id)->first();
+            $room->update(['status'=> 1]);
+
+            $service = ServiceRoom::where('room_id', $request->room_id)->where('status', 'reservado')->where('reserve', 1)->where('deleted_at', null)->first();
+            // return $service;
+            $service->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+            DB::commit();       
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Reserva cancelada exitosamente.', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+    
+    public function reservaStart(Request $request)
+    {    
+        // return $request;
+        DB::beginTransaction();
+        try {
+
+            $service = ServiceRoom::where('room_id', $request->room_id)->where('status', 'reservado')->where('reserve', 1)->where('deleted_at', null)->first();
+            // return $service;
+            $service->update(['status'=>'asignado']);
+            DB::commit();       
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hsopedaje iniciadp exitosamente.', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
 
     
 

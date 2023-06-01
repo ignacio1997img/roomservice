@@ -23,6 +23,7 @@ class ViewController extends Controller
     }
     public function index($planta)
     {
+        // return 1;
 
         // $foodDay = EgresMenu::with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
         //             ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id')
@@ -30,7 +31,7 @@ class ViewController extends Controller
         // return $foodDay;
 
 
-        $data = Room::where('categoryFacility_id', $planta)->where('deleted_at', null)->get();
+        $data = Room::where('categoryFacility_id', $planta)->where('deleted_at', null)->orderBy('number', 'ASC')->get();
         // return $data;
         return view('viewRoom.listRoom', compact('data'));
     }
@@ -51,7 +52,7 @@ class ViewController extends Controller
                 ->where('id', $room)->first();
         
         $service =  ServiceRoom::with(['people'])
-            ->where('room_id', $room->id)->where('status', 1)->where('deleted_at',null)->first();  
+            ->where('room_id', $room->id)->whereRaw('status = "asignado" or status = "reservado"')->where('deleted_at',null)->first();  
       
         $egre = DB::table('egres as e')
             ->join('egres_deatils as d', 'd.egre_id', 'e.id')

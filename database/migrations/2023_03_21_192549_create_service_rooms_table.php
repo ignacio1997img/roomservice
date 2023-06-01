@@ -24,9 +24,12 @@ class CreateServiceRoomsTable extends Migration
 
             $table->decimal('amount', 9,2)->nullable();
 
+            $table->smallInteger('reserve')->nullable();
+
+
             $table->text('observation')->nullable();
 
-            $table->smallInteger('status')->default(1);
+            $table->string('status')->nullable();
             $table->datetime('start')->nullable();
             $table->datetime('finish')->nullable();
             $table->timestamps();

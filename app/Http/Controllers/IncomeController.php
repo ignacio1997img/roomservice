@@ -177,7 +177,7 @@ class IncomeController extends Controller
         DB::beginTransaction();
         try {
 
-            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first();  
 
             $user = Auth::user()->id;
             $egre = Egre::create([
@@ -264,7 +264,7 @@ class IncomeController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            return 10101;
+            // return 10101;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
@@ -273,7 +273,7 @@ class IncomeController extends Controller
     public function ajaxFinishPieza($id)
     {
         $service =  ServiceRoom::with(['people'])
-            ->where('room_id', $id)->where('status', 1)->where('deleted_at',null)->first(); 
+            ->where('room_id', $id)->where('status', 'asignado')->where('deleted_at',null)->first(); 
         return Egre::with(['detail'=>function($q){$q->where('deleted_at',null);},'detail.article'])
                 ->where('deleted_at', null)
                 ->where('type', 'product')

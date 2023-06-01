@@ -76,7 +76,19 @@
                                     </span>
                                 </div>
                             </div>
-                        </div>    
+                        </div>   
+                        
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <input type="radio" id="html" name="type" value="asignado" checked>
+                                    <label for="html"><small style="font-size: 15px">Asignar</small></label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="css" name="type" value="reservado">
+                                    <label for="css"><small style="font-size: 15px">Reservar</small></label><br>
+                                </div>
+                            </div>
+                        </div> 
                         <div class="col-md-3">
                             <div class="panel-body">
                                 <div class="form-group">

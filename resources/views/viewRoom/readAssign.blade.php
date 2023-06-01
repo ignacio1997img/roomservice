@@ -55,10 +55,10 @@
                                 <h3 class="panel-title">Estado</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                @if ($room->status == 1)
-                                    <span class="label label-success">Habitacion Libre</span>
-                                @else
+                                @if ($service->status == 'asignado')
                                     <span class="label label-danger">Habitacion Ocuṕada</span>
+                                @else
+                                    <span class="label label-warning">Habitacion Reservada</span>
                                 @endif
                             </div>
                             <hr style="margin:0;">

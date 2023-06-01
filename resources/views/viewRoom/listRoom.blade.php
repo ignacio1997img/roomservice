@@ -10,52 +10,43 @@
                 @forelse ($data as $item)
                     @php
                         $category =  \App\Models\CategoriesRoom::where('id', $item->categoryRoom_id)->first();
-                        $aux =  \App\Models\CategoriesRoomsPart::where('categoryRoom_id', $item->categoryRoom_id)->where('deleted_at',null)->get();
-                        $total =0;
-                        foreach ($aux as $value) {
-                            $total = $total + $value->amount;
-                        }
-                        $prueba =123;
-                    @endphp
-                    <div class="col-md-2" class="grid-block ">
-                        {{-- <div class="col-md-3"></div> --}}
-                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:370px; @if($item->status == 0) box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif">
-                            <br>
-                            @php
-                                if($item->status==0)
-                                {
-                                    $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->where('status', 1)->where('deleted_at',null)->first();  
-                                    $egre = \DB::table('egres as e')
-                                            ->join('egres_deatils as d', 'd.egre_id', 'e.id')
-                                            ->join('articles as a', 'a.id', 'd.article_id')
-                                            ->where('e.serviceRoom_id', $service->id)
-                                            ->where('e.sale', 1)
-                                            ->where('e.deleted_at', null)
-                                            ->where('d.deleted_at', null)
-                                            // ->where('d.sale', 1)
-
-                                            ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price','d.amount')->groupBy('name', 'article_id', 'egre_id', 'price')->get();
-                                    $totalaux = $egre->SUM('amount');
-
-
-                                    $menu = DB::table('egres as e')
-                                            ->join('egres_menus as d', 'd.egre_id', 'e.id')
-                                            ->join('food as f', 'f.id', 'd.food_id')
-                                            ->where('e.serviceRoom_id', $service->id)
-                                            ->where('e.sale', 1)
-                                            ->where('e.deleted_at', null)
-                                            ->where('d.deleted_at', null)
-                                            ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
-                                    $totalMenu = $menu->SUM('amount');
-                                    $totalFinish= $service->amount+$totalaux+$totalMenu;
-                                    // dump($totalFinish);
-
+                        // $aux =  \App\Models\CategoriesRoomsPart::where('categoryRoom_id', $item->categoryRoom_id)->where('deleted_at',null)->get();
+                        // $total =0;
+                        // foreach ($aux as $value) {
+                        //     $total = $total + $value->amount;
+                        // }
+                   
+                        if($item->status==0)
+                        {
+                            $service =  \App\Models\ServiceRoom::where('room_id', $item->id)->whereRaw('(status = "asignado" or status = "reservado")')->where('deleted_at',null)->first();  
+                            // dump($service);
+                            $egre = \DB::table('egres as e')
+                                ->join('egres_deatils as d', 'd.egre_id', 'e.id')
+                                ->join('articles as a', 'a.id', 'd.article_id')
+                                ->where('e.serviceRoom_id', $service->id)
+                                ->where('e.sale', 1)
+                                ->where('e.deleted_at', null)
+                                ->where('d.deleted_at', null)    
+                                ->select('a.name', 'd.article_id', 'd.egre_id',  'd.price','d.amount')->groupBy('name', 'article_id', 'egre_id', 'price')->get();
                                     
+                            $totalaux = $egre->SUM('amount');
 
-                                    // $menu =  \App\Models\EgresMenu::where('serviceRoom_id', $service->id)->where('deleted_at',null)->get()->SUM('amount');
-                                    // dd($menu);
-                                }
-                            @endphp
+                            $menu = DB::table('egres as e')
+                                ->join('egres_menus as d', 'd.egre_id', 'e.id')
+                                ->join('food as f', 'f.id', 'd.food_id')
+                                ->where('e.serviceRoom_id', $service->id)
+                                ->where('e.sale', 1)
+                                ->where('e.deleted_at', null)
+                                ->where('d.deleted_at', null)
+                                ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
+                            $totalMenu = $menu->SUM('amount');
+                            $totalFinish= $service->amount+$totalaux+$totalMenu;                                  
+                        }
+                    @endphp
+                    <div class="col-md-3" class="grid-block ">
+                        <div class="col-md-12" id="myDiv" style="margin-top: 1em; border-radius: 20px; height:370px; @if($item->status == 0 && $service->status=='asignado') box-shadow: #F44E3E 0px 35px 60px -12px inset;@endif @if($item->status == 0 && $service->status=='reservado') box-shadow: #f3a528 0px 35px 60px -12px inset;@endif">
+                            <br>
+                            
                             
                             <p style="font-size: 20px; color: #ffffff;"><small>Pieza N° {{$item->number}}</small></p>                            
                             @if ($item->status == 1)
@@ -64,6 +55,9 @@
                                         <i class="fa-solid fa-key" style="color:rgb(46, 46, 46)"></i> Asignar</span>
                                     </a>     
                                 @endif
+                                {{-- <a href="{{route('view-planta.room', ['room'=>$item->id])}}" style="border-radius: 5px" class="btn btn-warning" data-toggle="modal">
+                                    <i class="fa-solid fa-bed" style="color:rgb(46, 46, 46)"></i> Reservar </span>
+                                </a>   --}}
                             @else
                                 <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }} <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish)) }}</small>
                             @endif
@@ -80,26 +74,34 @@
                             
                             @if ($item->status == 0)
                                 <br>
-                                @if (auth()->user()->hasPermission('read_assign'))
-                                    <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" style="border-radius: 5px" class="btn btn-dark" data-toggle="modal">
-                                        <i class="fa-solid fa-eye"></i> Ver</span>
+                                @if (auth()->user()->hasPermission('read_assign') )
+                                    <a href="{{route('view-planta-room.read', ['room'=>$item->id])}}" style="border-radius: 8px" class="btn btn-dark" data-toggle="modal" title="Ver Detalle">
+                                        <i class="fa-solid fa-eye"></i>
                                     </a>     
                                 @endif
-                                @if (auth()->user()->hasPermission('add_product'))
+                                @if (auth()->user()->hasPermission('add_product') && $service->status == 'asignado')
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_producto" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Vender producto al almacen" class="btn btn-success">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </a>
                                 @endif
-                                @if (auth()->user()->hasPermission('add_food'))
+                                @if (auth()->user()->hasPermission('add_food') && $service->status == 'asignado')
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_menu" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Comidas del menú" class="btn btn-primary">
                                         <i class="fa-solid fa-bowl-food"></i>
                                     </a>
                                 @endif
-                                {{-- @if (auth()->user()->hasPermission('add_food')) --}}
+                                @if ( $service->status == 'asignado')
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
-                                        <i class="fa-solid fa-hourglass-end"></i>
+                                        <i class="fa-solid fa-hourglass-end"></i> 
                                     </a>
-                                {{-- @endif --}}
+                                @endif
+                                @if ( $service->status == 'reservado')
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_start" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Iniciar Hospedaje" class="btn btn-success">
+                                        <i class="fa-regular fa-circle-play"></i>
+                                    </a>
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_cancelar"  data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Cancelar Reserva" class="btn btn-danger">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </a>
+                                @endif
                             @endif
 
 
@@ -367,18 +369,111 @@
 
 
 
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-foodmenu.store')}}" method="post">
+            @csrf
+            <div class="modal  fade" id="modal_cancelar" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-primary">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-solid fa-bowl-food"></i> Cancelar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <small id="label-pieza" style="font-size: 15px"></small>
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
+                            </div>
+                            <div class="form-group">
+                                <label>Menú</label>
+                                <select class="form-control" id="select_menu"></select>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-primary btn-submit" value="Guardar servicio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+        {{-- Para reserva del Hotel para las habitaciones --}}
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-hospedaje-reserva.cancel')}}" method="post">
+            @csrf
+            <div class="modal fade" id="modalReserva_cancelar" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-danger">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-solid fa-ban"></i> Cancelar Reserva</h4>
+                        </div>
+                        <div class="modal-body">
+                            <small id="label-pieza" style="font-size: 15px"></small>
+                            <input type="text" name="room_id" id="room_id">
+                            <input type="text" name="planta_id" id="planta_id">
+
+                            
+                        </div>
+                        <div class="modal-footer">        
+                            <div class="text-center" style="text-transform:uppercase">
+                                <i class="fa-solid fa-ban" style="color: red; font-size: 5em;"></i>
+                                <br>                                        
+                                <p><b>Desea cancelar la reserva de la siguiente habitacion?</b></p>
+                            </div>
+                            <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Sí, cancelar reserva">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form lass="form-submit" id="irremovability-form" action="{{route('serviceroom-hospedaje-reserva.start')}}" method="post">
+            @csrf
+            <div class="modal modal-success fade" id="modalReserva_start" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-regular fa-circle-play"></i> Iniciar hospedaje</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <small id="label-pieza" style="font-size: 15px"></small>
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
+                            </div>
+                        </div>
+                        <div class="modal-footer">        
+                            <div class="text-center" style="text-transform:uppercase">
+                                <i class="fa-regular fa-circle-play" style="color: #1abc9c; font-size: 5em;"></i>
+                                <br>                                        
+                                <p><b>Iniciar el Hospedaje?</b></p>
+                            </div>
+                            <input type="submit" class="btn btn-success pull-right delete-confirm" value="Sí, iniciar hospedaje">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
 
     </div>
 @stop
 @section('css')
 <style>
     div#myDiv{
-        /* width:200px;
-        height:200px; */
         background-image: url('https://us.123rf.com/450wm/photo5963/photo59631709/photo5963170900061/85635272-fondo-habitaci%C3%B3n-vac%C3%ADa.jpg');
-        /* background-color: rgba(145, 12, 12, 0.4) !important; */
-        /* box-shadow: 5px 5px 15px rgb(223, 5, 5); */
-        /* box-shadow: 35px 15px 15px rgb(255, 114, 114) inset; */
 
         background-repeat:no-repeat;
         background-size:cover;
@@ -531,10 +626,32 @@
                 }                            // alert(data)
                 $('#label-totalDetailFinish1').text(menuTotal);
             });
+        })
 
-            // $('#label-totalMenu').text(0);
-            // $('#input-totalMenu').val(0)
-            // $('#select_menu').val("").trigger("change");
+
+        //Para las reserva
+        $('#modalReserva_cancelar').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+        })
+        $('#modalReserva_start').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+
         })
 
 

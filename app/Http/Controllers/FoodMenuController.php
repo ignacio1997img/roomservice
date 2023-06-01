@@ -51,7 +51,7 @@ class FoodMenuController extends Controller
         DB::beginTransaction();
         try {
 
-            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 1)->where('deleted_at',null)->first();  
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first();  
             $user = Auth::user()->id;
 
             $egre = Egre::create([
@@ -94,7 +94,7 @@ class FoodMenuController extends Controller
     public function ajaxFinishPieza($id)
     {
         $service =  ServiceRoom::with(['people'])
-            ->where('room_id', $id)->where('status', 1)->where('deleted_at',null)->first();  
+            ->where('room_id', $id)->where('status', 'asignado')->where('deleted_at',null)->first();  
 
         return Egre::with(['menu'=>function($q){$q->where('deleted_at',null);},'menu.food'])
                 ->where('deleted_at', null)
