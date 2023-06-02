@@ -38,4 +38,9 @@ class Room extends Model
     {
         return $this->hasMany(RoomsFile::class, 'room_id');
     }
+
+    public function part()
+    {
+        return $this->hasMany(CategoriesRoomsPart::class, 'room_id');
+    }
 }

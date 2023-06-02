@@ -58,7 +58,7 @@
     </div>
   
 
-    <form lass="form-submit" id="irremovability-form" action="{{route('room.store')}}" method="POST" enctype="multipart/form-data">
+    <form lass="form-submit" id="irremovability-form" action="{{route('rooms.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
@@ -78,7 +78,7 @@
                         </div>
                         <div class="form-group">
                             <label>Categoría de Habitación</label>
-                            <select name="category" id="category" class="form-control select2" required>
+                            <select name="category_id" id="category_id" class="form-control select2" required>
                                 <option value=""disabled selected>--Seleccione una categoría--</option>
                                 @foreach ($category as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
@@ -98,6 +98,37 @@
                             <label>Imagenes de la Habitación</label>
                             <input type="file" accept="image/jpeg,image/jpg,image/png" multiple name="image[]" class="form-control imageLength">
                         </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <label>Partes de la Habitación</label>
+                            <select class="form-control" id="selected_parts" required></select>
+                        </div>
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table id="dataTable" class="tables table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30px">N&deg;</th>
+                                            <th style="text-align: center">Detalle</th>  
+                                            <th width="15px">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        <tr id="tr-empty">
+                                            <td colspan="3" style="height: 100px">
+                                                <h4 class="text-center text-muted" style="margin-top: 30px">
+                                                    <i class="fa-solid fa-list" style="font-size: 40px"></i> <br><br>
+                                                    Lista de detalle vacía
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -154,6 +185,109 @@
 
     <script src="{{ asset('vendor/tippy/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/tippy/tippy-bundle.umd.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            var productSelected;
+
+            $('#selected_parts').select2({
+            // tags: true,
+                placeholder: '<i class="fa fa-search"></i> Buscar...',
+                escapeMarkup : function(markup) {
+                    return markup;
+                },
+                language: {
+                    inputTooShort: function (data) {
+                        return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
+                    },
+                    noResults: function () {
+                        return `<i class="far fa-frown"></i> No hay resultados encontrados`;
+                    }
+                },
+                quietMillis: 250,
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{ url('admin/categories-rooms/parthotel/ajax') }}",        
+                    processResults: function (data) {
+                        let results = [];
+                        data.map(data =>{
+                            results.push({
+                                ...data,
+                                disabled: false
+                            });
+                        });
+                        return {
+                            results
+                        };
+                    },
+                    cache: true
+                },
+                templateResult: formatResultWorker,
+                templateSelection: (opt) => {
+                    productSelected = opt;
+
+                    
+                    return opt.name?opt.name:'<i class="fa fa-search"></i> Buscar... ';
+                }
+            }).change(function(){
+                // alert(2)
+                if($('#selected_parts option:selected').val()){
+                    let product = productSelected;
+                    if($('.tables').find(`#tr-item-${product.id}`).val() === undefined){
+                    // alert(product.name);
+
+                        $('#table-body').append(`
+                            <tr class="tr-item" id="tr-item-${product.id}">
+                                <td class="td-item"></td>
+                                <td>
+                                    <b class="label-description" id="description-${product.id}"><small>${product.name}</small>
+                                    <input type="hidden" name="category[]" value="${product.id}" />
+                                </td>
+                                <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
+                            </tr>
+                        `);
+                    }else{
+                        toastr.info('EL detalle ya está agregado', 'Información')
+                    }
+                    setNumber();
+                }
+            });
+            
+
+        })
+
+        function formatResultWorker(option){
+        // Si está cargando mostrar texto de carga
+            if (option.loading) {
+                return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
+            }
+            
+            // Mostrar las opciones encontradas
+            return $(`  <div style="display: flex">
+                            <div>
+                                <b style="font-size: 16px">${option.name}
+                            </div>
+                        </div>`);
+        }
+
+        function setNumber(){
+            var length = 0;
+            $(".td-item").each(function(index) {
+                $(this).text(index +1);
+                length++;
+            });
+
+            if(length > 0){
+                $('#tr-empty').css('display', 'none');
+            }else{
+                $('#tr-empty').fadeIn('fast');
+            }
+        }
+        function removeTr(id){
+            $(`#tr-item-${id}`).remove();
+            $('#selected_parts').val("").trigger("change");
+        }
+        
+    </script>
 
     <script>
         var countPage = 10, order = 'id', typeOrder = 'desc';
@@ -178,7 +312,7 @@
             var loader = '<div class="col-md-12 bg"><div class="loader" id="loader-3"></div></div>'
             $('#div-results').html(loader);
 
-            let url = '{{ url("admin/room/ajax/list") }}';
+            let url = '{{ url("admin/rooms/ajax/list") }}';
             let search = $('#input-search').val() ? $('#input-search').val() : '';
 
             $.ajax({

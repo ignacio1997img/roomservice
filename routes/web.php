@@ -62,15 +62,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::get('categories_rooms', [CategoryRoomController::class, 'index'])->name('voyager.categories-rooms.index');
     Route::get('categories_room/{room?}', [CategoryRoomController::class, 'show'])->name('voyager.categories-rooms.show');
     Route::post('categories_rooms/store', [CategoryRoomController::class, 'store'])->name('categories-rooms.store');
-    Route::post('categories-rooms/read/part/store', [CategoryRoomController::class, 'storePart'])->name('categories-rooms-read-part.store');
+    
     Route::delete('categories-rooms/{room?}/delete', [CategoryRoomController::class, 'destroy'])->name('categories-rooms.delete');
     Route::get('categories-rooms/parthotel/ajax', [CategoryRoomController::class, 'ajaxPartsHotel']);//para poder obtener las partes que conformara el hotel
     Route::get('categories-rooms/ajax/list/{search?}', [CategoryRoomController::class, 'list']);
-    Route::delete('categories-rooms/{part?}/part/delete', [CategoryRoomController::class, 'deletePart'])->name('categories-rooms-part.delete');
 
 
-    Route::resource('room', RoomController::class);
-    Route::get('room/ajax/list/{search?}', [RoomController::class, 'list']);
+    Route::resource('rooms', RoomController::class);
+    Route::get('rooms', [RoomController::class, 'index'])->name('voyager.rooms.index');
+    Route::get('rooms/{id?}', [RoomController::class, 'show'])->name('voyager.rooms.show');
+    Route::delete('rooms/delete/{id?}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+    Route::get('rooms/ajax/list/{search?}', [RoomController::class, 'list']);
+    Route::post('room/read/part/store', [RoomController::class, 'storePart'])->name('room-read-part.store');
+    Route::delete('room/{part?}/part/delete', [RoomController::class, 'deletePart'])->name('room-rooms-part.delete');
+
     
     Route::get('view/planta/{planta?}', [ViewController::class, 'index'])->name('view.planta');//paar ver todas la habitaciones de cada planta
     Route::get('view/planta/room/{room?}', [ViewController::class, 'viewAsignar'])->name('view-planta.room');

@@ -49,16 +49,16 @@ class CategoryRoomController extends Controller
                 'description'=>$request->description,
                 'registerUser_id'=>Auth::user()->id
             ]);
-            if(count($request->category) > 0)
-            {
-                for ($i=0; $i < count($request->category); $i++) { 
-                    CategoriesRoomsPart::create([
-                        'categoryRoom_id'=>$cat->id,
-                        'partHotel_id'=>$request->category[$i],
-                        'registerUser_id'=>Auth::user()->id
-                    ]);
-                }
-            }
+            // if(count($request->category) > 0)
+            // {
+            //     for ($i=0; $i < count($request->category); $i++) { 
+            //         CategoriesRoomsPart::create([
+            //             'categoryRoom_id'=>$cat->id,
+            //             'partHotel_id'=>$request->category[$i],
+            //             'registerUser_id'=>Auth::user()->id
+            //         ]);
+            //     }
+            // }
 
             DB::commit();
             return redirect()->route('voyager.categories-rooms.index')->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
@@ -89,10 +89,7 @@ class CategoryRoomController extends Controller
     public function show($room)
     {
         // return $room;
-        $data = CategoriesRoom::with(['part'=>function($q){
-                    $q->where('deleted_at', null);
-                }])
-                ->where('id', $room)
+        $data = CategoriesRoom::where('id', $room)
                 ->where('deleted_at', null)->first();
         $part = PartsHotel::where('deleted_at', null)->get();
 
@@ -101,47 +98,9 @@ class CategoryRoomController extends Controller
 
     }
 
-    // Para agregar partes a una habitacion
-    public function storePart(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $ok = CategoriesRoomsPart::where('categoryRoom_id',$request->room_id)->where('partHotel_id',$request->part)->where('deleted_at', null)->first();
-            if($ok)
-            {
-                return redirect()->route('voyager.categories-rooms.show', ['room' => $request->room_id])->with(['message' => 'Ya existe en la lista.', 'alert-type' => 'warning']);
-            }
-                CategoriesRoomsPart::create([
-                    'categoryRoom_id'=>$request->room_id,
-                    'partHotel_id'=>$request->part,
-                    'registerUser_id'=>Auth::user()->id,
-                    'observation'=>$request->observation
-                ]);   
-            DB::commit();
-            return redirect()->route('voyager.categories-rooms.show', ['room' => $request->room_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            // return 0;
-            return redirect()->route('voyager.categories-rooms.show', ['room' => $request->room_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
-        }
-    }
+    
 
-    public function deletePart(Request $request, $part)
-    {
-        // return $request;
-        DB::beginTransaction();
-        try {
-            $ok = CategoriesRoomsPart::where('id', $part)->where('deleted_at', null)->first();
-            $ok->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
-
-            DB::commit();
-            return redirect()->route('voyager.categories-rooms.show', ['room' => $request->room_id])->with(['message' => 'Eliminado exitosamente...', 'alert-type' => 'success']);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            // return 0;
-            return redirect()->route('voyager.categories-rooms.show', ['room' => $request->room_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
-        }
-    }
+    
 
 
     public function ajaxPartsHotel()

@@ -15,7 +15,7 @@ class CreateCategoriesRoomsPartsTable extends Migration
     {
         Schema::create('categories_rooms_parts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categoryRoom_id')->nullable()->constrained('categories_rooms');
+            $table->foreignId('room_id')->nullable()->constrained('rooms');
             $table->foreignId('partHotel_id')->nullable()->constrained('parts_hotels');
 
 

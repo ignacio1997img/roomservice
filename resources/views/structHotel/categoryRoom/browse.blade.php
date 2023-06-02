@@ -76,8 +76,8 @@
                             <label>Observaciones</label>
                             <textarea name="description" class="form-control" rows="5"></textarea>
                         </div>
-                        <hr>
-                        <div class="form-group">
+                        {{-- <hr> --}}
+                        {{-- <div class="form-group">
                             <label>Partes de la Habitación</label>
                             <select class="form-control" id="selected_parts" required></select>
                         </div>
@@ -103,7 +103,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -159,10 +159,10 @@
 @section('javascript')
     {{-- <script src="{{ url('js/main.js') }}"></script> --}}
 
-    <script src="{{ asset('vendor/tippy/popper.min.js') }}"></script>
-        <script src="{{ asset('vendor/tippy/tippy-bundle.umd.min.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/tippy/popper.min.js') }}"></script>
+    <script src="{{ asset('vendor/tippy/tippy-bundle.umd.min.js') }}"></script>
     <script>
-        $(document).ready(function(){
+            $(document).ready(function(){
                 var productSelected;
 
                 $('#selected_parts').select2({
@@ -231,29 +231,6 @@
 
             })
 
-            function formatResultCustomers(option){
-            // Si está cargando mostrar texto de carga
-                if (option.loading) {
-                    return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
-                }
-                let image = "{{ asset('image/default.jpg') }}";
-                if(option.image){
-                    image = "{{ asset('storage') }}/"+option.image.replace('.', '-cropped.');
-                    // alert(image)
-                }
-                
-                // Mostrar las opciones encontradas
-                return $(`  <div style="display: flex">
-                                <div style="margin: 0px 10px">
-                                    <img src="${image}" width="50px" />
-                                </div>
-                                <div>
-                                    <small>CI: </small>${option.ci}<br>
-                                    <b style="font-size: 16px">${option.first_name} ${option.last_name}
-                                </div>
-                            </div>`);
-            }
-
             function formatResultWorker(option){
             // Si está cargando mostrar texto de carga
                 if (option.loading) {
@@ -286,7 +263,7 @@
                 $('#selected_parts').val("").trigger("change");
             }
             
-    </script>
+    </script> --}}
     <script>
         var countPage = 10, order = 'id', typeOrder = 'desc';
         $(document).ready(() => {

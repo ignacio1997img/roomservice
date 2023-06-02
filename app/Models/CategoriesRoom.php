@@ -19,8 +19,5 @@ class CategoriesRoom extends Model
         'deletedUser_id'
     ];
 
-    public function part()
-    {
-        return $this->hasMany(CategoriesRoomsPart::class, 'categoryRoom_id');
-    }
+    
 }

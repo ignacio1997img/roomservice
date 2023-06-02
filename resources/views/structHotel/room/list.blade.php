@@ -19,8 +19,18 @@
                     <td>{{ $item->caregoryroom->name }}</td>
                     <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">
+                        {{-- @if (auth()->user()->hasPermission('edit__room'))                           --}}
+                            <a href="{{ route('voyager.rooms.edit', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-primary view">
+                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>
+                            </a>
+                        {{-- @endif
+                        @if (auth()->user()->hasPermission('read__room'))                           --}}
+                            <a href="{{ route('voyager.rooms.show', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
+                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
+                            </a>
+                        {{-- @endif --}}
                         @if (auth()->user()->hasPermission('delete_room'))
-                            <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room.destroy', ['room' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
+                            <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('rooms.destroy', ['id' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                                 <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
                             </button>
                         @endif

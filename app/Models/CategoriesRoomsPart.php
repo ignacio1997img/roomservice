@@ -9,7 +9,7 @@ class CategoriesRoomsPart extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'categoryRoom_id',
+        'room_id',
         'partHotel_id',
         'observation',
         'registerUser_id',
