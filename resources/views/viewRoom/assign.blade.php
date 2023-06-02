@@ -138,7 +138,7 @@
                                             $cont = 0;
                                             $total = 0;
                                         @endphp
-                                        @forelse ($room->caregoryroom->part as $item)
+                                        @forelse ($room->part as $item)
                                             @php
                                                 $cont++;
                                                 $total = $total + $item->amount;

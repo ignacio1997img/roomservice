@@ -39,7 +39,7 @@ class ViewController extends Controller
     public function viewAsignar($room)
     {
         // return $room;
-        $room = Room::with(['file','caregoryroom.part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
+        $room = Room::with(['file','part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         // return $room;
 
