@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Ver Habitacion')
-@if (auth()->user()->hasPermission('read_categories_rooms'))                          
+@if (auth()->user()->hasPermission('read_rooms'))                          
 
 @section('page_header')
     <h1 class="page-title">

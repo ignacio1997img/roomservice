@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('page_title', 'Viendo Habitaciones')
-@if (auth()->user()->hasPermission('browse_room'))
+@if (auth()->user()->hasPermission('browse_rooms'))
 @section('page_header')
     <div class="container-fluid">
         <div class="row">

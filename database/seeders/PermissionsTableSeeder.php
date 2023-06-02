@@ -107,15 +107,17 @@ class PermissionsTableSeeder extends Seeder
         }
 
         $keys = [
-            'browse_room',
-            'add_room',
-            'delete_room'
+            'browse_rooms',
+            'add_rooms',
+            'edit_rooms',
+            'read_rooms',
+            'delete_rooms'
         ];
 
         foreach ($keys as $key) {
             Permission::firstOrCreate([
                 'key'        => $key,
-                'table_name' => 'room',
+                'table_name' => 'rooms',
             ]);
         }
         
