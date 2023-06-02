@@ -162,9 +162,13 @@ class ServiceRoomController extends Controller
 
             $service = ServiceRoom::where('room_id', $request->room_id)->where('status', 'reservado')->where('reserve', 1)->where('deleted_at', null)->first();
             // return $service;
+            $people = People::where('id', $service->people_id)->first();
             $service->update(['status'=>'asignado']);
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
+
+            // return 1;
             DB::commit();       
-            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hsopedaje iniciadp exitosamente.', 'alert-type' => 'success']);
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje iniciado exitosamente.', 'alert-type' => 'success']);
 
         } catch (\Throwable $th) {
             DB::rollBack();

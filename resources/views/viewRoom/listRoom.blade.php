@@ -390,10 +390,10 @@
                             <h4 class="modal-title"><i class="fa-solid fa-ban"></i> Cancelar Hospedaje</h4>
                         </div>
                         <div class="modal-body">
-                            <small id="label-pieza" style="font-size: 15px"></small>
-                            <input type="text" name="room_id" id="room_id">
-                            <input type="text" name="planta_id" id="planta_id">
+                            <input type="hidden" name="room_id" id="room_id">
+                            <input type="hidden" name="planta_id" id="planta_id">
 
+                            <small id="label-pieza" style="font-size: 15px"></small>
                             
                         </div>
                         <div class="modal-footer">        
@@ -460,8 +460,8 @@
                         </div>
                         <div class="modal-body">
                             <small id="label-pieza" style="font-size: 15px"></small>
-                            <input type="text" name="room_id" id="room_id">
-                            <input type="text" name="planta_id" id="planta_id">
+                            <input type="hidden" name="room_id" id="room_id">
+                            <input type="hidden" name="planta_id" id="planta_id">
 
                             
                         </div>

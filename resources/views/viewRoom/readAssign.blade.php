@@ -125,7 +125,7 @@
                                                 $deuda = $deuda + $service->amount;
                                                 
                                             @endphp
-                                            @forelse ($room->caregoryroom->part as $item)
+                                            @forelse ($room->part as $item)
                                                 
                                                 <tr>
                                                     <td>{{ $cont = $cont +1 }}</td>
