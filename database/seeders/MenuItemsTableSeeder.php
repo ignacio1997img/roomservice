@@ -431,8 +431,8 @@ class MenuItemsTableSeeder extends Seeder
                 'parent_id' => 27,
                 'order' => 1,
                 'created_at' => '2023-03-20 16:33:57',
-                'updated_at' => '2023-03-20 16:37:41',
-                'route' => 'room.index',
+                'updated_at' => '2023-06-02 15:12:28',
+                'route' => 'voyager.rooms.index',
                 'parameters' => 'null',
             ),
             26 => 
@@ -545,6 +545,22 @@ class MenuItemsTableSeeder extends Seeder
                 'created_at' => '2023-03-30 12:40:10',
                 'updated_at' => '2023-03-30 12:40:31',
                 'route' => 'report.salefoodserviceroom',
+                'parameters' => NULL,
+            ),
+            33 => 
+            array (
+                'id' => 39,
+                'menu_id' => 1,
+                'title' => 'Rooms',
+                'url' => '',
+                'target' => '_self',
+                'icon_class' => 'fa-solid fa-person-booth',
+                'color' => NULL,
+                'parent_id' => NULL,
+                'order' => 14,
+                'created_at' => '2023-06-02 15:09:34',
+                'updated_at' => '2023-06-02 15:09:34',
+                'route' => 'voyager.rooms.index',
                 'parameters' => NULL,
             ),
         ));

@@ -217,6 +217,24 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-03-28 20:49:56',
                 'updated_at' => '2023-03-28 20:54:58',
             ),
+            11 => 
+            array (
+                'id' => 16,
+                'name' => 'rooms',
+                'slug' => 'rooms',
+                'display_name_singular' => 'Room',
+                'display_name_plural' => 'Rooms',
+                'icon' => 'fa-solid fa-person-booth',
+                'model_name' => 'App\\Models\\Room',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2023-06-02 15:09:34',
+                'updated_at' => '2023-06-02 15:11:58',
+            ),
         ));
         
         
