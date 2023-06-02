@@ -99,7 +99,7 @@ class ServiceRoomController extends Controller
             $room = Room::where('id', $request->room_id)->first();
             $room->update(['status'=> 1]);
 
-            $service->update(['status'=>'finalizado', 'amountFinish'=>$request->amountFinish]);
+            $service->update(['status'=>'finalizado', 'amountFinish'=>$request->amountFinish, 'qr'=>$request->qr]);
 
             DB::commit();
         

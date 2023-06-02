@@ -302,8 +302,8 @@
                                         <tbody id="table-bodyFinish">
                                             <tr id="tr-emptyMenuFinish">
                                                 <td colspan="5" style="height: 30px">
-                                                    <h4 class="text-center text-muted" style="margin-top: 40px">
-                                                        <i class="fa-solid fa-list" style="font-size: 40px"></i> <br>
+                                                    <h4 class="text-center text-muted" style="margin-top: 5px">
+                                                        <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
                                                         Lista de detalle vacía
                                                     </h4>
                                                 </td>
@@ -335,8 +335,8 @@
                                         <tbody id="table-bodyFinish1">
                                             <tr id="tr-emptyMenuFinish1">
                                                 <td colspan="5" style="height: 30px">
-                                                    <h4 class="text-center text-muted" style="margin-top: 40px">
-                                                        <i class="fa-solid fa-list" style="font-size: 40px"></i> <br>
+                                                    <h4 class="text-center text-muted" style="margin-top: 5px">
+                                                        <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
                                                         Lista de detalle vacía
                                                     </h4>
                                                 </td>
@@ -354,13 +354,22 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-12">                            
                             <div class="alert alert-success">
                                 <strong>Pago Total:</strong>
                                 <p id="letra"></p>
                                
                             </div>
+                            <div class="form-group">
+                                <input type="radio" id="html" name="qr" value="0" checked>
+                                <label for="html"><small style="font-size: 15px">Efectivo</small></label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" id="css" name="qr" value="1">
+                                <label for="css"><small style="font-size: 15px">QR</small></label><br>
+                            </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <input type="submit" class="btn btn-danger btn-submit" value="Finalizar">
