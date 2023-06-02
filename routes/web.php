@@ -70,7 +70,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     Route::resource('rooms', RoomController::class);
     Route::get('rooms', [RoomController::class, 'index'])->name('voyager.rooms.index');
-    Route::get('rooms/{id?}', [RoomController::class, 'show'])->name('voyager.rooms.show');
+    Route::get('rooms/edit/{id?}', [RoomController::class, 'show'])->name('voyager.rooms.show');
     Route::delete('rooms/delete/{id?}', [RoomController::class, 'destroy'])->name('rooms.destroy');
     Route::get('rooms/ajax/list/{search?}', [RoomController::class, 'list']);
     Route::post('room/read/part/store', [RoomController::class, 'storePart'])->name('room-read-part.store');
