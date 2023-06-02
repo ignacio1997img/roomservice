@@ -6,7 +6,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="fa-solid fa-person-booth"></i> Categorias de habitaciones
-        <a href="{{ route('room.index') }}" class="btn btn-warning">
+        <a href="{{ route('voyager.rooms.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             Volver a la lista
         </a>

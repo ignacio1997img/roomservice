@@ -547,22 +547,6 @@ class MenuItemsTableSeeder extends Seeder
                 'route' => 'report.salefoodserviceroom',
                 'parameters' => NULL,
             ),
-            33 => 
-            array (
-                'id' => 39,
-                'menu_id' => 1,
-                'title' => 'Rooms',
-                'url' => '',
-                'target' => '_self',
-                'icon_class' => 'fa-solid fa-person-booth',
-                'color' => NULL,
-                'parent_id' => NULL,
-                'order' => 14,
-                'created_at' => '2023-06-02 15:09:34',
-                'updated_at' => '2023-06-02 15:09:34',
-                'route' => 'voyager.rooms.index',
-                'parameters' => NULL,
-            ),
         ));
         
         

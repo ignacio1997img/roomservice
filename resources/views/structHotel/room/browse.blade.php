@@ -14,7 +14,7 @@
                             </h1>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 30px">
-                            @if (auth()->user()->hasPermission('add_room'))                          
+                            @if (auth()->user()->hasPermission('add_rooms'))                          
                                 <a href="#" data-toggle="modal" data-target="#modal_create" class="btn btn-success">
                                     <i class="voyager-plus"></i> <span>Crear</span>
                                 </a>
