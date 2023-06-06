@@ -78,7 +78,7 @@ class ServiceRoomController extends Controller
                     'registerUser_id'=>Auth::user()->id
                 ]);
             }
-            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A Se le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion Bs. '.$request->price);
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion Bs. '.$request->price);
             $ok->update(['status'=>0]);
             
             // return 1;
@@ -172,6 +172,8 @@ class ServiceRoomController extends Controller
             Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
 
             // return 1;
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$service->number.'.%0ACategoria: '.$service->category.'.%0ACosto de la habitacion Bs. '.$service->amount);
+
             DB::commit();       
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje iniciado exitosamente.', 'alert-type' => 'success']);
 
