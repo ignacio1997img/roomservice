@@ -32,6 +32,7 @@ class ServiceRoomController extends Controller
             // return $people;
             Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
             
+            
             // return $request;
 
             $ok = Room::where('id', $request->room_id)->where('deleted_at', null)->first();
@@ -62,7 +63,7 @@ class ServiceRoomController extends Controller
                 'number' => $ok->number,
                 'category'=>$category->name,    
                 'facility'=>$facility->name,
-                'amount'=>$request->price?$request->price:$request->amount,
+                'amount'=>$request->price,
                 'start' => $request->start,
                 'finish' => $request->finish,
                 'status' => $request->type,
@@ -77,7 +78,11 @@ class ServiceRoomController extends Controller
                     'registerUser_id'=>Auth::user()->id
                 ]);
             }
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A Se le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion Bs. '.$request->price);
             $ok->update(['status'=>0]);
+            
+            // return 1;
+
             DB::commit();
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
