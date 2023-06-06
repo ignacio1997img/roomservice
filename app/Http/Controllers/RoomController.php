@@ -125,11 +125,11 @@ class RoomController extends Controller
         // return $request;
         DB::beginTransaction();
         try {
-            $ok = CategoriesRoomsPart::where('room_id',$request->room_id)->where('partHotel_id',$request->part)->where('deleted_at', null)->first();
-            if($ok)
-            {
-                return redirect()->route('voyager.rooms.show', ['id' => $request->room_id])->with(['message' => 'Ya existe en la lista.', 'alert-type' => 'warning']);
-            }
+            // $ok = CategoriesRoomsPart::where('room_id',$request->room_id)->where('partHotel_id',$request->part)->where('deleted_at', null)->first();
+            // if($ok)
+            // {
+            //     return redirect()->route('voyager.rooms.show', ['id' => $request->room_id])->with(['message' => 'Ya existe en la lista.', 'alert-type' => 'warning']);
+            // }
                 CategoriesRoomsPart::create([
                     'room_id'=>$request->room_id,
                     'partHotel_id'=>$request->part,

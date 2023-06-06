@@ -102,7 +102,7 @@
                         <hr>
                         <div class="form-group">
                             <label>Partes de la Habitación</label>
-                            <select class="form-control" id="selected_parts" required></select>
+                            <select class="form-control" id="selected_parts"></select>
                         </div>
                         <div class="form-group">
                             <div class="table-responsive">
@@ -226,13 +226,13 @@
                     productSelected = opt;
 
                     
-                    return opt.name?opt.name:'<i class="fa fa-search"></i> Buscar... ';
+                    return '<i class="fa fa-search"></i> Buscar... ';
                 }
             }).change(function(){
                 // alert(2)
                 if($('#selected_parts option:selected').val()){
                     let product = productSelected;
-                    if($('.tables').find(`#tr-item-${product.id}`).val() === undefined){
+                    // if($('.tables').find(`#tr-item-${product.id}`).val() === undefined){
                     // alert(product.name);
 
                         $('#table-body').append(`
@@ -245,10 +245,11 @@
                                 <td class="text-right"><button type="button" onclick="removeTr(${product.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
                             </tr>
                         `);
-                    }else{
-                        toastr.info('EL detalle ya está agregado', 'Información')
-                    }
+                    // }else{
+                    //     toastr.info('EL detalle ya está agregado', 'Información')
+                    // }
                     setNumber();
+                    $('#selected_parts').val("").trigger("change");
                 }
             });
             

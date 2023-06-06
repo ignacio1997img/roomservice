@@ -120,7 +120,7 @@
     </div>
 
 
-    <form lass="form-submit" id="irremovability-form" action="{{route('room-read-part.store')}}" method="post">
+    <form lass="form-submit" id="part-form" action="{{route('room-read-part.store')}}" method="post">
         @csrf
         <div class="modal modal-success fade" id="modal_create" role="dialog">
             <div class="modal-dialog">
