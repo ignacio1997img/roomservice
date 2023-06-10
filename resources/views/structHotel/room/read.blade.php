@@ -82,7 +82,7 @@
                                         <th>N&deg;</th>
                                         <th>Nombre</th>
                                         <th>Descripción</th>
-                                        <th style="width: 150px">Precio</th>
+                                        {{-- <th style="width: 150px">Precio</th> --}}
                                         <th class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
@@ -98,7 +98,7 @@
                                             <td>{{ $cont }}</td>
                                             <td>{{ $item->name->name }}</td>
                                             <td>{{ $item->observation }}</td>
-                                            <td style="text-align: right"> <small>Bs.</small> {{$item->amount}}</td>
+                                            {{-- <td style="text-align: right"> <small>Bs.</small> {{$item->amount}}</td> --}}
                                             <td class="no-sort no-click bread-actions text-right">
                                                 <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('{{ route('room-rooms-part.delete', ['part' => $item->id]) }}')" data-toggle="modal" data-target="#delete-modal">
                                                     <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
