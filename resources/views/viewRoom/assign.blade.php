@@ -89,12 +89,13 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label><small>Monto</small></label>
                                     <select name="amount" class="form-control" id="select_amount" required>
-                                        <option value="{{$room->amount}}" selected>1 día Bs.{{$room->amount}}</option>
+                                        <option value="{{$room->amount}}" selected>Ventilador: 1 día Bs.{{$room->amount}} </option>
+                                        <option value="{{$room->amount1?$room->amount1:0}}" selected>Aire Acondiconado: 1 día Bs.{{$room->amount1?$room->amount1:0}}</option>
                                         <option value="personalizado">Monto Personalizado</option>
                                     </select>
                                 </div>
