@@ -4,7 +4,8 @@
             <thead>
                 <tr>
                     <th style="width: 100px">N° de Habitacion</th>                    
-                    <th style="width: 100px; text-align: center">Precio</th>                    
+                    <th style="width: 100px; text-align: center">Precio Con Ventilador</th>                    
+                    <th style="width: 100px; text-align: center">Precio Con Aire Acondicionado</th>                    
                     <th style="text-align: center">Categorria</th>
                     <th style="text-align: center">Planta</th>
                     {{-- <th>Estado</th> --}}
@@ -16,6 +17,7 @@
                 <tr>                    
                     <td><small>Pieza N° </small>{{ $item->number }}</td>
                     <td style="text-align: right"><small>Bs. {{ $item->amount }}</small></td>
+                    <td style="text-align: right"><small>Bs. {{ $item->amount1?$item->amount1:'SN' }}</small></td>
                     <td>{{ $item->caregoryroom->name }}</td>
                     <td>{{ $item->categoryfacility->name }}</td>
                     <td class="no-sort no-click bread-actions text-right">

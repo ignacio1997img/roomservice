@@ -1616,7 +1616,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 0,
                 'delete' => 0,
-                'details' => '{"validation":{"rule":"required|max:191|unique:people"},"display":{"width":4}}',
+                'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
                 'order' => 4,
             ),
             100 => 
@@ -1625,14 +1625,14 @@ class DataRowsTableSeeder extends Seeder
                 'data_type_id' => 16,
                 'field' => 'amount',
                 'type' => 'number',
-                'display_name' => 'Monto',
+                'display_name' => 'Precio Con Ventilador',
                 'required' => 0,
                 'browse' => 0,
                 'read' => 0,
                 'edit' => 1,
                 'add' => 0,
                 'delete' => 0,
-                'details' => '{"validation":{"rule":"required|max:191|unique:people"},"display":{"width":4}}',
+                'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
                 'order' => 5,
             ),
             101 => 
@@ -1649,7 +1649,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{"on":"Activo","off":"Inactivo","checked":true}',
-                'order' => 6,
+                'order' => 7,
             ),
             102 => 
             array (
@@ -1665,7 +1665,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 7,
+                'order' => 8,
             ),
             103 => 
             array (
@@ -1681,7 +1681,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 8,
+                'order' => 9,
             ),
             104 => 
             array (
@@ -1697,7 +1697,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 9,
+                'order' => 10,
             ),
             105 => 
             array (
@@ -1713,7 +1713,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 10,
+                'order' => 11,
             ),
             106 => 
             array (
@@ -1729,7 +1729,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 11,
+                'order' => 12,
             ),
             107 => 
             array (
@@ -1744,8 +1744,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 0,
-                'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\CategoriesFacility","table":"categories_facilities","type":"belongsTo","column":"id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
-                'order' => 13,
+                'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\CategoriesFacility","table":"categories_facilities","type":"belongsTo","column":"categoryFacility_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
+                'order' => 14,
             ),
             108 => 
             array (
@@ -1761,7 +1761,23 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 0,
                 'details' => '{"display":{"width":4},"model":"App\\\\Models\\\\CategoriesRoom","table":"categories_rooms","type":"belongsTo","column":"categoryRoom_id","key":"id","label":"name","pivot_table":"articles","pivot":"0","taggable":"0"}',
-                'order' => 12,
+                'order' => 13,
+            ),
+            109 => 
+            array (
+                'id' => 127,
+                'data_type_id' => 16,
+                'field' => 'amount1',
+                'type' => 'number',
+                'display_name' => 'Precio Con Aire Acondicionado',
+                'required' => 0,
+                'browse' => 0,
+                'read' => 0,
+                'edit' => 1,
+                'add' => 0,
+                'delete' => 0,
+                'details' => '{"validation":{"rule":"required|max:191|unique:people"},"display":{"width":4}}',
+                'order' => 6,
             ),
         ));
         

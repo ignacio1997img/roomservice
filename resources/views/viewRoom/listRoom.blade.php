@@ -2,19 +2,12 @@
 
 @section('content')
     <div class="page-content">
-        {{-- @include('voyager::alerts')
-        @include('voyager::dimmers') --}}
         
         <div class="analytics-container">
             <div class="row" style="text-align: center ">
                 @forelse ($data as $item)
                     @php
                         $category =  \App\Models\CategoriesRoom::where('id', $item->categoryRoom_id)->first();
-                        // $aux =  \App\Models\CategoriesRoomsPart::where('categoryRoom_id', $item->categoryRoom_id)->where('deleted_at',null)->get();
-                        // $total =0;
-                        // foreach ($aux as $value) {
-                        //     $total = $total + $value->amount;
-                        // }
                    
                         if($item->status==0)
                         {
@@ -64,7 +57,7 @@
                             
                             @if ($item->status==1)
                                 <br>
-                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}}</small>
+                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}} <br> Bs. {{$item->amount1??0}}</small>
                             @else  
                                 <br>
                                 <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$service?$totalFinish:0}}</small>                                

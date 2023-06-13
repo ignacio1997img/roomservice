@@ -73,8 +73,12 @@
                             <input type="number" min="1" step="1"  style="text-align: right" name="number" class="form-control" autocomplete="off" required>                                                  
                         </div>
                         <div class="form-group">
-                            <label>Precio</label>
+                            <label>Precio Con Ventilador</label>
                             <input type="number" name="price" min="1" step="1"  style="text-align: right" class="form-control text" required>                          
+                        </div>
+                        <div class="form-group">
+                            <label>Precio Con Aire Acondicionado</label>
+                            <input type="number" name="price1" min="1" step="1"  style="text-align: right" class="form-control text" required>                          
                         </div>
                         <div class="form-group">
                             <label>Categoría de Habitación</label>
