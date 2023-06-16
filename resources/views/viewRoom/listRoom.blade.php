@@ -52,7 +52,9 @@
                                     <i class="fa-solid fa-bed" style="color:rgb(46, 46, 46)"></i> Reservar </span>
                                 </a>   --}}
                             @else
-                                <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }} <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish)) }}</small>
+                                <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }}
+                                 {{-- <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish))}} --}}
+                                </small>
                             @endif
                             
                             @if ($item->status==1)

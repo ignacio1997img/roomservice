@@ -50,9 +50,11 @@ class ViewController extends Controller
         //  return $room;
         $room = Room::with(['part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
+        // return $room;
         
         $service =  ServiceRoom::with(['people'])
-            ->where('room_id', $room->id)->whereRaw('status = "asignado" or status = "reservado"')->where('deleted_at',null)->first();  
+            ->where('room_id', $room->id)->whereRaw('(status = "asignado" or status = "reservado")')->where('deleted_at', null)->first(); 
+        // return $service; 
       
         $egre = DB::table('egres as e')
             ->join('egres_deatils as d', 'd.egre_id', 'e.id')

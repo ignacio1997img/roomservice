@@ -24,16 +24,9 @@ class ServiceRoomController extends Controller
     
     public function store(Request $request)
     {
-        // return 1;
-        // return $request;
         DB::beginTransaction();
         $people = People::where('id', $request->people_id)->first();
-        try {
-            // return $people;
-            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
-            
-            
-            // return $request;
+        try {      
 
             $ok = Room::where('id', $request->room_id)->where('deleted_at', null)->first();
             // return $ok;
@@ -42,20 +35,17 @@ class ServiceRoomController extends Controller
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'La habitación se encuentra asignada.', 'alert-type' => 'warning']);
             }
 
-            if($request->amount<=0 && $request->amount != 'personalizado')
+            if($request->amount == 'aire')
             {
-                return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Error al registrar...', 'alert-type' => 'warning']);
+                $aux = $ok->amount1;
             }
-            if($request->price<=0 && $request->amount == 'personalizado')
+            else
             {
-                return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Error al registrar...', 'alert-type' => 'warning']);
+                $aux = $ok->amount;
             }
-// return 1;
-            $category = CategoriesRoom::where('id', $ok->categoryRoom_id)->first();
-            // return $category;
-            $facility = CategoriesFacility::where('id', $ok->categoryFacility_id)->first();
-            // return $facility;
 
+            $category = CategoriesRoom::where('id', $ok->categoryRoom_id)->first();
+            $facility = CategoriesFacility::where('id', $ok->categoryFacility_id)->first();
 
             $ser = ServiceRoom::create([
                 'people_id'=>$request->people_id,
@@ -63,9 +53,14 @@ class ServiceRoomController extends Controller
                 'number' => $ok->number,
                 'category'=>$category->name,    
                 'facility'=>$facility->name,
-                'amount'=>$request->price,
+
+                'typeAmount'=> $request->amount,
+                'typePrice'=> $aux,
+                
+                'amount'=>$aux,
+
                 'start' => $request->start,
-                'finish' => $request->finish,
+                // 'finish' => $request->finish,
                 'status' => $request->type,
                 'reserve'=> $request->type=='asignado'?0:1,
                 'registerUser_id'=>Auth::user()->id
@@ -78,6 +73,11 @@ class ServiceRoomController extends Controller
                     'registerUser_id'=>Auth::user()->id
                 ]);
             }
+
+            if($request->type=='asignado')
+            {
+                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
+            }
             Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion Bs. '.$request->price);
             $ok->update(['status'=>0]);
             
@@ -87,7 +87,7 @@ class ServiceRoomController extends Controller
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            // return 0;
+            return 0;
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }

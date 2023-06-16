@@ -78,7 +78,7 @@
                             </div>
                         </div>   
                         
-                        <div class="col-md-12">
+                        {{-- <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <input type="radio" id="html" name="type" value="asignado" checked>
@@ -88,28 +88,45 @@
                                     <label for="css"><small style="font-size: 15px">Reservar</small></label><br>
                                 </div>
                             </div>
-                        </div> 
+                        </div>  --}}
+
+                        <div class="col-md-3">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label><small>Tipo</small></label>
+                                    <select name="type" class="form-control select2" id="type" required>
+                                        <option value="" selected disabled>--Seleccione una opcción--</option>
+                                        <option value="asignado">Asignar habitación</option>
+                                        <option value="reservado">Reservar habitación</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         <div class="col-md-4">
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label><small>Monto</small></label>
-                                    <select name="amount" class="form-control" id="select_amount" required>
-                                        <option value="{{$room->amount}}" selected>Ventilador: 1 día Bs.{{$room->amount}} </option>
-                                        <option value="{{$room->amount1?$room->amount1:0}}" selected>Aire Acondiconado: 1 día Bs.{{$room->amount1?$room->amount1:0}}</option>
-                                        <option value="personalizado">Monto Personalizado</option>
+                                    <select name="amount" class="form-control select2" id="select_amount" required>
+                                        <option value="" selected disabled>--Seleccione una opcción--</option>
+                                        <option value="ventilador">Ventilador: 1 día Bs.{{$room->amount}} </option>
+                                        <option value="aire">Aire Acondiconado: 1 día Bs.{{$room->amount1?$room->amount1:0}}</option>
+                                        {{-- <option value="personalizado">Monto Personalizado</option> --}}
                                     </select>
                                 </div>
                             </div>
                         </div>       
                         
-                        <div class="col-md-2" id="div_price" style="display:none">
+                        {{-- <div class="col-md-2" id="div_price" style="display:none">
                             <div class="panel-body">                            
                                 <div class="form-group">
                                     <label><small>Precio</small></label>
                                     <input type="number" id="input" name="price" min="1" step="1" value="{{$room->amount}}" style="text-align: right" class="form-control text">
                                 </div>
                             </div>
-                        </div>  
+                        </div>   --}}
                                   
                         <div class="col-md-3">
                             <div class="panel-body">
@@ -117,12 +134,12 @@
                                 <input type="datetime-local" name="start" value="{{date('Y-m-d h:i') }}" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <div class="panel-body">
                                 <label><small>Fecha Fin</small></label>
                                 <input type="datetime-local" id="finish" name="finish" value="{{date('Y-m-d h:i',strtotime(date('Y-m-d h:i')."+ 1 days"))}}" class="form-control" required>
                             </div>
-                        </div>
+                        </div> --}}
                        
                         <div class="col-md-7">
                             <div class="panel-body">

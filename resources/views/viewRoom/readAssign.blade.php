@@ -90,7 +90,7 @@
                             </div>
                             <hr style="margin:0;">
                         </div>       
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <div class="panel-heading" style="border-bottom:0;">
                                 <h3 class="panel-title">Fecha Fin</h3>
                             </div>
@@ -98,7 +98,7 @@
                                 <p>{{$service->finish? date('d-m-Y h:i', strtotime($service->finish)):'' }}</p>
                             </div>
                             <hr style="margin:0;">
-                        </div>        
+                        </div>         --}}
                   
                         
                        @php

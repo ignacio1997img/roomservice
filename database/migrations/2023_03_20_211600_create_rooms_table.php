@@ -18,8 +18,8 @@ class CreateRoomsTable extends Migration
             $table->foreignId('categoryFacility_id')->nullable()->constrained('categories_facilities');
             $table->foreignId('categoryRoom_id')->nullable()->constrained('categories_rooms');
             $table->integer('number')->nullable();
-            $table->decimal('amount', 9,2)->nullable();
-            $table->decimal('amount1', 9,2)->nullable();
+            $table->decimal('amount', 9,2)->nullable(); //ventilador
+            $table->decimal('amount1', 9,2)->nullable(); //aire
 
 
 
