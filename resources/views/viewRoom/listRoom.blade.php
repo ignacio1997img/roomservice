@@ -59,7 +59,7 @@
                             
                             @if ($item->status==1)
                                 <br>
-                                <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$item->amount??0}} <br> Bs. {{$item->amount1??0}}</small>
+                                <small style="font-size: 18px; color: rgb(0, 0, 0)"><i class="fa-solid fa-fan"></i> Bs. {{$item->amount??0}} <br><i class="fa-solid fa-wind"></i> Bs. {{$item->amount1??0}}</small>
                             @else  
                                 <br>
                                 <small style="font-size: 18px; color: rgb(0, 0, 0)">Bs. {{$service?$totalFinish:0}}</small>                                
@@ -93,7 +93,7 @@
                                     </a>
                                 @endif
                                 @if ( $service->status == 'reservado')
-                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_start" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Iniciar Hospedaje" class="btn btn-success">
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_start" data-start="{{$service->start}}" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Iniciar Hospedaje" class="btn btn-success">
                                         <i class="fa-regular fa-circle-play"></i>
                                     </a>
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modalReserva_cancelar"  data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Cancelar Reserva" class="btn btn-danger">
@@ -484,18 +484,27 @@
                             <h4 class="modal-title"><i class="fa-regular fa-circle-play"></i> Iniciar hospedaje</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <small id="label-pieza" style="font-size: 15px"></small>
+                            <div class="col-md-12">
+                                <div class="panel-body">
+                                    <small id="label-pieza" style="font-size: 15px"></small>
                                 <input type="hidden" name="room_id" id="room_id">
                                 <input type="hidden" name="planta_id" id="planta_id">
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">        
                             <div class="text-center" style="text-transform:uppercase">
                                 <i class="fa-regular fa-circle-play" style="color: #1abc9c; font-size: 5em;"></i>
                                 <br>                                        
                                 <p><b>Iniciar el Hospedaje?</b></p>
                             </div>
+                            <div class="col-md-12">
+                                <div class="panel-body">
+                                    <label><small>Fecha Inicio de Hospedaje</small></label>
+                                    <input type="datetime-local" name="start" id="start"  class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">        
+                            
                             <input type="submit" class="btn btn-success pull-right delete-confirm" value="Sí, iniciar hospedaje">
                             <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
                         </div>
@@ -697,9 +706,11 @@
             var id = button.data('id');
             var pieza = button.data('pieza');
             var planta = button.data('planta');
+            var start = button.data('start');
             var modal = $(this);
             modal.find('.modal-body #room_id').val(id);
             modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #start').val(start);
             modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
 
         })

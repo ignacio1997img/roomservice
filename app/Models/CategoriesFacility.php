@@ -14,6 +14,9 @@ class CategoriesFacility extends Model
     protected $fillable = [
         'name',
         'description',
-        'deleted_at'
+        'deleted_at',
+        'wifiName',
+        'wifiPassword'
+
     ];
 }

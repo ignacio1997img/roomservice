@@ -960,7 +960,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 0,
-                'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
+                'details' => '{"validation":{"rule":"required|max:191|unique:categories_facilities"},"display":{"width":4}}',
                 'order' => 2,
             ),
             59 => 
@@ -977,7 +977,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 0,
                 'details' => '{"display":{"width":12}}',
-                'order' => 3,
+                'order' => 5,
             ),
             60 => 
             array (
@@ -993,7 +993,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 4,
+                'order' => 6,
             ),
             61 => 
             array (
@@ -1009,7 +1009,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 5,
+                'order' => 7,
             ),
             62 => 
             array (
@@ -1025,7 +1025,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 6,
+                'order' => 8,
             ),
             63 => 
             array (
@@ -1778,6 +1778,38 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '{"validation":{"rule":"required|max:191|unique:people"},"display":{"width":4}}',
                 'order' => 6,
+            ),
+            110 => 
+            array (
+                'id' => 128,
+                'data_type_id' => 11,
+                'field' => 'wifiName',
+                'type' => 'text',
+                'display_name' => 'Nombre wifi',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 0,
+                'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
+                'order' => 3,
+            ),
+            111 => 
+            array (
+                'id' => 129,
+                'data_type_id' => 11,
+                'field' => 'wifiPassword',
+                'type' => 'text',
+                'display_name' => 'Contraseña wifi',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 0,
+                'details' => '{"validation":{"rule":"required|max:191"},"display":{"width":4}}',
+                'order' => 4,
             ),
         ));
         

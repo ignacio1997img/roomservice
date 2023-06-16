@@ -76,12 +76,13 @@ class ServiceRoomController extends Controller
 
             if($request->type=='asignado')
             {
-                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
+                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$facility->wifiName.'%0AContraseña: '.$facility->wifiPassword);
+                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion con '.($request->amount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$aux);
+                $ok->update(['status'=>0]);
             }
-            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion Bs. '.$request->price);
-            $ok->update(['status'=>0]);
             
-            // return 1;
+            
+            return 1;
 
             DB::commit();
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
@@ -165,14 +166,19 @@ class ServiceRoomController extends Controller
         DB::beginTransaction();
         try {
 
+            $planta = CategoriesFacility::where('id', $request->planta_id)->first();
             $service = ServiceRoom::where('room_id', $request->room_id)->where('status', 'reservado')->where('reserve', 1)->where('deleted_at', null)->first();
             // return $service;
             $people = People::where('id', $service->people_id)->first();
-            $service->update(['status'=>'asignado']);
-            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A'.setting('admin.Whatsapp'));
+
+            $service->update(['status'=>'asignado', 'start'=>$request->start]);
 
             // return 1;
-            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$service->number.'.%0ACategoria: '.$service->category.'.%0ACosto de la habitacion Bs. '.$service->amount);
+
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$planta->wifiName.'%0AContraseña: '.$planta->wifiPassword);
+            Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$service->number.'.%0ACategoria: '.$service->category.'.%0ACosto de la habitacion con '.($request->typeAmount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$service->amount);
+
+            // return 1;
 
             DB::commit();       
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje iniciado exitosamente.', 'alert-type' => 'success']);

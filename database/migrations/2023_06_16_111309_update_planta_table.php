@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesFacilitiesTable extends Migration
+class UpdatePlantaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateCategoriesFacilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories_facilities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-
+        Schema::table('categories_facilities', function (Blueprint $table) {
             $table->string('wifiName')->nullable();
             $table->string('wifiPassword')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+
         });
     }
 
@@ -32,6 +27,6 @@ class CreateCategoriesFacilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories_facilities');
+        //
     }
 }
