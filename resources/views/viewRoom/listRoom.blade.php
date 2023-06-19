@@ -360,14 +360,14 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="5" style="text-align: right">
                                                 Total <small>Bs.</small>
                                             </td>
                                             <td style="text-align: right">
                                                 <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                     </table>
                                 </div>
                             </div>
@@ -733,7 +733,7 @@
                             <tr class="tr-item">
                                 <td>
                                     <small>${data.number}</small><br>
-                                    <input type="hidden" id="serviceRoom_idf" name="serviceRoom_idf" value="${data.id}">
+                                    <input type="hidden" id="serviceRoom_idf" name="serviceRoom_idf" value="${data.room_id}">
                                 </td>                                
                                 <td style="text-align: right">
                                     <small>${moment(data.start).format('DD-MM-YYYY h:mm:ss a')}</small><br>
@@ -769,7 +769,9 @@
         function subTotal()
         {
             let dateFinishf = $("#finishf").val();
+            // alert(dateFinishf)
             let id_f = $('#serviceRoom_idf').val();
+            // alert(id_f)
             $.get('{{route('serviceroom-finish.rooms')}}/'+id_f+'/'+dateFinishf, function (data) {
                 $('#labelDia').text(data.dia);
                 $('#diaf').val(data.dia);
