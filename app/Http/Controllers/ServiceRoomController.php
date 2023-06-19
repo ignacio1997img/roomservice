@@ -26,6 +26,7 @@ class ServiceRoomController extends Controller
     
     public function store(Request $request)
     {
+        // return $request;
         DB::beginTransaction();
         $people = People::where('id', $request->people_id)->first();
         try {      
@@ -51,6 +52,7 @@ class ServiceRoomController extends Controller
 
             $ser = ServiceRoom::create([
                 'people_id'=>$request->people_id,
+                'recommended_id'=>$request->recommended_id??null,
                 'room_id'=>$request->room_id,
                 'number' => $ok->number,
                 'category'=>$category->name,    
@@ -80,8 +82,9 @@ class ServiceRoomController extends Controller
             {
                 Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$facility->wifiName.'%0AContraseña: '.$facility->wifiPassword);
                 Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion con '.($request->amount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$aux);
-                $ok->update(['status'=>0]);
             }
+            $ok->update(['status'=>0]);
+
             
             
             // return 1;

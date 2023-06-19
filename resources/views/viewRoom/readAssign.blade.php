@@ -90,15 +90,15 @@
                             </div>
                             <hr style="margin:0;">
                         </div>       
-                        {{-- <div class="col-md-3">
+                        <div class="col-md-3">
                             <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Fecha Fin</h3>
+                                <h3 class="panel-title">Recomendado Por</h3>
                             </div>
                             <div class="panel-body" style="padding-top:0;">
-                                <p>{{$service->finish? date('d-m-Y h:i', strtotime($service->finish)):'' }}</p>
+                                <p>{{$service->recommended? $service->people->first_name.' '.$service->people->last_name:'SN' }}</p>
                             </div>
                             <hr style="margin:0;">
-                        </div>         --}}
+                        </div>        
                   
                         
                        @php

@@ -43,4 +43,9 @@ class ServiceRoom extends Model
     {
         return $this->belongsTo(People::class, 'people_id');
     }
+
+    public function recommended()
+    {
+        return $this->belongsTo(People::class, 'recommended_id');
+    }
 }

@@ -48,12 +48,8 @@
                                         <i class="fa-solid fa-key" style="color:rgb(46, 46, 46)"></i> Asignar</span>
                                     </a>     
                                 @endif
-                                {{-- <a href="{{route('view-planta.room', ['room'=>$item->id])}}" style="border-radius: 5px" class="btn btn-warning" data-toggle="modal">
-                                    <i class="fa-solid fa-bed" style="color:rgb(46, 46, 46)"></i> Reservar </span>
-                                </a>   --}}
                             @else
                                 <small style="font-size: 10px; color: red">{{ date('d-m-Y h:i', strtotime($service->start)) }}
-                                 {{-- <br> Hasta <br> {{ date('d-m-Y h:i', strtotime($service->finish))}} --}}
                                 </small>
                             @endif
                             
