@@ -144,7 +144,7 @@
                         <div class="col-md-3">
                             <div class="panel-body">
                                 <label><small>Fecha Inicio</small></label>
-                                <input type="datetime-local" name="start" value="{{date('Y-m-d h:i') }}" class="form-control" required>
+                                <input type="datetime-local" name="start" value="{{date('Y-m-d H:i') }}" class="form-control" required>
                             </div>
                         </div>
                         {{-- <div class="col-md-3">

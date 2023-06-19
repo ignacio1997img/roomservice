@@ -694,7 +694,9 @@
 
             moment.locale('es');
             let now= moment();
-            dateFinish = now.format('YYYY-MM-DD hh:mm');
+            dateFinish = now.format('YYYY-MM-DD HH:mm');
+
+            // alert(dateFinish);
 
             $.get('{{route('serviceroom-finish.rooms')}}/'+id+'/'+dateFinish, function (data) {
                         $('#table-bodyHospedaje').empty();
@@ -708,7 +710,7 @@
                                     <small>${moment(data.start).format('DD-MM-YYYY h:mm:ss a')}</small><br>
                                 </td>
                                 <td style="text-align: right">
-                                    <input type="datetime-local" id="finishf" name="finishf" value="{{date('Y-m-d h:i') }}" onchange="subTotal()" onkeyup="subTotal()" class="form-control" required>
+                                    <input type="datetime-local" id="finishf" name="finishf" value="{{date('Y-m-d H:i') }}" onchange="subTotal()" onkeyup="subTotal()" class="form-control" required>
                                 </td>
                                 <td style="text-align: right">
                                     <small>${data.typePrice}</small><br>
