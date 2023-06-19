@@ -84,13 +84,13 @@ class ServiceRoomController extends Controller
             }
             
             
-            return 1;
+            // return 1;
 
             DB::commit();
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return 0;
+            // return 0;
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }

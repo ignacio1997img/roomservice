@@ -127,7 +127,7 @@
                                 </div>
                             </div>
                         </div>   --}}
-                                  <input type="text">
+                                  {{-- <input type="text"> --}}
                         <div class="col-md-3">
                             <div class="panel-body">
                                 <label><small>Fecha Inicio</small></label>
