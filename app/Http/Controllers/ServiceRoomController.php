@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\IncomesDetail;
 use App\Models\People;
 use Illuminate\Support\Facades\Http;
+use DateTime;
+
 
 class ServiceRoomController extends Controller
 {
@@ -187,6 +189,84 @@ class ServiceRoomController extends Controller
             DB::rollBack();
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
+    }
+
+
+
+    // PARA SACAR LOS DIAS QUE SE DEBE DE LA HABITACION PARA PODER FINALIZAR EL HOSPEDAJE MEDIANTE LA FECHA DE INICIO
+    public function ajaxFinishPieza($id, $dateFinishClose)
+    {
+        $service =  ServiceRoom::where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
+            ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount')
+            ->first();  
+
+        // dump('________________________________________  INICIO  ___________________________________________________');
+
+        //Para calcular el inicio del hospedaje
+        $dateStart = date('Y-m-d', strtotime($service->start));
+        // dump($dateStart);
+        $dateStart = new DateTime($dateStart);
+        $hourStart = date('H', strtotime($service->start));
+        // $hourStart = date('5');
+        // dump($hourStart);
+
+        // dump('_____________________________________________________________________________________________________');
+        $dateFinish = date('Y-m-d', strtotime($dateFinishClose));
+        // $dateFinish = $dateFinish; 
+        // $dateFinish = date('2023-06-16');
+        $dateFinish = new DateTime($dateFinish);
+        $hourFinish = date('H', strtotime($dateFinishClose));
+        // $hourFinish = date('H');
+        // $hourFinish = date('18');
+ 
+        // dump(date('Y-m-d'));
+        // dump($hourFinish);
+        // dump('________________________________________   FIN  ____________________________________________________');
+
+
+        $diasTotal =$dateStart->diff($dateFinish);
+        $diasTotal = $diasTotal->format('%d')+1;
+     
+        // dump('Total Dias '.$diasTotal);
+        $total =0;
+      
+        for($i=1; $i<=$diasTotal; $i++)
+        {
+            // Para el primer dia si el hospedaje llega ante de las 5 de la mañana y e queda asta las 12 pm  es un dia de hospedaje 
+            if($i==1 && $hourStart < 5 && $hourFinish<=12)
+            {
+                $total = $total + 1;                
+            }
+
+            if($i==1 && $hourStart < 5 && $hourFinish > 12)
+            {
+                $total = $total + 2;
+            }
+
+            if($i==1 && $hourStart >= 5)
+            {
+                $total = $total + 1;
+            }
+
+            // Para el segundo dia o mas
+            if($i!=1 && $i < $diasTotal)
+            {
+                $total = $total + 1;
+            }
+
+            // Para el ultimo dia
+            if($i!=1 && $i == $diasTotal && $hourFinish > 12)
+            {
+                $total = $total + 1;
+            }
+
+            // dump($i);
+           
+        }
+        $service->dia = $total;
+        $service->totalPagar = $total*$service->typePrice;
+        
+        return $service;
     }
 
     

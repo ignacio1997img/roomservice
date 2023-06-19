@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\IncomesDetail;
 use Illuminate\Support\Facades\DB;
 use App\Models\ServiceRoom;
+use DateTime;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -23,7 +24,43 @@ class ViewController extends Controller
     }
     public function index($planta)
     {
-        // return 1;
+
+        $service =  ServiceRoom::where('room_id',2)->where('status', 'asignado')->where('deleted_at',null)
+            ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount')
+            ->first();  
+        // $service->dia=;
+
+        // return $service;
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // return $horaInicio;
 
         // $foodDay = EgresMenu::with('food')->where('deleted_at', null)->whereDate('created_at', '=', date('Y-m-d'))
         //             ->selectRaw('COUNT(food_id) as count,SUM(amount) as total, food_id')

@@ -88,6 +88,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::get('food/menu/list/ajax', [FoodMenuController::class, 'ajaxMenuExists']);//para poder obtene el menu del dia
     Route::get('serviceroom/finish/article/{id?}', [IncomeController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.article');//para poder obtener los detalle de venta producto del dia para finalizar el ospedaje
     Route::get('serviceroom/finish/menu/{id?}', [FoodMenuController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.menu');//para poder obtener los menu o comida del dia para finalizar el ospedaje
+    Route::get('serviceroom/finish/room/{id?}/{dateFinish?}', [ServiceRoomController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.rooms');//Para poder calcular la fecha o los dias de hospedaje y el total de deuda de solo la habitacion
     Route::post('serviceroom/hospedaje/close', [ServiceRoomController::class, 'closeFinishRoom'])->name('serviceroom-hospedaje-close');    //Para poder finalizar el hospedaje de la habitracion
 
     Route::post('serviceroom/hospedaje/cancel', [ServiceRoomController::class, 'hospedajeCancel'])->name('serviceroom-hospedaje.cancel');    //Para poder cancelar el hospedaje de las habitaciones hospedaje

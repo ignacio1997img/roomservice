@@ -263,25 +263,6 @@
                             <input type="hidden" name="room_id" id="room_id">
                             <input type="hidden" name="planta_id" id="planta_id">
                             <input type="hidden" name="amountFinish" id="amountFinish">
-
-
-                            <div class="form-group">
-                                <div class="table-responsive">
-                                    <table id="dataTable" class="tables table-bordered table-hover">
-                                        <tr>
-                                            <td colspan="4" style="text-align: right">
-                                                <small>Pagos de la habitacion Bs.</small>
-                                            </td>
-                                            <td style="text-align: right">
-                                                <small><b id="label-roomAmount" class="label-roomAmount">0.00</b></small>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-
-
-
                             <div class="form-group">
                                 <div class="table-responsive">
                                     <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
@@ -343,6 +324,63 @@
                                             </td>
                                             <td style="text-align: right">
                                                 <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            {{-- Para mostrar el detalle de los ospedaje --}}
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px">N&deg; Hab.</th>
+                                                <th style="text-align: center; width: 150px">Fecha de Hospedaje</th>    
+                                                <th style="text-align: center; width: 150px">Fecha Fin Hospedaje</th>  
+                                                <th style="text-align: center; width: 80px">Precio Por Dia</th>    
+
+                                                <th style="text-align: center; width: 80px">Dias Hosp.</th>
+                                                <th style="text-align: center; width: 80px">Sub Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-bodyHospedaje">
+                                            <tr id="tr-emptyHospedaje">
+                                                {{-- <div class="col-md-3">
+                                                    <div class="panel-body">
+                                                        <input type="datetime-local" id="dateFinishClose" name="dateFinishClose" value="{{date('Y-m-d h:i') }}" class="form-control" required>
+                                                    </div>
+                                                </div> --}}
+                                                <td colspan="6" style="height: 30px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 5px">
+                                                        <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
+                                                        Lista de detalle vacía
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tr>
+                                            <td colspan="5" style="text-align: right">
+                                                Total <small>Bs.</small>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables table-bordered table-hover">
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">
+                                                <small>Pagos de la habitacion Bs.</small>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small><b id="label-roomAmount" class="label-roomAmount">0.00</b></small>
                                             </td>
                                         </tr>
                                     </table>
@@ -535,7 +573,9 @@
 @stop
 
 @section('javascript')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
+<script src="{{ url('js/main.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>    
 
 <script>
 
@@ -576,6 +616,8 @@
             $('#select_menu').val("").trigger("change");
         })
 
+
+        // Para finalizar el hospedaje y sacar cuanto ha consumido y su deuda total
         let aux =1;
         $('#modal_finish').on('show.bs.modal', function (event)
         {
@@ -603,7 +645,8 @@
 
       
 
-
+            dateFinish = $('#dateFinishClose').val();
+            // alert(dateFinish)
             $.get('{{route('serviceroom-finish.article')}}/'+id, function (data) {
                 // alert(data);
                 
@@ -673,7 +716,71 @@
                 }                            // alert(data)
                 $('#label-totalDetailFinish1').text(menuTotal);
             });
+
+
+            moment.locale('es');
+            let now= moment();
+            dateFinish = now.format('YYYY-MM-DD hh:mm');
+
+            // dateFinish =1;
+
+            $.get('{{route('serviceroom-finish.rooms')}}/'+id+'/'+dateFinish, function (data) {
+                // alert(data.number);
+                $('#table-bodyHospedaje').empty();
+                
+                        // const element = array[index]xº;
+                        $('#table-bodyHospedaje').append(`   
+                            <tr class="tr-item">
+                                <td>
+                                    <small>${data.number}</small><br>
+                                    <input type="hidden" id="serviceRoom_idf" name="serviceRoom_idf" value="${data.id}">
+                                </td>                                
+                                <td style="text-align: right">
+                                    <small>${moment(data.start).format('DD-MM-YYYY h:mm:ss a')}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <input type="datetime-local" id="finishf" name="finishf" value="{{date('Y-m-d h:i') }}" onchange="subTotal()" onkeyup="subTotal()" class="form-control" required>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data.typePrice}</small><br>
+                                    <input type="hidden" id="pricef" name="pricef" value="${data.typePrice}">
+                                </td>
+                                <td style="text-align: right">
+                                    <small id="labelDia">${data.dia}</small><br>
+                                    <input type="hidden" id="diaf" name="diaf" value="${data.dia}">
+                                </td>
+                                <td style="text-align: right">
+                                    <small id="labelPagar">${data.totalPagar}</small><br>
+                                    <input type="hidden" id="pagarf" name="pagarf" value="${data.totalPagar}">
+                                </td>
+
+                            </tr>
+                        `
+                        );
+
+                                                // alert(data)
+
+                // $('#label-totalDetailFinish1').text(menuTotal);
+             
+            });
+            
+            
         })
+        function subTotal()
+        {
+            let dateFinishf = $("#finishf").val();
+            let id_f = $('#serviceRoom_idf').val();
+            $.get('{{route('serviceroom-finish.rooms')}}/'+id_f+'/'+dateFinishf, function (data) {
+                $('#labelDia').text(data.dia);
+                $('#diaf').val(data.dia);
+
+                $('#labelPagar').text(data.totalPagar);
+                $('#pagarf').val(data.totalPagar);
+             
+            });
+            // alert(id_f);
+                
+        }
         
         $('#modelFinish_cancelar').on('show.bs.modal', function (event)
         {
