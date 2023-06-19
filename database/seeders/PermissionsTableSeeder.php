@@ -62,6 +62,8 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('food');
         Permission::generateFor('food_menus');
 
+        Permission::generateFor('nationalities');
+
 
         $keys = [
             'browse_sales',
