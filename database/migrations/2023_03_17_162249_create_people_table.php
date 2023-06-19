@@ -15,6 +15,8 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('nationality_id')->nullable()->constrained('nationalities');
+            
             $table->string('ci')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

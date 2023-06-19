@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdatePlantaTable extends Migration
+class UpdatePeopleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class UpdatePlantaTable extends Migration
      */
     public function up()
     {
-        Schema::table('categories_facilities', function (Blueprint $table) {
-            $table->string('wifiName')->nullable();
-            $table->string('wifiPassword')->nullable();
-
+        Schema::table('people', function (Blueprint $table) {
+            $table->foreignId('nationality_id')->nullable()->constrained('nationalities');
         });
     }
 

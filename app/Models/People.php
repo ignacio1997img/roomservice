@@ -12,6 +12,7 @@ class People extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
+        'nationality_id',
         'ci',
         'first_name',
         'last_name',
@@ -29,4 +30,9 @@ class People extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+    
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class, 'nationality_id');
+    }
 }

@@ -89,7 +89,7 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
                 'created_at' => '2023-03-17 00:33:00',
-                'updated_at' => '2023-03-21 22:57:04',
+                'updated_at' => '2023-06-19 13:32:53',
             ),
             4 => 
             array (
@@ -234,6 +234,24 @@ class DataTypesTableSeeder extends Seeder
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
                 'created_at' => '2023-06-02 07:09:34',
                 'updated_at' => '2023-06-13 07:26:29',
+            ),
+            12 => 
+            array (
+                'id' => 19,
+                'name' => 'nationalities',
+                'slug' => 'nationalities',
+                'display_name_singular' => 'Nacionalidad',
+                'display_name_plural' => 'Nacionalidades',
+                'icon' => 'fa-solid fa-flag',
+                'model_name' => 'App\\Models\\Nationality',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2023-06-19 13:26:35',
+                'updated_at' => '2023-06-19 13:37:54',
             ),
         ));
         

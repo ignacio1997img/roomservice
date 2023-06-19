@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateServiceRomsTable extends Migration
+class CreateNationalitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class UpdateServiceRomsTable extends Migration
      */
     public function up()
     {
-        Schema::table('service_rooms', function (Blueprint $table) {
-            $table->foreignId('recommended_id')->nullable()->constrained('people');//Para la persona que recomienda
+        Schema::create('nationalities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 
@@ -25,6 +30,6 @@ class UpdateServiceRomsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('nationalities');
     }
 }

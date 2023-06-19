@@ -12,6 +12,7 @@ class ServiceRoom extends Model
     protected $fillable = [
         'room_id',
         'people_id',
+        'recommended_id',
         'number',
         'category',
         'facility',

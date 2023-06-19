@@ -33,7 +33,8 @@
                                 <td>
                                     <small>CI. </small>{{ $item->ci }}
                                         <br>
-                                    {{ strtoupper($item->first_name) }} {{ strtoupper($item->last_name) }}
+                                    {{ strtoupper($item->first_name) }} {{ strtoupper($item->last_name) }} <br>
+                                    <small>Nacionalidad. </small>{{ $item->nationality?$item->nationality->name:'SN' }}
                                 </td>
                             </tr>
                         </table>

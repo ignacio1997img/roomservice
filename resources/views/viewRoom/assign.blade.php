@@ -64,7 +64,7 @@
                             <hr style="margin:0;">
                         </div>                  
                   
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
@@ -77,6 +77,19 @@
                                 </div>
                             </div>
                         </div>   
+                        <div class="col-md-6">
+                            <div class="panel-body">
+                                <label><small>Recomendado Por</small></label>
+                                <div class="input-group">
+                                    <select name="recommended_id" class="form-control" id="select_recommended_id" required></select>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div> 
                         
                         {{-- <div class="col-md-12">
                             <div class="panel-body">
@@ -354,7 +367,8 @@
         }
 
             $(document).ready(function(){
-                var productSelected;
+                var peopleSelected;
+                var recommendedSelected;
                 
                 $('#select_people_id').select2({
                 // tags: true,
@@ -390,10 +404,53 @@
                     },
                     templateResult: formatResultCustomers,
                     templateSelection: (opt) => {
-                        productSelected = opt;
+                        peopleSelected = opt;
 
                         
-                        return opt.first_name?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
+                        return opt.id?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
+                    }
+                }).change(function(){
+                   
+                });
+
+                $('#select_recommended_id').select2({
+                // tags: true,
+                    placeholder: '<i class="fa fa-search"></i> Buscar...',
+                    escapeMarkup : function(markup) {
+                        return markup;
+                    },
+                    language: {
+                        inputTooShort: function (data) {
+                            return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
+                        },
+                        noResults: function () {
+                            return `<i class="far fa-frown"></i> No hay resultados encontrados`;
+                        }
+                    },
+                    quietMillis: 250,
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ url('admin/worker/people/ajax') }}",        
+                        processResults: function (data) {
+                            let results = [];
+                            data.map(data =>{
+                                results.push({
+                                    ...data,
+                                    disabled: false
+                                });
+                            });
+                            return {
+                                results
+                            };
+                        },
+                        cache: true
+                    },
+                    templateResult: formatResultCustomers,
+                    templateSelection: (opt) => {
+                        recommendedSelected = opt;
+
+                        
+                        return opt.id?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
                     }
                 }).change(function(){
                    
