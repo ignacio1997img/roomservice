@@ -85,7 +85,7 @@
                                     </a>
                                 @endif
                                 @if ( $service->status == 'asignado')
-                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-amountfinish="{{$totalFinish}}"  data-room="{{$service->amount}}" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
                                         <i class="fa-solid fa-hourglass-end"></i> 
                                     </a>
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modelFinish_cancelar"  data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Cancelar Hospedaje" class="btn btn-danger">
@@ -291,6 +291,7 @@
                                             </td>
                                             <td style="text-align: right">
                                                 <small><b id="label-totalDetailFinish" class="label-totalDetailFinish">0.00</b></small>
+                                                <input type="hidden" id="subTotalDetalle" name="subTotalDetalle">
                                             </td>
                                         </tr>
                                     </table>
@@ -324,6 +325,7 @@
                                             </td>
                                             <td style="text-align: right">
                                                 <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
+                                                <input type="hidden" id="subTotalMenu" name="subTotalMenu">
                                             </td>
                                         </tr>
                                     </table>
@@ -347,11 +349,6 @@
                                         </thead>
                                         <tbody id="table-bodyHospedaje">
                                             <tr id="tr-emptyHospedaje">
-                                                {{-- <div class="col-md-3">
-                                                    <div class="panel-body">
-                                                        <input type="datetime-local" id="dateFinishClose" name="dateFinishClose" value="{{date('Y-m-d h:i') }}" class="form-control" required>
-                                                    </div>
-                                                </div> --}}
                                                 <td colspan="6" style="height: 30px">
                                                     <h4 class="text-center text-muted" style="margin-top: 5px">
                                                         <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
@@ -360,29 +357,6 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        {{-- <tr>
-                                            <td colspan="5" style="text-align: right">
-                                                Total <small>Bs.</small>
-                                            </td>
-                                            <td style="text-align: right">
-                                                <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
-                                            </td>
-                                        </tr> --}}
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="table-responsive">
-                                    <table id="dataTable" class="tables table-bordered table-hover">
-                                        <tr>
-                                            <td colspan="4" style="text-align: right">
-                                                <small>Pagos de la habitacion Bs.</small>
-                                            </td>
-                                            <td style="text-align: right">
-                                                <small><b id="label-roomAmount" class="label-roomAmount">0.00</b></small>
-                                            </td>
-                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -626,24 +600,26 @@
             var pieza = button.data('pieza');
             var planta = button.data('planta');
 
-            var room = button.data('room');
+            // var room = button.data('room');
 
-            let amountfinish = 0;
-            amountfinish = button.data('amountfinish');
-            amountfinish = parseFloat(amountfinish).toFixed(2);
+            // let amountfinish = 0;
+            // amountfinish = button.data('amountfinish');
+            // amountfinish = parseFloat(amountfinish).toFixed(2);
 
             var modal = $(this);
             modal.find('.modal-body #room_id').val(id);
             modal.find('.modal-body #planta_id').val(planta);
-            modal.find('.modal-body #amountFinish').val(amountfinish);
+            // modal.find('.modal-body #amountFinish').val(amountfinish);
 
-            $('#label-roomAmount').empty();
-            $('#label-roomAmount').text(room);           
+            // $('#label-roomAmount').empty();
+            // $('#label-roomAmount').text(room);           
        
-            $('#letra').empty();
-            $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+amountfinish+'</small>');
+            
 
       
+            // var totalArticle =0;
+            // var totalMenu =0;
+            var TotalHosp =0;
 
             dateFinish = $('#dateFinishClose').val();
             // alert(dateFinish)
@@ -680,10 +656,10 @@
                     }
                 }     
                 $('#label-totalDetailFinish').text(detailTotal);
+                $('#subTotalDetalle').val(detailTotal);
+
             });
             $.get('{{route('serviceroom-finish.menu')}}/'+id, function (data) {
-                // alert(data);
-                
                 menuTotal=0;
                 for (i = 0; i < data.length; i++) {
                     if(i==0)
@@ -691,7 +667,6 @@
                         $('#table-bodyFinish1').empty();
                     }
                     for (x = 0; x < data[i].menu.length; x++) {
-                        // const element = array[index]xº;
                         $('#table-bodyFinish1').append(`   
                             <tr class="tr-item">
                                 <td class="td-itemMenu">${i+1}</td>
@@ -715,6 +690,9 @@
                     }                    
                 }                            // alert(data)
                 $('#label-totalDetailFinish1').text(menuTotal);
+                $('#subTotalMenu').val(menuTotal);
+
+                // totalMenu= menuTotal;   
             });
 
 
@@ -722,13 +700,8 @@
             let now= moment();
             dateFinish = now.format('YYYY-MM-DD hh:mm');
 
-            // dateFinish =1;
-
             $.get('{{route('serviceroom-finish.rooms')}}/'+id+'/'+dateFinish, function (data) {
-                // alert(data.number);
-                $('#table-bodyHospedaje').empty();
-                
-                        // const element = array[index]xº;
+                        $('#table-bodyHospedaje').empty();
                         $('#table-bodyHospedaje').append(`   
                             <tr class="tr-item">
                                 <td>
@@ -757,12 +730,14 @@
                             </tr>
                         `
                         );
+                
+                TotalHosp=data.totalPagar;  
 
-                                                // alert(data)
-
-                // $('#label-totalDetailFinish1').text(menuTotal);
-             
+                $('#letra').empty();
+                $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+(parseFloat(detailTotal+menuTotal+TotalHosp))+'</small>');     
             });
+            // alert(parseFloat(totalArticle+totalMenu+TotalHosp))
+            
             
             
         })
@@ -778,9 +753,16 @@
 
                 $('#labelPagar').text(data.totalPagar);
                 $('#pagarf').val(data.totalPagar);
-             
+                
+                auxArticle = parseFloat($('#subTotalDetalle').val());
+                auxMenu = parseFloat($('#subTotalMenu').val());
+                totaPagar = parseFloat(data.totalPagar);
+                
+
+                $('#letra').empty();
+                $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+(parseFloat(auxArticle+auxMenu+totaPagar))+'</small>');
+
             });
-            // alert(id_f);
                 
         }
         
