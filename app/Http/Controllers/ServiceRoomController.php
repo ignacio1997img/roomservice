@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\IncomesDetail;
 use App\Models\People;
+use App\Models\ServiceTransaction;
 use Illuminate\Support\Facades\Http;
 use DateTime;
 
@@ -100,16 +101,22 @@ class ServiceRoomController extends Controller
 
     public function closeFinishRoom(Request $request)
     {
+        // return $request;
         DB::beginTransaction();
         try {
             $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first(); 
-            $user = Auth::user()->id;
+            $user = Auth::user();
 
             $room = Room::where('id', $request->room_id)->first();
             $room->update(['status'=> 1]);
             // return $service;
+            $pago = $request->subTotalDetalle+$request->subTotalMenu+$request->pagarf;
 
-            $service->update(['status'=>'finalizado', 'amount'=>$request->subTotalDetalle+$request->subTotalMenu+$request->pagarf, 'qr'=>$request->qr]);
+            ServiceTransaction::create(['amount'=>$pago, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+
+
+            $service->update(['status'=>'finalizado', 'amount'=>$pago, 'qr'=>$request->qr]);
+
 
             DB::commit();        
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje Finalizado.', 'alert-type' => 'success']);
