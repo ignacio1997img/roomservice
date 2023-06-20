@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoriesRoomsPart;
+use App\Models\Country;
 use App\Models\Egre;
 use App\Models\EgresDeatil;
 use App\Models\EgresMenu;
@@ -78,9 +79,10 @@ class ViewController extends Controller
         // return $room;
         $room = Room::with(['file','part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
+        $country = Country::where('deleted_at', null)->get();
         // return $room;
 
-        return view('viewRoom.assign', compact('room'));
+        return view('viewRoom.assign', compact('room', 'country'));
     }
     public function readAsignar($room)
     {

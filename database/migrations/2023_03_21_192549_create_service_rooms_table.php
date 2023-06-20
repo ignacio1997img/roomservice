@@ -39,6 +39,17 @@ class CreateServiceRoomsTable extends Migration
             $table->string('status')->nullable();
             $table->datetime('start')->nullable();
             $table->datetime('finish')->nullable();
+
+
+            // Para poder ver su procedencia
+            $table->smallInteger('foreign')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('department_id')->nullable()->constrained('departments');
+            $table->foreignId('province_id')->nullable()->constrained('provinces');
+            $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->text('origin')->nullable();
+
+
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');
             $table->softDeletes();

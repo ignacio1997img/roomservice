@@ -76,7 +76,27 @@ class ServiceRoomController extends Controller
                 'status' => $request->type,
                 'reserve'=> $request->type=='asignado'?0:1,
                 'registerUser_id'=>Auth::user()->id
+
             ]);
+
+            if($request->country_id==1)
+            {
+                $ser->update([
+                    'foreign'=>0,
+                    'country_id'=>$request->country_id,
+                    'department_id'=>$request->state_id??null,
+                    'province_id'=>$request->province_id??null,
+                    'city_id'=>$request->city_id??null
+                ]);
+            }
+            else
+            {
+                $ser->update([
+                    'foreign'=>1,
+                    'country_id'=>$request->country_id,
+                    'origin'=>$request->origin
+                ]);
+            }
             // return 1;
             for ($i=0; $i < count($request->part); $i++) { 
                 ServiceRoomsDetail::create([
@@ -108,7 +128,6 @@ class ServiceRoomController extends Controller
 
     public function closeFinishRoom(Request $request)
     {
-        // return $request;
         DB::beginTransaction();
         try {
             $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first(); 

@@ -28,8 +28,17 @@ class ServiceRoom extends Model
         'finish',
         'registerUser_id',
         'deleted_at',
-        'deletedUser_id'
+        'deletedUser_id',
+        
+        'foreign',
+        'country_id',
+        'department_id',
+        'province_id',
+        'city_id',
+        'origin'
     ];
+
+
 
     public function room()
     {
