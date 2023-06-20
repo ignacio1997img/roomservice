@@ -47,7 +47,8 @@ class WorkerController extends Controller
     public function ajaxPeople()
     {
         $q = request('q');
-        $data = People::whereRaw($q ? '(ci like "%'.$q.'%" or first_name like "%'.$q.'%" or last_name like "%'.$q.'%" )' : 1)
+        $data = People::with(['nationality'])
+            ->whereRaw($q ? '(ci like "%'.$q.'%" or first_name like "%'.$q.'%" or last_name like "%'.$q.'%" )' : 1)
         ->where('deleted_at', null)->get();
 
         return response()->json($data);

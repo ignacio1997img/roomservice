@@ -349,6 +349,18 @@
                             <label for="full_name">Nombre completo</label>
                             <input type="text" name="full_name" class="form-control" placeholder="Juan Perez" required>
                         </div> --}}
+                       
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>Nacionalidad</label>
+                                <select name="nationality_id" class="form-control select2" id="nationality_id" required>
+                                    <option value="" selected disabled>--Seleccione una opción--</option>
+                                    @foreach ($nacionalidad as $item)
+                                        <option value="{{$item->id}}" >{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="full_name">Nombre</label>
@@ -380,6 +392,23 @@
                                     <option value="masculino">Masculino</option>
                                     <option value="femenino">Femenino</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="profession">Profesión</label>
+                                <input type="text" name="profession" class="form-control" placeholder="Profesión">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="civilStatus">Estado Civil</label>
+                                <select name="civilStatus" class="form-control">
+                                    <option value="Soltero(a)">Soltero(a)</option>
+                                    <option value="Casado(a)">Casado(a)</option>
+                                    <option value="Divorciado(a)">Divorciado(a)</option>
+                                    <option value="Viudo(a)">Viudo(a)</option>
+                                </select>
+
+                                
                             </div>
                         </div>
                         <div class="form-group">
@@ -638,7 +667,8 @@
                                 </div>
                                 <div>
                                     <small>CI: </small>${option.ci}<br>
-                                    <b style="font-size: 16px">${option.first_name} ${option.last_name}
+                                    <b style="font-size: 16px">${option.first_name} ${option.last_name}<br>
+                                    <small>Nacionalidad: </small>${option.nationality?option.nationality.name:'SN'}
                                 </div>
                             </div>`);
             }

@@ -11,6 +11,7 @@ use App\Models\PartsHotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use App\Models\IncomesDetail;
+use App\Models\Nationality;
 use Illuminate\Support\Facades\DB;
 use App\Models\ServiceRoom;
 use DateTime;
@@ -80,9 +81,10 @@ class ViewController extends Controller
         $room = Room::with(['file','part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         $country = Country::where('deleted_at', null)->get();
+        $nacionalidad = Nationality::where('deleted_at', null)->get();
         // return $room;
 
-        return view('viewRoom.assign', compact('room', 'country'));
+        return view('viewRoom.assign', compact('room', 'country', 'nacionalidad'));
     }
     public function readAsignar($room)
     {
