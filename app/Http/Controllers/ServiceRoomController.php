@@ -77,7 +77,7 @@ class ServiceRoomController extends Controller
                 'reserve'=> $request->type=='asignado'?0:1,
                 'registerUser_id'=>Auth::user()->id
             ]);
-            return 1;
+            // return 1;
             for ($i=0; $i < count($request->part); $i++) { 
                 ServiceRoomsDetail::create([
                     'serviceRoom_id'=>$ser->id,
