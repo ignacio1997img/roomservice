@@ -126,20 +126,20 @@
                                         <option value="" selected disabled>--Seleccione una opcción--</option>
                                         <option value="ventilador">Ventilador: 1 día Bs.{{$room->amount}} </option>
                                         <option value="aire">Aire Acondiconado: 1 día Bs.{{$room->amount1?$room->amount1:0}}</option>
-                                        {{-- <option value="personalizado">Monto Personalizado</option> --}}
+                                        <option value="personalizado">Monto Personalizado</option>
                                     </select>
                                 </div>
                             </div>
                         </div>       
                         
-                        {{-- <div class="col-md-2" id="div_price" style="display:none">
+                        <div class="col-md-2" id="div_price" style="display:none">
                             <div class="panel-body">                            
                                 <div class="form-group">
                                     <label><small>Precio</small></label>
                                     <input type="number" id="input" name="price" min="1" step="1" value="{{$room->amount}}" style="text-align: right" class="form-control text">
                                 </div>
                             </div>
-                        </div>   --}}
+                        </div>  
                                   {{-- <input type="text"> --}}
                         <div class="col-md-3">
                             <div class="panel-body">

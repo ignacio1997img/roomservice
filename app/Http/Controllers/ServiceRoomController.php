@@ -43,13 +43,20 @@ class ServiceRoomController extends Controller
             {
                 $aux = $ok->amount1;
             }
-            else
+            if($request->amount == 'ventilador')
             {
                 $aux = $ok->amount;
+            }
+            if($request->amount == 'personalizado')
+            {
+                $aux = $request->price;
             }
 
             $category = CategoriesRoom::where('id', $ok->categoryRoom_id)->first();
             $facility = CategoriesFacility::where('id', $ok->categoryFacility_id)->first();
+
+            // return $request->amount;
+            // return $aux;
 
             $ser = ServiceRoom::create([
                 'people_id'=>$request->people_id,
@@ -70,7 +77,7 @@ class ServiceRoomController extends Controller
                 'reserve'=> $request->type=='asignado'?0:1,
                 'registerUser_id'=>Auth::user()->id
             ]);
-            // return 1;
+            return 1;
             for ($i=0; $i < count($request->part); $i++) { 
                 ServiceRoomsDetail::create([
                     'serviceRoom_id'=>$ser->id,
@@ -94,7 +101,7 @@ class ServiceRoomController extends Controller
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Registrado exitosamente...', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            // return 0;
+            return 0;
             return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
