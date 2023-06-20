@@ -89,7 +89,7 @@ class ViewController extends Controller
                 ->where('id', $room)->first();
         // return $room;
         
-        $service =  ServiceRoom::with(['people', 'recommended'])
+        $service =  ServiceRoom::with(['people', 'recommended' , 'transaction'])
             ->where('room_id', $room->id)->whereRaw('(status = "asignado" or status = "reservado")')->where('deleted_at', null)->first(); 
         // return $service; 
       

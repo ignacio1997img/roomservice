@@ -13,6 +13,8 @@ class People extends Model
 
     protected $fillable = [
         'nationality_id',
+        'profession',
+        'civilStatus',
         'ci',
         'first_name',
         'last_name',
@@ -31,6 +33,8 @@ class People extends Model
         'deletedUser_id'
     ];
     
+
+
     public function nationality()
     {
         return $this->belongsTo(Nationality::class, 'nationality_id');

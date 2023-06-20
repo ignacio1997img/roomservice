@@ -48,4 +48,8 @@ class ServiceRoom extends Model
     {
         return $this->belongsTo(People::class, 'recommended_id');
     }
+    public function transaction()
+    {
+        return $this->hasMany(ServiceTransaction::class, 'serviceRoom_id');
+    }
 }

@@ -63,6 +63,10 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('food_menus');
 
         Permission::generateFor('nationalities');
+        Permission::generateFor('countries');
+        Permission::generateFor('departments');
+        Permission::generateFor('provinces');
+        Permission::generateFor('cities');
 
 
         $keys = [

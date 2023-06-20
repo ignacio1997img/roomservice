@@ -248,10 +248,72 @@
                                     </table>
                                 </div>                            
                             </div>                            
-                        </div>             
+                        </div>
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="5" style="text-align: center"><i class="fa-solid fa-money-bill"></i> Pagos Realizados</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align: center; width:12%">N&deg; Transacción</th>
+                                                <th style="text-align: center">Monto</th>
+                                                <th style="text-align: center">Fecha</th>
+                                                <th style="text-align: center">Atendido Por</th>
+                                                <th style="text-align: right">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $cont = 0;
+                                                $total = 0;
+                                            @endphp
+                                            @forelse ($service->transaction as $item)       
+                                                @php
+                                                    $total = $total + $item->amount;
+                                                @endphp        
+                                                <tr>
+                                                    <td style="text-align: center">{{$item->transaction}}</td>
+                                                    <td style="text-align: center">
+                                                        @if ($item->deleted_at)
+                                                            <del>BS. {{$item->amount}} <br></del>
+                                                            <label class="label label-danger">Anulado por {{$item->eliminado}}</label>
+                                                        @else
+                                                        BS. {{$item->amount}}
+                                                        @endif
+                                                    </td>
+                                                    <td style="text-align: center">
+                                                        {{date('d/m/Y H:i:s', strtotime($item->created_at))}}<br><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}
+                                                    </td>
+                                                    <td style="text-align: center">{{$item->agentType}} <br> {{$item->name}}</td>
+                                                    <td class="no-sort no-click bread-actions text-right">
+                                                        @if(!$item->deleted_at)
+                                                            <a onclick="printDailyMoney({{$item->id}}, {{$item->id}})" title="Imprimir"  class="btn btn-danger">
+                                                                <i class="glyphicon glyphicon-print"></i>
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                
+                                            @empty
+                                                <tr>
+                                                    <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                </tr>
+                                            @endforelse
+                                            <tr>
+                                                <td colspan="3" style="text-align: right">Total</td>
+                                                <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>                            
+                            </div>                            
+                        </div>                
                         <div class="col-md-12">                            
                             <div class="alert alert-success">
-                                <strong>Deudas:</strong>
+                                <strong>Pago Total:</strong>
                                 <p>Total a pagar de los servicios: {{NumerosEnLetras::convertir($deuda,'Bolivianos',true,'Centavos')}} </p>
                             </div>
                         </div>
