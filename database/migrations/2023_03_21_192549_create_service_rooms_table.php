@@ -49,6 +49,9 @@ class CreateServiceRoomsTable extends Migration
             $table->foreignId('city_id')->nullable()->constrained('cities');
             $table->text('origin')->nullable();
 
+            $table->string('typeHospedaje')->nullable();//Porq se esta alojando
+
+
 
             $table->timestamps();
             $table->foreignId('registerUser_id')->nullable()->constrained('users');

@@ -70,6 +70,7 @@ class ServiceRoomController extends Controller
                 'typePrice'=> $aux,
                 
                 'amount'=>$aux,
+                'typeHospedaje'=>$request->typeHospedaje,
 
                 'start' => $request->start,
                 // 'finish' => $request->finish,
