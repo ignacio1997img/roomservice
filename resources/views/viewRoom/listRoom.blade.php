@@ -328,6 +328,8 @@
                                 </div>
                             </div>
 
+
+
                             {{-- Para mostrar el detalle de los ospedaje --}}
                             <div class="form-group">
                                 <div class="table-responsive">
@@ -357,12 +359,16 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">                            
-                                <div class="alert alert-success">
-                                    <strong>Pago Total:</strong>
+                            <div class="form-group">
+                                <div class="alert alert-success" style="background: #178a32">
+                                    {{-- <strong>Pago Total:</strong> --}}
                                     <p id="letra"></p>
                                    
                                 </div>
+                            </div>
+
+                            <div class="col-md-12">                            
+                                
                                 <div class="form-group">
                                     <input type="radio" id="html" name="qr" value="0" checked>
                                     <label for="html"><small style="font-size: 15px">Efectivo</small></label>
@@ -734,7 +740,27 @@
                 TotalHosp=data.totalPagar;  
 
                 $('#letra').empty();
-                $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+(parseFloat(detailTotal+menuTotal+TotalHosp))+'</small>');     
+                $('#letra').append(`
+                     <table class="table">
+                        <tr>
+                            <th style="text-align: left"><small >Total a pagar de los servicios mas el hospedaje</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(detailTotal+menuTotal+TotalHosp)}</small></th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left"><small >Total de dinero cobrado</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(data.debt)}</small></th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left"><small >Total de dinero a devolver</small></th>
+                            <th style="text-align: right"><small >Bs. ${data.debt > detailTotal+menuTotal+TotalHosp?parseFloat(data.debt - detailTotal+menuTotal+TotalHosp):'0' }</small></th>
+                        </tr>
+
+                        <tr>
+                            <th style="text-align: left"><small >Total a cobrar</small></th>
+                            <th style="text-align: right"><small >Bs. ${(detailTotal+menuTotal+TotalHosp) > data.debt?parseFloat(detailTotal+menuTotal+TotalHosp - data.debt ):'0' }</small></th>
+                        </tr>
+                    </table>
+                `);     
             });
             // alert(parseFloat(totalArticle+totalMenu+TotalHosp))
             
@@ -760,7 +786,28 @@
                 
 
                 $('#letra').empty();
-                $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+(parseFloat(auxArticle+auxMenu+totaPagar))+'</small>');
+                // $('#letra').append('<small> Total a pagar de los servicios mas el hospedaje Bs '+(parseFloat(auxArticle+auxMenu+totaPagar))+'</small>');
+                $('#letra').append(`
+                     <table class="table">
+                        <tr>
+                            <th style="text-align: left"><small >Total a pagar de los servicios mas el hospedaje</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(auxArticle+auxMenu+totaPagar)}</small></th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left"><small >Total de dinero cobrado</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(data.debt)}</small></th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left"><small >Total de dinero a devolver</small></th>
+                            <th style="text-align: right"><small >Bs. ${data.debt > auxArticle+auxMenu+totaPagar?parseFloat(data.debt - (auxArticle+auxMenu+totaPagar)):'0' }</small></th>
+                        </tr>
+
+                        <tr>
+                            <th style="text-align: left"><small >Total a cobrar</small></th>
+                            <th style="text-align: right"><small >Bs. ${(auxArticle+auxMenu+totaPagar) > data.debt?parseFloat((auxArticle+auxMenu+totaPagar) - data.debt ):'0' }</small></th>
+                        </tr>
+                    </table>
+                `);
 
             });
                 

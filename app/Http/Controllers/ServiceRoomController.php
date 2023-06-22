@@ -240,7 +240,7 @@ class ServiceRoomController extends Controller
 
             $service->update(['debt'=>$aux+$request->amount]);
 
-            ServiceTransaction::create(['amount'=>$request->amount, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+            ServiceTransaction::create(['type'=>'ingreso', 'amount'=>$request->amount, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
 
             // $service->update(['status'=>'finalizado', 'amount'=>$pago, 'qr'=>$request->qr]);
             // return 1;
@@ -259,7 +259,7 @@ class ServiceRoomController extends Controller
     public function ajaxFinishPieza($id, $dateFinishClose)
     {
         $service =  ServiceRoom::where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
-            ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount')
+            ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount', 'debt')
             ->first();  
 
         // dump('________________________________________  INICIO  ___________________________________________________');

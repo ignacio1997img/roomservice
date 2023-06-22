@@ -232,6 +232,7 @@
                             <div class="panel-body">
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
+                                        
                                         <tr>
                                             <th>N&deg;</th>
                                             <th>Nombre</th>

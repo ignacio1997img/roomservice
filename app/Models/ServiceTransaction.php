@@ -15,6 +15,7 @@ class ServiceTransaction extends Model
         'serviceRoom_id',
         'amount',
         'qr',
+        'type',
         'registerUser_id',
         'registerRol',
         'deleteUser_id',
