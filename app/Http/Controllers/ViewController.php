@@ -15,6 +15,7 @@ use App\Models\Nationality;
 use Illuminate\Support\Facades\DB;
 use App\Models\ServiceRoom;
 use DateTime;
+use App\Http\Controllers\ServiceRoomController;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -88,14 +89,18 @@ class ViewController extends Controller
     }
     public function readAsignar($room)
     {
-        //  return $room;
+        // date('Y'):
+
+        $obj = new ServiceRoomController;       
+
+
+        // return $room;
         $room = Room::with(['part'=>function($q){$q->where('deleted_at', null);}, 'categoryfacility'])
                 ->where('id', $room)->first();
         // return $room;
         
         $service =  ServiceRoom::with(['people', 'recommended' , 'transaction'])
             ->where('room_id', $room->id)->whereRaw('(status = "asignado" or status = "reservado")')->where('deleted_at', null)->first(); 
-        // return $service; 
       
         $egre = DB::table('egres as e')
             ->join('egres_deatils as d', 'd.egre_id', 'e.id')
@@ -115,8 +120,17 @@ class ViewController extends Controller
             ->where('d.deleted_at', null)
             ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
 
+        $auxTotal =0;
+        if($service->status=='asignado')
+        {
+            $auxTotal = $obj->ajaxFinishPieza($room->id, date('Y-m-d H:i'));
+        }
+        // return $service; 
+        // return $auxTotal;
+
+
     
 
-        return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu'));
+        return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu', 'auxTotal'));
     }
 }
