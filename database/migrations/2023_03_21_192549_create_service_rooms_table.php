@@ -24,8 +24,11 @@ class CreateServiceRoomsTable extends Migration
             $table->string('category')->nullable();
             $table->string('facility')->nullable();
 
-            $table->decimal('amount', 9,2)->nullable();
-            $table->decimal('debt', 9,2)->nullable();
+            $table->decimal('amount', 9,2)->nullable(); //contiene el total de los dias hospedado por el precio de la habitacion
+            $table->decimal('debt', 9,2)->nullable(); //Contiene los pagos totales de articulo y comida mas hospedaje
+
+            $table->smallInteger('day')->nullable();
+            $table->decimal('amountTotal', 9,2)->nullable();
 
             $table->decimal('typePrice', 9,2)->nullable();
             $table->string('typeAmount')->nullable();

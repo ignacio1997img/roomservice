@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateservvTable extends Migration
+class UpdateServiceRTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class UpdateservvTable extends Migration
     public function up()
     {
         Schema::table('service_rooms', function (Blueprint $table) {
-            $table->string('typeHospedaje')->nullable();
+            $table->smallInteger('day')->nullable();
+            $table->decimal('amountTotal', 9,2)->nullable();
         });
     }
 

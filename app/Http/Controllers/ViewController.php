@@ -124,6 +124,7 @@ class ViewController extends Controller
         if($service->status=='asignado')
         {
             $auxTotal = $obj->ajaxFinishPieza($room->id, date('Y-m-d H:i'));
+            // $service->
         }
         // return $service; 
         // return $auxTotal;

@@ -294,9 +294,10 @@
                                                 <tr>
                                                     <th style="text-align: center; width:12%">N&deg; Transacción</th>
                                                     <th style="text-align: center; width:10%">Tipo de Pago</th>
-                                                    <th style="text-align: center">Monto</th>
                                                     <th style="text-align: center">Fecha</th>
                                                     <th style="text-align: center">Atendido Por</th>
+                                                    <th style="text-align: center">Monto</th>
+
                                                     <th style="text-align: right; width: 150px">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -312,7 +313,12 @@
                                                     <tr>
                                                         <td style="text-align: center">{{$item->id}}</td>
                                                         <td style="text-align: center">{{$item->qr==1?'QR':'Efectivo'}}</td>
+                                                        
                                                         <td style="text-align: center">
+                                                            {{date('d/m/Y H:i:s', strtotime($item->created_at))}}<br><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}
+                                                        </td>
+                                                        <td style="text-align: center">{{$item->register->name}} <br> {{$item->registerRol}}</td>
+                                                        <td style="text-align: right">
                                                             @if ($item->deleted_at)
                                                                 <del>BS. {{$item->amount}} <br></del>
                                                                 <label class="label label-danger">Anulado por {{$item->eliminado}}</label>
@@ -320,10 +326,6 @@
                                                             BS. {{$item->amount}}
                                                             @endif
                                                         </td>
-                                                        <td style="text-align: center">
-                                                            {{date('d/m/Y H:i:s', strtotime($item->created_at))}}<br><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}
-                                                        </td>
-                                                        <td style="text-align: center">{{$item->register->name}} <br> {{$item->registerRol}}</td>
                                                         <td class="no-sort no-click bread-actions text-right">
                                                             @if(!$item->deleted_at)
                                                                 <a onclick="printDailyMoney({{$item->id}}, {{$item->id}})" title="Imprimir"  class="btn btn-danger">
@@ -338,10 +340,41 @@
                                                         <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
                                                     </tr>
                                                 @endforelse
-                                                {{-- <tr>
-                                                    <td colspan="3" style="text-align: right">Total</td>
-                                                    <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
-                                                </tr> --}}
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right">Total De dinero abonado en transacciones</td>
+                                                    <td style="text-align: right" ><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                                    {{-- <td></td> --}}
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right">Total a pagar de los servicios y hospedajes</td>
+                                                    <td style="text-align: right" ><strong><small>Bs. {{ number_format($auxTotal->totalPagar+$totalA+$totalF,2, ',', '.') }}</small></strong></td>
+                                                    {{-- <td></td> --}}
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right">Total de dinero a devolver</td>
+                                                    <td style="text-align: right" ><strong><small style="color: red">
+                                                        Bs. 
+                                                        @if ($total > $auxTotal->totalPagar+$totalA+$totalF)
+                                                            {{ number_format( $total-$auxTotal->totalPagar+$totalA+$totalF,2, ',', '.') }}
+                                                        @else
+                                                            {{ number_format(0,2, ',', '.') }}
+                                                        @endif
+                                                        
+                                                        </small></strong>
+                                                    </td>
+                                                    {{-- <td></td> --}}
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right">Total de dinero a cobrar</td>
+                                                    <td style="text-align: right" ><strong><small>Bs. 
+                                                        @if ($total < $auxTotal->totalPagar+$totalA+$totalF)
+                                                            {{ number_format($auxTotal->totalPagar+$totalA+$totalF -$total,2, ',', '.') }}
+                                                        @else
+                                                            {{ number_format(0,2, ',', '.') }}
+                                                        @endif
+                                                    </small></strong></td>
+                                                    {{-- <td></td> --}}
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>                            

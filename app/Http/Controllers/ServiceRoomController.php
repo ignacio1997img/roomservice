@@ -236,6 +236,10 @@ class ServiceRoomController extends Controller
             // return $service;
             $user = Auth::user();
 
+            $aux = $service->debt??0;
+
+            $service->update(['debt'=>$aux+$request->amount]);
+
             ServiceTransaction::create(['amount'=>$request->amount, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
 
             // $service->update(['status'=>'finalizado', 'amount'=>$pago, 'qr'=>$request->qr]);
