@@ -25,6 +25,8 @@ class CreateServiceRoomsTable extends Migration
             $table->string('facility')->nullable();
 
             $table->decimal('amount', 9,2)->nullable();
+            $table->decimal('debt', 9,2)->nullable();
+
             $table->decimal('typePrice', 9,2)->nullable();
             $table->string('typeAmount')->nullable();
 

@@ -94,6 +94,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::post('serviceroom/hospedaje/cancel', [ServiceRoomController::class, 'hospedajeCancel'])->name('serviceroom-hospedaje.cancel');    //Para poder cancelar el hospedaje de las habitaciones hospedaje
     Route::post('serviceroom/hospedaje/reserva/cancel', [ServiceRoomController::class, 'reservaCancelar'])->name('serviceroom-hospedaje-reserva.cancel');    //Para poder cancelar la reserva de una habitacion en el hotel
     Route::post('serviceroom/hospedaje/reserva/start', [ServiceRoomController::class, 'reservaStart'])->name('serviceroom-hospedaje-reserva.start');    //Para poder cancelar la reserva de una habitacion en el hotel
+    Route::post('serviceroom/hospedaje/addmoney', [ServiceRoomController::class, 'addMoney'])->name('serviceroom-hospedaje.addmoney');
 
 
     Route::resource('sales', SaleController::class);

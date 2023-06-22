@@ -356,22 +356,24 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div class="col-md-12">                            
+                                <div class="alert alert-success">
+                                    <strong>Pago Total:</strong>
+                                    <p id="letra"></p>
+                                   
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" id="html" name="qr" value="0" checked>
+                                    <label for="html"><small style="font-size: 15px">Efectivo</small></label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="css" name="qr" value="1">
+                                    <label for="css"><small style="font-size: 15px">QR</small></label><br>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="col-md-12">                            
-                            <div class="alert alert-success">
-                                <strong>Pago Total:</strong>
-                                <p id="letra"></p>
-                               
-                            </div>
-                            <div class="form-group">
-                                <input type="radio" id="html" name="qr" value="0" checked>
-                                <label for="html"><small style="font-size: 15px">Efectivo</small></label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" id="css" name="qr" value="1">
-                                <label for="css"><small style="font-size: 15px">QR</small></label><br>
-                            </div>
-                        </div>
+                        
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

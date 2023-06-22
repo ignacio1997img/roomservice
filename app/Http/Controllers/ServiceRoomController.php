@@ -226,6 +226,29 @@ class ServiceRoomController extends Controller
         }
     }
 
+    // funcion para adicionar dinero al servicio de la habitacion para ir pagando
+    public function addMoney(Request $request)
+    {
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $service =  ServiceRoom::where('id', $request->serviceRoom_id)->where('status', 'asignado')->where('deleted_at',null)->first(); 
+            // return $service;
+            $user = Auth::user();
+
+            ServiceTransaction::create(['amount'=>$request->amount, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+
+            // $service->update(['status'=>'finalizado', 'amount'=>$pago, 'qr'=>$request->qr]);
+            // return 1;
+            DB::commit();        
+            return redirect()->route('view-planta-room.read', ['room'=>$service->room_id])->with(['message' => 'Hospedaje Finalizado.', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('view-planta-room.read', ['room'=>$service->room_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+
 
 
     // PARA SACAR LOS DIAS QUE SE DEBE DE LA HABITACION PARA PODER FINALIZAR EL HOSPEDAJE MEDIANTE LA FECHA DE INICIO

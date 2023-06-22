@@ -36,7 +36,8 @@ class ServiceRoom extends Model
         'province_id',
         'city_id',
         'origin',
-        'typeHospedaje'
+        'typeHospedaje',
+        'debt'
     ];
 
 

@@ -249,68 +249,79 @@
                                 </div>                            
                             </div>                            
                         </div>
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table id="dataTable" class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="5" style="text-align: center"><i class="fa-solid fa-money-bill"></i> Pagos Realizados</th>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: center; width:12%">N&deg; Transacción</th>
-                                                <th style="text-align: center">Monto</th>
-                                                <th style="text-align: center">Fecha</th>
-                                                <th style="text-align: center">Atendido Por</th>
-                                                <th style="text-align: right">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $cont = 0;
-                                                $total = 0;
-                                            @endphp
-                                            @forelse ($service->transaction as $item)       
+                        @if ($service->status != 'reservado')                            
+                            <div class="col-md-12">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table id="dataTable" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4" style="text-align: center"><i class="fa-solid fa-money-bill"></i> Pagos Realizados
+                                                        
+                                                    </th>
+                                                    <th style="text-align: right">
+                                                    
+                                                        <button class="btn btn-success" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
+                                                                <span class="glyphicon glyphicon-plus"></span>Adicionar Pago
+                                                        </button>
+                                                        
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: center; width:12%">N&deg; Transacción</th>
+                                                    <th style="text-align: center">Monto</th>
+                                                    <th style="text-align: center">Fecha</th>
+                                                    <th style="text-align: center">Atendido Por</th>
+                                                    <th style="text-align: right; width: 150px">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 @php
-                                                    $total = $total + $item->amount;
-                                                @endphp        
-                                                <tr>
-                                                    <td style="text-align: center">{{$item->transaction}}</td>
-                                                    <td style="text-align: center">
-                                                        @if ($item->deleted_at)
-                                                            <del>BS. {{$item->amount}} <br></del>
-                                                            <label class="label label-danger">Anulado por {{$item->eliminado}}</label>
-                                                        @else
-                                                        BS. {{$item->amount}}
-                                                        @endif
-                                                    </td>
-                                                    <td style="text-align: center">
-                                                        {{date('d/m/Y H:i:s', strtotime($item->created_at))}}<br><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}
-                                                    </td>
-                                                    <td style="text-align: center">{{$item->agentType}} <br> {{$item->name}}</td>
-                                                    <td class="no-sort no-click bread-actions text-right">
-                                                        @if(!$item->deleted_at)
-                                                            <a onclick="printDailyMoney({{$item->id}}, {{$item->id}})" title="Imprimir"  class="btn btn-danger">
-                                                                <i class="glyphicon glyphicon-print"></i>
-                                                            </a>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                                
-                                            @empty
-                                                <tr>
-                                                    <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
-                                                </tr>
-                                            @endforelse
-                                            <tr>
-                                                <td colspan="3" style="text-align: right">Total</td>
-                                                <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                    $cont = 0;
+                                                    $total = 0;
+                                                @endphp
+                                                @forelse ($service->transaction as $item)       
+                                                    @php
+                                                        $total = $total + $item->amount;
+                                                    @endphp        
+                                                    <tr>
+                                                        <td style="text-align: center">{{$item->id}}</td>
+                                                        <td style="text-align: center">
+                                                            @if ($item->deleted_at)
+                                                                <del>BS. {{$item->amount}} <br></del>
+                                                                <label class="label label-danger">Anulado por {{$item->eliminado}}</label>
+                                                            @else
+                                                            BS. {{$item->amount}}
+                                                            @endif
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            {{date('d/m/Y H:i:s', strtotime($item->created_at))}}<br><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}
+                                                        </td>
+                                                        <td style="text-align: center">{{$item->register->name}} <br> {{$item->registerRol}}</td>
+                                                        <td class="no-sort no-click bread-actions text-right">
+                                                            @if(!$item->deleted_at)
+                                                                <a onclick="printDailyMoney({{$item->id}}, {{$item->id}})" title="Imprimir"  class="btn btn-danger">
+                                                                    <i class="glyphicon glyphicon-print"></i>
+                                                                </a>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                @empty
+                                                    <tr>
+                                                        <td style="text-align: center" valign="top" colspan="5" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                    </tr>
+                                                @endforelse
+                                                {{-- <tr>
+                                                    <td colspan="3" style="text-align: right">Total</td>
+                                                    <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                                </tr> --}}
+                                            </tbody>
+                                        </table>
+                                    </div>                            
                                 </div>                            
-                            </div>                            
-                        </div>                
+                            </div>   
+                        @endif
                         <div class="col-md-12">                            
                             <div class="alert alert-success">
                                 <strong>Pago Total:</strong>
@@ -323,6 +334,41 @@
         </div>
         </form>
     </div>
+
+
+    <form action="{{ route('serviceroom-hospedaje.addmoney') }}" id="form-create-customer" method="POST">
+        @csrf                    
+        <div class="modal fade" tabindex="-1" id="modal-create-customer" role="dialog">
+            <div class="modal-dialog modal-success">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa-solid fa-money-bill"></i> Adicionar Pago</h4>
+                    </div>
+                    <div class="modal-body">                       
+                        <div class="form-group col-md-12">
+                            <label for="full_name">Monto</label>
+                            <input type="number" style="text-align: right" name="amount" min="0.1" step="0.1" class="form-control" placeholder="0.0" required>
+                        </div>
+
+                        <input type="hidden" name="serviceRoom_id" value="{{$service->id}}">
+
+                        <div class="form-group col-md-12">
+                            <input type="radio" id="html" name="qr" value="0" checked>
+                            <label for="html"><small style="font-size: 15px">Efectivo</small></label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="css" name="qr" value="1">
+                            <label for="css"><small style="font-size: 15px">QR</small></label>
+                        </div>    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-success btn-save-customer" value="Guardar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 @stop
 
 @section('javascript')
