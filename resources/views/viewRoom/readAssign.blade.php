@@ -280,7 +280,7 @@
                                         <table id="dataTable" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th colspan="4" style="text-align: center"><i class="fa-solid fa-money-bill"></i> Pagos Realizados
+                                                    <th colspan="5" style="text-align: center"><i class="fa-solid fa-money-bill"></i> Pagos Realizados
                                                         
                                                     </th>
                                                     <th style="text-align: right">
@@ -293,6 +293,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th style="text-align: center; width:12%">N&deg; Transacción</th>
+                                                    <th style="text-align: center; width:10%">Tipo de Pago</th>
                                                     <th style="text-align: center">Monto</th>
                                                     <th style="text-align: center">Fecha</th>
                                                     <th style="text-align: center">Atendido Por</th>
@@ -310,6 +311,7 @@
                                                     @endphp        
                                                     <tr>
                                                         <td style="text-align: center">{{$item->id}}</td>
+                                                        <td style="text-align: center">{{$item->qr==1?'QR':'Efectivo'}}</td>
                                                         <td style="text-align: center">
                                                             @if ($item->deleted_at)
                                                                 <del>BS. {{$item->amount}} <br></del>
