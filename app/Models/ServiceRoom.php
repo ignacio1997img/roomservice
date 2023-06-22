@@ -17,6 +17,8 @@ class ServiceRoom extends Model
         'category',
         'facility',
         'amount',
+        'amountTotal',
+        'day',
         'typeAmount',
         'typePrice',
         'qr',

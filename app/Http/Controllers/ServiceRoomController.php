@@ -129,6 +129,7 @@ class ServiceRoomController extends Controller
 
     public function closeFinishRoom(Request $request)
     {
+        // return $request;
         DB::beginTransaction();
         try {
             $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first(); 
@@ -136,13 +137,27 @@ class ServiceRoomController extends Controller
 
             $room = Room::where('id', $request->room_id)->first();
             $room->update(['status'=> 1]);
-            // return $service;
             $pago = $request->subTotalDetalle+$request->subTotalMenu+$request->pagarf;
 
-            ServiceTransaction::create(['amount'=>$pago, 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+            if($request->debt > $request->pagarf)
+            {
+                ServiceTransaction::create(['amount'=>$request->dev, 'type'=>'egreso', 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+            }
+            else
+            {
+                if($request->cobro)
+                {
+                    ServiceTransaction::create(['amount'=>$request->cobro, 'type'=>'ingreso', 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+                }
+                
+            }
+     
 
 
-            $service->update(['status'=>'finalizado', 'amount'=>$pago, 'qr'=>$request->qr]);
+            // ServiceTransaction::create([ 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
+
+
+            $service->update(['status'=>'finalizado', 'amount'=>$request->pagarf, 'amountTotal'=>$pago, 'qr'=>$request->qr, 'day'=>$request->diaf]);
 
 
             DB::commit();        
@@ -150,7 +165,7 @@ class ServiceRoomController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            // return 0;
+            return 0;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }

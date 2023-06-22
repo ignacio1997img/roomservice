@@ -737,7 +737,9 @@
                         `
                         );
                 
-                TotalHosp=data.totalPagar;  
+                TotalHosp=data.totalPagar; 
+                debt = data.debt?parseFloat(data.debt):0;
+
 
                 $('#letra').empty();
                 $('#letra').append(`
@@ -748,16 +750,16 @@
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero cobrado</small></th>
-                            <th style="text-align: right"><small >Bs. ${parseFloat(data.debt)}</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(debt)}</small><input type="hidden" name="debt" value="${debt}"></th>
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero a devolver</small></th>
-                            <th style="text-align: right"><small >Bs. ${data.debt > detailTotal+menuTotal+TotalHosp?parseFloat(data.debt - detailTotal+menuTotal+TotalHosp):'0' }</small></th>
+                            <th style="text-align: right"><small >Bs. ${debt > (detailTotal+menuTotal+TotalHosp)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp)):'0' }</small><input type="hidden" name="dev" value="${debt > (detailTotal+menuTotal+TotalHosp)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp)):'0' }"></th>
                         </tr>
 
                         <tr>
                             <th style="text-align: left"><small >Total a cobrar</small></th>
-                            <th style="text-align: right"><small >Bs. ${(detailTotal+menuTotal+TotalHosp) > data.debt?parseFloat(detailTotal+menuTotal+TotalHosp - data.debt ):'0' }</small></th>
+                            <th style="text-align: right"><small >Bs. ${(detailTotal+menuTotal+TotalHosp) > debt?parseFloat((detailTotal+menuTotal+TotalHosp) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(detailTotal+menuTotal+TotalHosp) > debt?parseFloat((detailTotal+menuTotal+TotalHosp) - debt ):'0' }"></th>
                         </tr>
                     </table>
                 `);     
@@ -783,6 +785,7 @@
                 auxArticle = parseFloat($('#subTotalDetalle').val());
                 auxMenu = parseFloat($('#subTotalMenu').val());
                 totaPagar = parseFloat(data.totalPagar);
+                debt = data.debt?parseFloat(data.debt):0;
                 
 
                 $('#letra').empty();
@@ -795,16 +798,16 @@
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero cobrado</small></th>
-                            <th style="text-align: right"><small >Bs. ${parseFloat(data.debt)}</small></th>
+                            <th style="text-align: right"><small >Bs. ${debt}</small> <input type="hidden" name="debt" value="${debt}"></th>
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero a devolver</small></th>
-                            <th style="text-align: right"><small >Bs. ${data.debt > auxArticle+auxMenu+totaPagar?parseFloat(data.debt - (auxArticle+auxMenu+totaPagar)):'0' }</small></th>
+                            <th style="text-align: right"><small >Bs. ${debt > (auxArticle+auxMenu+totaPagar)?parseFloat(debt - (auxArticle+auxMenu+totaPagar)):'0' }</small> <input type="hidden" name="dev" value="${debt > auxArticle+auxMenu+totaPagar?parseFloat(debt - (auxArticle+auxMenu+totaPagar)):'0' }"</th>
                         </tr>
 
                         <tr>
                             <th style="text-align: left"><small >Total a cobrar</small></th>
-                            <th style="text-align: right"><small >Bs. ${(auxArticle+auxMenu+totaPagar) > data.debt?parseFloat((auxArticle+auxMenu+totaPagar) - data.debt ):'0' }</small></th>
+                            <th style="text-align: right"><small >Bs. ${(auxArticle+auxMenu+totaPagar) > debt?parseFloat((auxArticle+auxMenu+totaPagar) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(auxArticle+auxMenu+totaPagar) > debt?parseFloat((auxArticle+auxMenu+totaPagar) - debt ):'0' }"</th>
                         </tr>
                     </table>
                 `);
