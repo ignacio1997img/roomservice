@@ -17,7 +17,7 @@ class EgresDeatil extends Model
         'price',
         'amount',
         'registerUser_id',
-        'dleeted_at',
+        'deleted_at',
         'deletedUser_id'
     ];
 

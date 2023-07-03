@@ -19,6 +19,7 @@ class ServiceTransaction extends Model
         'registerUser_id',
         'registerRol',
         'deleteUser_id',
+        'deleted_at',
         'deleteRol'
     ];
     public function register()

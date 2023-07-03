@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriesFacility;
 use App\Models\CategoriesRoom;
+use App\Models\Egre;
+use App\Models\EgresDeatil;
+use App\Models\EgresMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Room;
@@ -16,7 +19,7 @@ use App\Models\People;
 use App\Models\ServiceTransaction;
 use Illuminate\Support\Facades\Http;
 use DateTime;
-
+use Symfony\Contracts\Service\Test\ServiceLocatorTest;
 
 class ServiceRoomController extends Controller
 {
@@ -182,11 +185,42 @@ class ServiceRoomController extends Controller
             // return $service;
             $service->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
 
+
+            ServiceTransaction::where('serviceRoom_id', $service->id)->where('deleted_at', null)->update(['deleted_at'=>Carbon::now(), 'deleteUser_id'=>Auth::user()->id, 'deleteRol'=>Auth::user()->role->name]);
+
+            $egres = Egre::where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
+            foreach($egres as $item)
+            {
+                if($item->type == 'food')
+                {
+                    EgresMenu::where('egre_id', $item->id)->where('deleted_at', null)->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);                    
+                }
+                if($item->type == 'product')
+                {
+                    $article = EgresDeatil::where('egre_id', $item->id)->where('deleted_at', null)->get();
+                    foreach($article as $ar)
+                    {
+                        $aux = EgresDeatil::where('id', $ar->id)->where('deleted_at', null)->first();
+                        // return $aux;
+
+                        IncomesDetail::where('id', $aux->incomeDetail_id)->increment('cantRestante',$aux->cantSolicitada);
+
+                        $aux->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+                    }
+                }
+                Egre::where('id', $item->id)->update(['deleted_at'=>Carbon::now(), 'deletedUser_id'=>Auth::user()->id]);
+            }
+
+
+
+
+            // return 1;
             DB::commit();       
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Hospedaje cancelada exitosamente.', 'alert-type' => 'success']);
 
         } catch (\Throwable $th) {
             DB::rollBack();
+            // return 0;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
