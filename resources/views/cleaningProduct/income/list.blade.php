@@ -26,8 +26,8 @@
                         @endif     
                     </td>
                     <td class="no-sort no-click bread-actions text-right">
-                        @if (auth()->user()->hasPermission('print_incomes'))
-                            <a href="{{route('incomes.show',$item->id)}}" title="Ver" target="_blank" class="btn btn-sm btn-success view">
+                        @if (auth()->user()->hasPermission('print_cleaningproducts'))
+                            <a href="{{route('cleaningproducts.show',$item->id)}}" title="Ver" target="_blank" class="btn btn-sm btn-success view">
                                 <i class="glyphicon glyphicon-print"></i>
                             </a>     
                         @endif

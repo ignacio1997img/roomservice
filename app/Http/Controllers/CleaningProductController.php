@@ -27,7 +27,7 @@ class CleaningProductController extends Controller
         $paginate = request('paginate') ?? 10;
         // return 1;
        
-        $data = Income::with(['user'])
+        $data = CleaningProduct::with(['user'])
                     ->where(function($query) use ($search){
                         if($search){
                             $query->OrWhereRaw($search ? "numberFactura like '%$search%'" : 1)
@@ -37,7 +37,7 @@ class CleaningProductController extends Controller
                     })
                     ->where('deleted_at', NULL)->orderBy('id', 'DESC')->paginate($paginate);
         // dump($data);
-        return view('store.income.list', compact('data'));
+        return view('cleaningProduct.income.list', compact('data'));
 
     }
 
@@ -85,5 +85,20 @@ class CleaningProductController extends Controller
             // return 0;
             return redirect()->route('cleaningproducts.index')->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
+    }
+
+    public function show($id)
+    {
+        $income = CleaningProduct::where('id', $id)
+                ->first();
+        // return $income;
+        $data = DB::table('cleaning_products_details as id')
+            ->join('articles as a', 'a.id', 'id.article_id')
+            ->join('categories as c', 'c.id', 'a.category_id')
+            ->where('id.cleaningProduct_id', $income->id)
+            ->select('id.cantSolicitada', 'id.price', 'id.amount', 'a.name as article', 'c.name as category')
+            ->get();
+        // return $data;
+        return view('cleaningProduct.income.print', compact('income', 'data'));
     }
 }

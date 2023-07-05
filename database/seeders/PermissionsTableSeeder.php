@@ -100,7 +100,7 @@ class PermissionsTableSeeder extends Seeder
             'browse_cleaningproducts',
             'add_cleaningproducts',
             'print_cleaningproducts',
-            'browse_cleaningproducts'
+            // 'browse_cleaningproducts'
         ];
 
         foreach ($keys as $key) {

@@ -106,6 +106,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     // ::::::::::::::::::::::   Para registro de produtos de limpieza  :::::::::::::::::::
     Route::resource('cleaningproducts', CleaningProductController::class);
+    Route::get('cleaningproducts/ajax/list/{search?}', [CleaningProductController::class, 'list']);
+
 
 
 

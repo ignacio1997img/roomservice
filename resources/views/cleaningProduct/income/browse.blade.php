@@ -99,7 +99,7 @@
             var loader = '<div class="col-md-12 bg"><div class="loader" id="loader-3"></div></div>'
             $('#div-results').html(loader);
 
-            let url = '{{ url("admin/incomes/ajax/list") }}';
+            let url = '{{ url("admin/cleaningproducts/ajax/list") }}';
             // alert(1)
             let search = $('#input-search').val() ? $('#input-search').val() : '';
 

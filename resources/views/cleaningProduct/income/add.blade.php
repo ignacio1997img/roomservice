@@ -2,7 +2,7 @@
 
 @section('page_title', 'Crear Ingreso de limpieza')
 
-{{-- @if (auth()->user()->hasPermission('add_loans')) --}}
+@if (auth()->user()->hasPermission('add_cleaningproducts'))
 
     @section('page_header')
         <h1 id="titleHead" class="page-title">
@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="form-group col-md-12 text-center">
                                     <button type="submit" id="btn-submit" class="btn btn-primary btn-block">Registrar <i class="voyager-basket"></i></button>
-                                    <a href="{{ route('incomes.index') }}" >Volver a la lista</a>
+                                    <a href="{{ route('cleaningproducts.index') }}" >Volver a la lista</a>
                                 </div>
                             </div>
                         </div>
@@ -315,4 +315,4 @@
         </script>
     @stop
 
-{{-- @endif --}}
+@endif
