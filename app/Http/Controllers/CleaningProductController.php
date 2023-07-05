@@ -91,7 +91,7 @@ class CleaningProductController extends Controller
     {
         $income = CleaningProduct::where('id', $id)
                 ->first();
-        // return $income;
+        return $income;
         $data = DB::table('cleaning_products_details as id')
             ->join('articles as a', 'a.id', 'id.article_id')
             ->join('categories as c', 'c.id', 'a.category_id')
@@ -100,5 +100,28 @@ class CleaningProductController extends Controller
             ->get();
         // return $data;
         return view('cleaningProduct.income.print', compact('income', 'data'));
+    }
+
+
+
+    //Para ver el stock del almacen
+    public function indexStock()
+    {
+        // return 1;
+        return view('cleaningProduct.stock.browse');
+    }
+
+    public function listStock($search = null)
+    {
+        // dump(1);
+        $paginate = request('paginate') ?? 10;
+
+        $data = CleaningProductsDetail::with(['article.category'])
+                ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id',  'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price')->paginate($paginate);
+
+        // return $data;
+        // dump($data);
+        return view('cleaningProduct.stock.list', compact('data'));
+
     }
 }
