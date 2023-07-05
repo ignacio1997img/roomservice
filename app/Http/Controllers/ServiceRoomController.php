@@ -16,9 +16,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\IncomesDetail;
 use App\Models\People;
+use App\Models\ServiceRoomsExtra;
 use App\Models\ServiceTransaction;
 use Illuminate\Support\Facades\Http;
 use DateTime;
+use Doctrine\DBAL\Driver\IBMDB2\DB2Driver;
 use Symfony\Contracts\Service\Test\ServiceLocatorTest;
 
 class ServiceRoomController extends Controller
@@ -112,8 +114,8 @@ class ServiceRoomController extends Controller
 
             if($request->type=='asignado')
             {
-                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$facility->wifiName.'%0AContraseña: '.$facility->wifiPassword);
-                Http::get('http://api.what.capresi.net/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion con '.($request->amount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$aux);
+                Http::get('http://tecnologiaweb.org/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$facility->wifiName.'%0AContraseña: '.$facility->wifiPassword);
+                Http::get('http://tecnologiaweb.org/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion con '.($request->amount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$aux);
             }
             $ok->update(['status'=>0]);
 
@@ -140,7 +142,7 @@ class ServiceRoomController extends Controller
 
             $room = Room::where('id', $request->room_id)->first();
             $room->update(['status'=> 1]);
-            $pago = $request->subTotalDetalle+$request->subTotalMenu+$request->pagarf;
+            $pago = $request->subTotalDetalle+$request->subTotalMenu+$request->pagarf+$request->subTotalExtra;
 
             if($request->debt > $request->pagarf)
             {
@@ -154,10 +156,6 @@ class ServiceRoomController extends Controller
                 }
                 
             }
-     
-
-
-            // ServiceTransaction::create([ 'serviceRoom_id'=> $service->id, 'qr'=>$request->qr, 'registerUser_id'=>$user->id, 'registerRol'=>$user->role->name]);
 
 
             $service->update(['status'=>'finalizado', 'amount'=>$request->pagarf, 'amountTotal'=>$pago, 'qr'=>$request->qr, 'day'=>$request->diaf]);
@@ -168,7 +166,7 @@ class ServiceRoomController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            return 0;
+            // return 0;
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
     }
@@ -273,6 +271,45 @@ class ServiceRoomController extends Controller
             DB::rollBack();
             return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
         }
+    }
+
+    // Para registrar los servicios extras 
+    public function storeExtra(Request $request)
+    {
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+            $service =  ServiceRoom::where('room_id', $request->room_id)->where('status', 'asignado')->where('deleted_at',null)->first();  
+            if (!$service) {
+                return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+            }
+            ServiceRoomsExtra::create([
+                'serviceRoom_id'=>$service->id,
+                'detail'=>$request->detail,
+                'amount'=>$request->amount,
+                'registerUser_id'=>$user->id,
+                'registerRol'=>$user->role->name
+            ]);
+            // return 1;
+            DB::commit();
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Registrado exitosamente.', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // return 0;
+            return redirect()->route('view.planta', ['planta'=>$request->planta_id])->with(['message' => 'Ocurrió un error.', 'alert-type' => 'error']);
+        }
+    }
+
+    public function ajaxFinishPiezaExtra($id)
+    {
+        $service =  ServiceRoom::with(['people'])
+            ->where('room_id', $id)->where('status', 'asignado')->where('deleted_at',null)->first();  
+
+        return ServiceRoomsExtra::where('deleted_at', null)
+            ->where('serviceRoom_id',$service->id)
+            ->get();
+        
     }
 
     // funcion para adicionar dinero al servicio de la habitacion para ir pagando

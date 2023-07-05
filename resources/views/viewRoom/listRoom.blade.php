@@ -80,6 +80,13 @@
                                         <i class="fa-solid fa-bowl-food"></i>
                                     </a>
                                 @endif
+                                {{-- Para los servicios extras --}}
+                                @if (auth()->user()->hasPermission('add_serviceExtra') && $service->status == 'asignado')
+                                    <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_extra" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Servicios Extras" class="btn btn-warning">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </a>
+                                @endif
+
                                 @if ( $service->status == 'asignado')
                                     <a href="#" data-toggle="modal" style="border-radius: 8px" data-target="#modal_finish" data-id="{{$item->id}}" data-pieza="{{$item->number}}" data-planta="{{$item->categoryFacility_id}}" title="Finalizar Hospedaje" class="btn btn-danger">
                                         <i class="fa-solid fa-hourglass-end"></i> 
@@ -245,6 +252,43 @@
         </form>
 
 
+        {{-- Para los servicios extras --}}
+        <form lass="form-submit" id="menu-form" action="{{route('serviceroom-extra.store')}}" method="post">
+            @csrf
+            <div class="modal  fade" id="modal_extra" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content modal-warning">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa-solid fa-cart-plus"></i> Servicios Extras</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <small id="label-pieza" style="font-size: 15px"></small>
+                                <input type="hidden" name="room_id" id="room_id">
+                                <input type="hidden" name="planta_id" id="planta_id">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 form-group">
+                                    <label>Detalle</label>
+                                    <input type="text" name="detail" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Precio</label>
+                                    <input type="number" min="0" step="0.1" name="amount" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-warning btn-submit" value="Guardar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
         {{-- Para finalizar el hopedaje --}}
         <form lass="form-submit" id="menu-form" action="{{route('serviceroom-hospedaje-close')}}" method="post">
             @csrf
@@ -276,7 +320,7 @@
                                                 <td colspan="5" style="height: 30px">
                                                     <h4 class="text-center text-muted" style="margin-top: 5px">
                                                         <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
-                                                        Lista de detalle vacía
+                                                        Lista de articulos / productos vacía
                                                     </h4>
                                                 </td>
                                             </tr>
@@ -310,7 +354,7 @@
                                                 <td colspan="5" style="height: 30px">
                                                     <h4 class="text-center text-muted" style="margin-top: 5px">
                                                         <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
-                                                        Lista de detalle vacía
+                                                        Lista de comida vacía
                                                     </h4>
                                                 </td>
                                             </tr>
@@ -322,6 +366,39 @@
                                             <td style="text-align: right">
                                                 <small><b id="label-totalDetailFinish1" class="label-totalDetailFinish1">0.00</b></small>
                                                 <input type="hidden" id="subTotalMenu" name="subTotalMenu">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables tablesMenu table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px">N&deg;</th>
+                                                <th style="text-align: center">Detalle</th>  
+                                                <th style="text-align: center; width: 80px">Sub Total</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="table-bodyFinish2">
+                                            <tr id="tr-emptyExtraFinish">
+                                                <td colspan="3" style="height: 30px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 5px">
+                                                        <i class="fa-solid fa-list" style="font-size: 20px"></i> <br>
+                                                        Lista de servicios extras vacía
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tr>
+                                            <td colspan="2" style="text-align: right">
+                                                Total <small>Bs.</small>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <small><b id="label-totalDetailFinish2" class="label-totalDetailFinish2">0.00</b></small>
+                                                <input type="hidden" id="subTotalExtra" name="subTotalExtra">
                                             </td>
                                         </tr>
                                     </table>
@@ -594,6 +671,24 @@
             $('#select_menu').val("").trigger("change");
         })
 
+        $('#modal_extra').on('show.bs.modal', function (event)
+        {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var pieza = button.data('pieza');
+            var planta = button.data('planta');
+            var modal = $(this);
+            modal.find('.modal-body #room_id').val(id);
+            modal.find('.modal-body #planta_id').val(planta);
+            modal.find('.modal-body #label-pieza').text('Pieza N° '+pieza);
+
+            $('#table-bodyMenu').empty();
+
+            $('#label-totalMenu').text(0);
+            $('#input-totalMenu').val(0)
+            $('#select_menu').val("").trigger("change");
+        })
+
 
         // Para finalizar el hospedaje y sacar cuanto ha consumido y su deuda total
         let aux =1;
@@ -604,19 +699,10 @@
             var pieza = button.data('pieza');
             var planta = button.data('planta');
 
-            // var room = button.data('room');
-
-            // let amountfinish = 0;
-            // amountfinish = button.data('amountfinish');
-            // amountfinish = parseFloat(amountfinish).toFixed(2);
 
             var modal = $(this);
             modal.find('.modal-body #room_id').val(id);
-            modal.find('.modal-body #planta_id').val(planta);
-            // modal.find('.modal-body #amountFinish').val(amountfinish);
-
-            // $('#label-roomAmount').empty();
-            // $('#label-roomAmount').text(room);           
+            modal.find('.modal-body #planta_id').val(planta);     
        
             
 
@@ -699,6 +785,36 @@
                 // totalMenu= menuTotal;   
             });
 
+            $.get('{{route('serviceroom-finish.extra')}}/'+id, function (data) {
+                extraTotal=0;
+                for (i = 0; i < data.length; i++) {
+                    if(i==0)
+                    {
+                        $('#table-bodyFinish2').empty();
+                    }
+                    // for (x = 0; x < data[i].menu.length; x++) {
+                        $('#table-bodyFinish2').append(`   
+                            <tr class="tr-item">
+                                <td class="td-itemMenu">${i+1}</td>
+                                <td>
+                                    <small>${data[i].detail}</small><br>
+                                </td>
+                                <td style="text-align: right">
+                                    <small>${data[i].amount}</small><br>
+                                </td>
+
+                            </tr>
+                        `
+                        );
+                        extraTotal = parseFloat(extraTotal) + parseFloat(data[i].amount);                        
+                    // }                    
+                }                            // alert(data)
+                $('#label-totalDetailFinish2').text(extraTotal);
+                $('#subTotalExtra').val(extraTotal);
+
+                // totalMenu= menuTotal;   
+            });
+
 
             moment.locale('es');
             let now= moment();
@@ -746,7 +862,7 @@
                      <table class="table">
                         <tr>
                             <th style="text-align: left"><small >Total a pagar de los servicios mas el hospedaje</small></th>
-                            <th style="text-align: right"><small >Bs. ${parseFloat(detailTotal+menuTotal+TotalHosp)}</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(detailTotal+menuTotal+TotalHosp+extraTotal)}</small></th>
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero cobrado</small></th>
@@ -754,12 +870,12 @@
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero a devolver</small></th>
-                            <th style="text-align: right"><small >Bs. ${debt > (detailTotal+menuTotal+TotalHosp)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp)):'0' }</small><input type="hidden" name="dev" value="${debt > (detailTotal+menuTotal+TotalHosp)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp)):'0' }"></th>
+                            <th style="text-align: right"><small >Bs. ${debt > (detailTotal+menuTotal+TotalHosp+extraTotal)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp+extraTotal)):'0' }</small><input type="hidden" name="dev" value="${debt > (detailTotal+menuTotal+TotalHosp)?parseFloat(debt - (detailTotal+menuTotal+TotalHosp)):'0' }"></th>
                         </tr>
 
                         <tr>
                             <th style="text-align: left"><small >Total a cobrar</small></th>
-                            <th style="text-align: right"><small >Bs. ${(detailTotal+menuTotal+TotalHosp) > debt?parseFloat((detailTotal+menuTotal+TotalHosp) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(detailTotal+menuTotal+TotalHosp) > debt?parseFloat((detailTotal+menuTotal+TotalHosp) - debt ):'0' }"></th>
+                            <th style="text-align: right"><small >Bs. ${(detailTotal+menuTotal+TotalHosp+extraTotal) > debt?parseFloat((detailTotal+menuTotal+TotalHosp+extraTotal) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(detailTotal+menuTotal+TotalHosp) > debt?parseFloat((detailTotal+menuTotal+TotalHosp) - debt ):'0' }"></th>
                         </tr>
                     </table>
                 `);     
@@ -784,6 +900,7 @@
                 
                 auxArticle = parseFloat($('#subTotalDetalle').val());
                 auxMenu = parseFloat($('#subTotalMenu').val());
+                auxExtra = parseFloat($('#subTotalExtra').val());
                 totaPagar = parseFloat(data.totalPagar);
                 debt = data.debt?parseFloat(data.debt):0;
                 
@@ -794,7 +911,7 @@
                      <table class="table">
                         <tr>
                             <th style="text-align: left"><small >Total a pagar de los servicios mas el hospedaje</small></th>
-                            <th style="text-align: right"><small >Bs. ${parseFloat(auxArticle+auxMenu+totaPagar)}</small></th>
+                            <th style="text-align: right"><small >Bs. ${parseFloat(auxArticle+auxMenu+totaPagar+auxExtra)}</small></th>
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero cobrado</small></th>
@@ -802,12 +919,12 @@
                         </tr>
                         <tr>
                             <th style="text-align: left"><small >Total de dinero a devolver</small></th>
-                            <th style="text-align: right"><small >Bs. ${debt > (auxArticle+auxMenu+totaPagar)?parseFloat(debt - (auxArticle+auxMenu+totaPagar)):'0' }</small> <input type="hidden" name="dev" value="${debt > auxArticle+auxMenu+totaPagar?parseFloat(debt - (auxArticle+auxMenu+totaPagar)):'0' }"</th>
+                            <th style="text-align: right"><small >Bs. ${debt > (auxArticle+auxMenu+totaPagar+auxExtra)?parseFloat(debt - (auxArticle+auxMenu+totaPagar+auxExtra)):'0' }</small> <input type="hidden" name="dev" value="${debt > auxArticle+auxMenu+totaPagar?parseFloat(debt - (auxArticle+auxMenu+totaPagar)):'0' }"</th>
                         </tr>
 
                         <tr>
                             <th style="text-align: left"><small >Total a cobrar</small></th>
-                            <th style="text-align: right"><small >Bs. ${(auxArticle+auxMenu+totaPagar) > debt?parseFloat((auxArticle+auxMenu+totaPagar) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(auxArticle+auxMenu+totaPagar) > debt?parseFloat((auxArticle+auxMenu+totaPagar) - debt ):'0' }"</th>
+                            <th style="text-align: right"><small >Bs. ${(auxArticle+auxMenu+totaPagar+auxExtra) > debt?parseFloat((auxArticle+auxMenu+totaPagar+auxExtra) - debt ):'0' }</small><input type="hidden" name="cobro" value="${(auxArticle+auxMenu+totaPagar) > debt?parseFloat((auxArticle+auxMenu+totaPagar) - debt ):'0' }"</th>
                         </tr>
                     </table>
                 `);
@@ -1063,6 +1180,7 @@
 
         
 
+        // Para los articulos
         function setNumber(){
             var length = 0;
             $(".td-item").each(function(index) {

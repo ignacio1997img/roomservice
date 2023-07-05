@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ServiceRoom;
 use DateTime;
 use App\Http\Controllers\ServiceRoomController;
+use App\Models\ServiceRoomsExtra;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -119,6 +120,8 @@ class ViewController extends Controller
             ->where('e.deleted_at', null)
             ->where('d.deleted_at', null)
             ->select('f.name', 'd.cant',  'd.price', 'd.amount')->get();
+        
+        $extra = ServiceRoomsExtra::where('serviceRoom_id', $service->id)->where('deleted_at', null)->get();
 
         $auxTotal =0;
         if($service->status=='asignado')
@@ -132,6 +135,6 @@ class ViewController extends Controller
 
     
 
-        return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu', 'auxTotal'));
+        return view('viewRoom.readAssign', compact('room', 'service', 'egre', 'menu', 'auxTotal', 'extra'));
     }
 }

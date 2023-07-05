@@ -135,6 +135,7 @@ class PermissionsTableSeeder extends Seeder
             'read_assign',
             'add_product',
             'add_food',
+            'add_serviceExtra',
         ];
 
         foreach ($keys as $key) {

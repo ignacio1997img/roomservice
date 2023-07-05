@@ -106,6 +106,7 @@
 
                            $totalF =0;
                            $totalA =0;
+                           $totalE =0;
                        @endphp
                         
                         @if ($service->status == 'asignado')                            
@@ -221,6 +222,56 @@
                                 </div>                            
                             </div>
 
+                            <div class="col-md-4" style="display: none">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table id="dataTable" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3" style="text-align: center"><i class="fa-solid fa-cart-plus"></i> Servicios Extras</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px">N&deg;</th>
+                                                    <th style="text-align: center">Detalles</th>
+                                                    <th style="width: 100px; text-align: center">Precio</th>
+                                                    {{-- <th style="width: 50px">Acción</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $cont = 0;
+                                                    $total = 0;
+                                                @endphp
+                                                @forelse ($extra as $item)               
+                                                        @php
+                                                            $cont++;
+                                                            $total = $total + $item->amount;
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $cont }}</td>
+                                                            <td>{{ $item->detail}}</td>
+                                                            <td style="text-align: right">{{ $item->amount}}</td>
+                                                        
+                                                        </tr>
+                                                    
+                                                @empty
+                                                    <tr>
+                                                        <td style="text-align: center" valign="top" colspan="3" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                    </tr>
+                                                @endforelse
+                                                <tr>
+                                                    @php
+                                                        $totalE = $total;
+                                                    @endphp
+                                                    <td colspan="2" style="text-align: right">Total</td>
+                                                    <td style="text-align: right"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>                            
+                                </div>                            
+                            </div>
+
                             {{-- <input type="text">                             --}}
 
                             <div class="col-md-12">
@@ -296,7 +347,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4" style="text-align: right">Total a pagar de los servicios y hospedajes</td>
-                                                    <td style="text-align: right" ><strong><small>Bs. {{ number_format($auxTotal->totalPagar+$totalA+$totalF,2, ',', '.') }}</small></strong></td>
+                                                    <td style="text-align: right" ><strong><small>Bs. {{ number_format($auxTotal->totalPagar+$totalA+$totalF+$totalE,2, ',', '.') }}</small></strong></td>
                                                     {{-- <td></td> --}}
                                                 </tr>
                                                 {{-- <table>
@@ -311,7 +362,7 @@
                                                     <td style="text-align: right" ><strong><small style="color: red">
                                                         Bs. 
                                                         @if ($total > $auxTotal->totalPagar+$totalA+$totalF)
-                                                            {{ number_format( $total-$auxTotal->totalPagar+$totalA+$totalF,2, ',', '.') }}
+                                                            {{ number_format( $total-($auxTotal->totalPagar+$totalA+$totalF+$totalE),2, ',', '.') }}
                                                         @else
                                                             {{ number_format(0,2, ',', '.') }}
                                                         @endif
@@ -324,7 +375,7 @@
                                                     <td colspan="4" style="text-align: right">Total de dinero a cobrar</td>
                                                     <td style="text-align: right" ><strong><small>Bs. 
                                                         @if ($total < $auxTotal->totalPagar+$totalA+$totalF)
-                                                            {{ number_format($auxTotal->totalPagar+$totalA+$totalF -$total,2, ',', '.') }}
+                                                            {{ number_format(($auxTotal->totalPagar+$totalA+$totalF+$totalE) -$total,2, ',', '.') }}
                                                         @else
                                                             {{ number_format(0,2, ',', '.') }}
                                                         @endif
@@ -361,7 +412,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th style="width: 50px">N&deg;</th>
-                                                    <th>Nombre</th>
+                                                    <th style="text-align: center">Nombre</th>
                                                     <th style="width: 50px">Precio</th>
                                                     <th style="width: 50px">Cantidad</th>
                                                     <th style="width: 50px">Sub Total</th>
@@ -416,7 +467,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th style="width: 50px">N&deg;</th>
-                                                    <th>Nombre</th>
+                                                    <th style="text-align: center">Nombre</th>
                                                     <th style="width: 50px">Precio</th>
                                                     <th style="width: 50px">Cantidad</th>
                                                     <th style="width: 50px">Sub Total</th>
@@ -455,6 +506,52 @@
                                                     @endphp
                                                     <td colspan="3" style="text-align: right">Total</td>
                                                     <td style="text-align: right" colspan="2"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>                            
+                                </div>                            
+                            </div>
+                            <div class="col-md-4">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table id="dataTable" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="3" style="text-align: center"><i class="fa-solid fa-cart-plus"></i> Servicios Extras</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px">N&deg;</th>
+                                                    <th style="text-align: center">Detalles</th>
+                                                    <th style="width: 100px; text-align: center">Precio</th>
+                                                    {{-- <th style="width: 50px">Acción</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $cont = 0;
+                                                    $total = 0;
+                                                @endphp
+                                                @forelse ($extra as $item)               
+                                                        @php
+                                                            $cont++;
+                                                            $total = $total + $item->amount;
+                                                        @endphp
+                                                        <tr>
+                                                            <td>{{ $cont }}</td>
+                                                            <td>{{ $item->detail}}</td>
+                                                            <td style="text-align: right">{{ $item->amount}}</td>
+                                                        
+                                                        </tr>
+                                                    
+                                                @empty
+                                                    <tr>
+                                                        <td style="text-align: center" valign="top" colspan="3" class="dataTables_empty">No hay datos disponibles en la tabla</td>
+                                                    </tr>
+                                                @endforelse
+                                                <tr>
+                                                    <td colspan="2" style="text-align: right">Total</td>
+                                                    <td style="text-align: right"><strong><small>Bs. {{ number_format($total,2, ',', '.') }}</small></strong></td>
                                                 </tr>
                                             </tbody>
                                         </table>

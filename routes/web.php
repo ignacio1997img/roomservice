@@ -85,9 +85,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     // para agregar productos a una pieza o habitacion
     Route::post('serviceroom/article/store', [IncomeController::class, 'storeEgressPieza'])->name('serviceroom-article.store');//para agregar un producto a la venta en una habitacion
     Route::post('serviceroom/foodmenu/store', [FoodMenuController::class, 'storeEgressPieza'])->name('serviceroom-foodmenu.store');//para agregar una comida a la venta en una habitacion
+    Route::post('serviceroom/extra/store', [ServiceRoomController::class, 'storeExtra'])->name('serviceroom-extra.store');//para registrar los servicios extras de cada habitacion ocupada
     Route::get('food/menu/list/ajax', [FoodMenuController::class, 'ajaxMenuExists']);//para poder obtene el menu del dia
     Route::get('serviceroom/finish/article/{id?}', [IncomeController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.article');//para poder obtener los detalle de venta producto del dia para finalizar el ospedaje
     Route::get('serviceroom/finish/menu/{id?}', [FoodMenuController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.menu');//para poder obtener los menu o comida del dia para finalizar el ospedaje
+    Route::get('serviceroom/finish/extra/{id?}', [ServiceRoomController::class, 'ajaxFinishPiezaExtra'])->name('serviceroom-finish.extra');//para poder obtener los servicios extras para finalizar el ospedaje
     Route::get('serviceroom/finish/room/{id?}/{dateFinish?}', [ServiceRoomController::class, 'ajaxFinishPieza'])->name('serviceroom-finish.rooms');//Para poder calcular la fecha o los dias de hospedaje y el total de deuda de solo la habitacion
     Route::post('serviceroom/hospedaje/close', [ServiceRoomController::class, 'closeFinishRoom'])->name('serviceroom-hospedaje-close');    //Para poder finalizar el hospedaje de la habitracion
 
