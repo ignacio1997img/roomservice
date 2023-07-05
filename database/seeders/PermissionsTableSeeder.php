@@ -95,6 +95,21 @@ class PermissionsTableSeeder extends Seeder
             ]);
         }
 
+        // Para los productos de limpieza
+        $keys = [
+            'browse_cleaningproducts',
+            'add_cleaningproducts',
+            'print_cleaningproducts',
+            'browse_cleaningproducts'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'cleaningproducts',
+            ]);
+        }
+
 
         //Para la estructura del hotel
         $keys = [

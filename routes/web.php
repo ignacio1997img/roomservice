@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryRoomController;
+use App\Http\Controllers\CleaningProductController;
 use App\Http\Controllers\FoodMenuController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
@@ -101,6 +102,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     Route::resource('sales', SaleController::class);
     Route::get('sales/ajax/list/{search?}', [SaleController::class, 'list']);
+
+
+    // ::::::::::::::::::::::   Para registro de produtos de limpieza  :::::::::::::::::::
+    Route::resource('cleaningproducts', CleaningProductController::class);
+
+
+
+
+
 
 
     //para los reportes de ventas de productos habitaciones o personas invidual
