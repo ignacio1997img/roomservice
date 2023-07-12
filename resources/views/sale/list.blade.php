@@ -4,10 +4,10 @@
             <thead>
                 <tr>
                     {{-- <th>ID</th> --}}
-                    <th>Nombre completo</th>                    
-                    <th>Fecha Hora de Compra.</th>
-                    <th>Monto</th>
-                    <th class="text-right">Acciones</th>
+                    <th style="text-align: center">Nombre / Nro de Habitación</th>                    
+                    <th width="10%" style="text-align: center">Fecha Hora de Compra.</th>
+                    <th width="10%" style="text-align: center">Monto</th>
+                    <th width="5%" class="text-right">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,24 +26,28 @@
                                
                             @endphp
                             <tr>
-                                <td><img src="{{ $image }}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
+                                <td ><img src="{{ $image }}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
                                 <td>
                                     
                                     @if ($item->people_id)
                                         <small>CI / PASS. </small>{{ $item->people->ci??'SN' }}
                                         <br>
                                         {{ strtoupper($item->people->first_name) }} {{ strtoupper($item->people->last_name) }}
+
+                                        @if ($item->serviceRoom_id)<br>
+                                            <small style="color: red">PIEZA N°. {{ $item->serviceroom->number }}</small>
+                                        @endif
+                                    @else
+                                        <Small>SN</Small>
                                     @endif
                                     
-                                    @if ($item->serviceRoom_id)<br>
-                                        <small style="color: red">PIEZA N°. {{ $item->serviceroom->number }}</small>
-                                    @endif
+                                    
                                 </td>
                                 
                             </tr>
                         </table>
                     </td>
-                    <td>{{ date('d/m/Y', strtotime($item->created_at)) }} </td>
+                    <td style="text-align: center">{{ date('d-m-Y H:m:s', strtotime($item->created_at)) }} <br> <small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}.</small> </td>
                     <td style="text-align: right"><small>Bs. {{ number_format($item->amount,2, ',', '.') }}</small></td>
                     <td class="no-sort no-click bread-actions text-right">
                         @if (auth()->user()->hasPermission('print_sales'))                    
