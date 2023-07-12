@@ -346,7 +346,7 @@
                                                     {{-- <td></td> --}}
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4" style="text-align: right">Total a pagar de los servicios y hospedajes</td>
+                                                    <td colspan="4" style="text-align: right">Total a pagar de los servicios, extra y hospedajes</td>
                                                     <td style="text-align: right" ><strong><small>Bs. {{ number_format($auxTotal->totalPagar+$totalA+$totalF+$totalE,2, ',', '.') }}</small></strong></td>
                                                     {{-- <td></td> --}}
                                                 </tr>
@@ -361,8 +361,8 @@
                                                     <td colspan="4" style="text-align: right">Total de dinero a devolver</td>
                                                     <td style="text-align: right" ><strong><small style="color: red">
                                                         Bs. 
-                                                        @if ($total > $auxTotal->totalPagar+$totalA+$totalF)
-                                                            {{ number_format( $total-($auxTotal->totalPagar+$totalA+$totalF+$totalE),2, ',', '.') }}
+                                                        @if ($total > $auxTotal->totalPagar+$totalA+$totalF+$totalE)
+                                                            {{ number_format($total-($auxTotal->totalPagar+$totalA+$totalF+$totalE),2, ',', '.') }}
                                                         @else
                                                             {{ number_format(0,2, ',', '.') }}
                                                         @endif
@@ -374,7 +374,7 @@
                                                 <tr>
                                                     <td colspan="4" style="text-align: right">Total de dinero a cobrar</td>
                                                     <td style="text-align: right" ><strong><small>Bs. 
-                                                        @if ($total < $auxTotal->totalPagar+$totalA+$totalF)
+                                                        @if ($total < $auxTotal->totalPagar+$totalA+$totalF+$totalE)
                                                             {{ number_format(($auxTotal->totalPagar+$totalA+$totalF+$totalE) -$total,2, ',', '.') }}
                                                         @else
                                                             {{ number_format(0,2, ',', '.') }}
@@ -394,9 +394,10 @@
                                         <strong>Pago Total de servicio:</strong>
                                         <p><small>Total a pagar de los servicio de los articulo:</small> {{NumerosEnLetras::convertir($totalA,'Bolivianos',true,'Centavos')}} </p>
                                         <p><small>Total a pagar de los servicios de comida:</small> {{NumerosEnLetras::convertir($totalF,'Bolivianos',true,'Centavos')}} </p>
+                                        <p><small>Total a pagar de los servicios extra:</small> {{NumerosEnLetras::convertir($totalE,'Bolivianos',true,'Centavos')}} </p>
                                         <p><small>Total a pagar del servicio de hospedaje con {{$auxTotal->typeAmount=='ventilador'? 'Ventilador':'Aire Acondicionado'}} de un total de {{$auxTotal->dia}} {{$auxTotal->dia>1?'días':'día'}}:</small> {{NumerosEnLetras::convertir($auxTotal->totalPagar,'Bolivianos',true,'Centavos')}} </p>
                                         <br>
-                                        <p><small>Total a pagar:</small> {{NumerosEnLetras::convertir($auxTotal->totalPagar+$totalA+$totalF,'Bolivianos',true,'Centavos')}} </p>
+                                        <p><small>Total a pagar:</small> {{NumerosEnLetras::convertir($auxTotal->totalPagar+$totalA+$totalF+$totalE,'Bolivianos',true,'Centavos')}} </p>
                                     </div>
                                 </div>
                             </div>
