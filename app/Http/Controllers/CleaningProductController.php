@@ -91,7 +91,7 @@ class CleaningProductController extends Controller
     {
         $income = CleaningProduct::where('id', $id)
                 ->first();
-        return $income;
+        // return $income;
         $data = DB::table('cleaning_products_details as id')
             ->join('articles as a', 'a.id', 'id.article_id')
             ->join('categories as c', 'c.id', 'a.category_id')

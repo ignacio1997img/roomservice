@@ -17,7 +17,7 @@
                     <img src="{{ Voyager::image($admin_favicon) }}" alt="{{strtoupper(setting('admin.title'))}}" width="70px">
                 @endif
             </td>
-            <td style="text-align: center;  width:50%">
+            <td style="text-align: center;  width:60%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
                     {{strtoupper(setting('admin.title'))}}<br>
                 </h3>
@@ -25,12 +25,12 @@
                     REPORTE DETALLADO DE INGRESO DE ARTICULO AL ALMACEN <br> PARA LIMPIEZA
                 </h4>
             </td>
-            <td style="text-align: right; width:30%">
+            <td style="text-align: right; width:20%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
                     <div id="qr_code">
                         {{-- {!! QrCode::size(80)->generate('Total Cobrado: Bs'.number_format($amount,2, ',', '.').', Cobrado Por: '.$agent.', Recaudado en Fecha '.date('d', strtotime($date)).' de '.strtoupper($months[intval(date('m', strtotime($date)))] ).' de '.date('Y', strtotime($date))); !!} --}}
                     </div>
-                    <small style="font-size: 8px; font-weight: 100">Impreso por: {{ Auth::user()->name }} {{ date('d/m/Y H:i:s') }}</small>
+                    <small style="font-size: 8px; font-weight: 100">Impreso por: {{ Auth::user()->name }} <br> {{ date('d/m/Y H:i:s') }}</small>
                 </h3>
             </td>
         </tr>
