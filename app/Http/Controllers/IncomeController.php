@@ -143,7 +143,7 @@ class IncomeController extends Controller
                 ->join('categories as c', 'c.id', 'a.category_id')
                 ->where('incomes_details.deleted_at', NULL)->where('incomes_details.cantRestante','>',0)
                 ->select('incomes_details.article_id', 'a.name as article', 'a.image', 'c.name as category',  'incomes_details.income_id', 'incomes_details.expiration', 'incomes_details.price', DB::raw("SUM(incomes_details.cantRestante) as stock"))
-                ->orderBy('incomes_details.id', 'DESC')->groupBy('incomes_details.article_id', 'incomes_details.price', 'incomes_details.   ')->paginate($paginate);
+                ->orderBy('incomes_details.id', 'DESC')->groupBy('incomes_details.article_id', 'incomes_details.price', 'incomes_details.expiration')->paginate($paginate);
 
         // $data = IncomesDetail::with(['article', 'income'])
         //         ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'income_id', 'id', 'expiration', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price', 'expiration')->paginate($paginate);
