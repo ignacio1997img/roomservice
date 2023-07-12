@@ -18,5 +18,10 @@ class CategoriesFacility extends Model
         'wifiName',
         'wifiPassword'
 
-    ];
+    ]; 
+
+    public function room()
+    {
+        return $this->hasMany(Room::class, 'categoryFacility_id');
+    }
 }

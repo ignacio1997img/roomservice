@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryRoomController;
+use App\Http\Controllers\CleaningController;
 use App\Http\Controllers\CleaningProductController;
 use App\Http\Controllers\FoodMenuController;
 use App\Http\Controllers\IncomeController;
@@ -102,6 +103,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     Route::resource('sales', SaleController::class);
     Route::get('sales/ajax/list/{search?}', [SaleController::class, 'list']);
+
+
+    // :::::::::::::::::::::::Para limpieza :::::::::::::::::::::::::
+    Route::resource('cleaning', CleaningController::class);
+    Route::get('cleaning/asignation/index', [CleaningController::class, 'indexAsignation'])->name('cleaning-asignation.index');
+    Route::get('cleaning/asignation/list/{search?}', [CleaningController::class, 'ListAsignation']);
+    Route::get('cleaning/asignation/{user_id?}/room/index', [CleaningController::class, 'indexAsignationRoom'])->name('cleaning-asignation-room.index');
+    Route::get('cleaning/asignation/room/list/{user_id}/{search?}', [CleaningController::class, 'ListAsignationRoom']);
+    Route::post('cleaning/asignation/room/store', [CleaningController::class, 'storeAsignationRoom'])->name('cleaning-asignation-room.store');
+    Route::delete('cleaning/asignation/room/delete/{id?}', [CleaningController::class, 'deleteAsignationRoom'])->name('cleaning-asignation-room.delete');
+
+
 
 
     // ::::::::::::::::::::::   Para registro de produtos de limpieza  :::::::::::::::::::
