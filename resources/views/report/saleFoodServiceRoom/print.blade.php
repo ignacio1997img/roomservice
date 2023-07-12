@@ -20,7 +20,7 @@
                     <img src="{{ Voyager::image($admin_favicon) }}" alt="{{strtoupper(setting('admin.title'))}}" width="70px">
                 @endif
             </td>
-            <td style="text-align: center;  width:50%">
+            <td style="text-align: center;  width:60%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
                     {{strtoupper(setting('admin.title'))}}<br>
                 </h3>
@@ -39,12 +39,12 @@
                 @endif
                 
             </td>
-            <td style="text-align: right; width:30%">
+            <td style="text-align: right; width:20%">
                 <h3 style="margin-bottom: 0px; margin-top: 5px">
                     {{-- <div id="qr_code">
                         {!! QrCode::size(80)->generate('Total Cobrado: Bs'.number_format($amount,2, ',', '.').', Cobrado Por: '.$agent.', Recaudado en Fecha '.date('d', strtotime($date)).' de '.strtoupper($months[intval(date('m', strtotime($date)))] ).' de '.date('Y', strtotime($date))); !!}
                     </div> --}}
-                    <small style="font-size: 8px; font-weight: 100">Impreso por: {{ Auth::user()->name }} {{ date('d/M/Y H:i:s') }}</small>
+                    <small style="font-size: 8px; font-weight: 100">Impreso por: {{ Auth::user()->name }} <br> {{ date('d/m/Y H:i:s') }}</small>
                 </h3>
             </td>
         </tr>
@@ -72,20 +72,30 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td>
-                                <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
-                                <small>Nro Habitación:</small> {{ $item->number}}
+                                <small>Nombre:</small> 
+                                @if ($item->first_name)
+                                    {{ $item->first_name}} {{ $item->last_name}}<br>
+                                @else
+                                    <small>SN</small>
+                                @endif
+
+
+
+                                @if ($item->number)
+                                    <small>Nro Habitación:</small> {{ $item->number}}
+                                @endif
                             </td>
                             <td style="text-align: center">{{$item->user}}</td>
-                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
-                            <td style="text-align: right">{{ $item->food}}</td>
-                            <td style="text-align: right">{{ number_format($item->cant,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ number_format(($item->cant * $item->price),2, ',', '.') }}</td>                                                                                
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
+                            <td style="text-align: center">{{ $item->name}}</td>
+                            <td style="text-align: right"><b>{{ number_format($item->cantSolicitada,2, ',', '.') }}</b></td>
+                            <td style="text-align: right"><b>{{ number_format($item->price,2, ',', '.') }}</b></td>
+                            <td style="text-align: right"><b>{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</b></td>                                                                                  
                             
                         </tr>
                         @php
                             $count++;
-                            $total = $total + ($item->cant * $item->price);                            
+                            $total = $total + ($item->cantSolicitada * $item->price);                            
                         @endphp
                         
                     @empty

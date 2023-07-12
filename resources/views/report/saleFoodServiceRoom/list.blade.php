@@ -16,7 +16,7 @@
                         <th style="text-align: center">CLIENTE</th>
                         <th style="text-align: center">ATENDIDO POR</th>
                         <th style="text-align: center">FECHA</th>
-                        <th style="text-align: center">COMIDA</th>
+                        <th style="text-align: center">PRODUCTO</th>
                         <th style="text-align: center; width:5px">CANTIDAD</th>
                         <th style="text-align: center; width:5px">PRECIO</th>
 
@@ -32,20 +32,30 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td>
-                                <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
-                                <small>Nro Habitación:</small> {{ $item->number}}
+                                <small>Nombre:</small> 
+                                @if ($item->first_name)
+                                    {{ $item->first_name}} {{ $item->last_name}}<br>
+                                @else
+                                    <small>SN</small>
+                                @endif
+
+
+
+                                @if ($item->number)
+                                    <small>Nro Habitación:</small> {{ $item->number}}
+                                @endif
                             </td>
                             <td style="text-align: center">{{$item->user}}</td>
-                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
-                            <td style="text-align: right">{{ $item->food}}</td>
-                            <td style="text-align: right">{{ number_format($item->cant,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
-                            <td style="text-align: right">{{ number_format(($item->cant * $item->price),2, ',', '.') }}</td>                                                                                
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
+                            <td style="text-align: center">{{ $item->name}}</td>
+                            <td style="text-align: right"><small>{{ number_format($item->cantSolicitada,2, ',', '.') }}</small></td>
+                            <td style="text-align: right"><small>{{ number_format($item->price,2, ',', '.') }}</small></td>
+                            <td style="text-align: right"><small>{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</small></td>                                                                                
                             
                         </tr>
                         @php
                             $count++;
-                            $total = $total + ($item->cant * $item->price);                            
+                            $total = $total + ($item->cantSolicitada * $item->price);                            
                         @endphp
                         
                     @empty

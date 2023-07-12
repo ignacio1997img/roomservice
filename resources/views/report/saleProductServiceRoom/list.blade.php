@@ -32,13 +32,21 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td>
-                                <small>Nombre:</small> {{ $item->first_name}} {{ $item->last_name}}<br>
+                                <small>Nombre:</small> 
+                                @if ($item->first_name)
+                                    {{ $item->first_name}} {{ $item->last_name}}<br>
+                                @else
+                                    <small>SN</small>
+                                @endif
+
+
+
                                 @if ($item->number)
                                     <small>Nro Habitación:</small> {{ $item->number}}
                                 @endif
                             </td>
                             <td style="text-align: center">{{$item->user}}</td>
-                            <td style="text-align: center">{{date('d/m/Y', strtotime($item->created_at))}}</td>
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
                             <td style="text-align: right">{{ $item->name}}</td>
                             <td style="text-align: right">{{ number_format($item->cantSolicitada,2, ',', '.') }}</td>
                             <td style="text-align: right">{{ number_format($item->price,2, ',', '.') }}</td>
