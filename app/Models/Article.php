@@ -22,4 +22,8 @@ class Article extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function incomeDetail()
+    {
+        return $this->hasMany(IncomesDetail::class, 'article_id');
+    }
 }

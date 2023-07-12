@@ -50,7 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     // Para obtener la lista de article en stock
     Route::get('incomes/article/stock/ajax', [IncomeController::class, 'ajaxProductExists']);//para poder obtener los particulos o productos
 
-
+    
 
     Route::resource('worker', WorkerController::class);
     Route::get('worker/ajax/list/{search?}', [WorkerController::class, 'list']);

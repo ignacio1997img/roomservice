@@ -126,6 +126,11 @@ class IncomeController extends Controller
     //Para ver el stock del almacen
     public function indexStock()
     {
+        $data = IncomesDetail::join('articles as a', 'a.id', 'incomes_details.article_id')
+                ->join('categories as c', 'c.id', 'a.category_id')
+                ->where('incomes_details.deleted_at', NULL)->where('incomes_details.cantRestante','>',0)->select('incomes_details.article_id', 'a.name as article', 'a.image', 'c.name as category',  'incomes_details.income_id', 'incomes_details.expiration', 'incomes_details.price', DB::raw("SUM(incomes_details.cantRestante) as stock"))->orderBy('incomes_details.id', 'DESC')->groupBy('incomes_details.article_id', 'incomes_details.price', 'incomes_details.expiration')->get();
+
+        // return $data;
         return view('store.stock.browse');
     }
 
@@ -133,8 +138,15 @@ class IncomeController extends Controller
     {
         $paginate = request('paginate') ?? 10;
 
-        $data = IncomesDetail::with(['article.category'])
-                ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'expiration', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price', 'expiration')->paginate($paginate);
+
+        $data = IncomesDetail::join('articles as a', 'a.id', 'incomes_details.article_id')
+                ->join('categories as c', 'c.id', 'a.category_id')
+                ->where('incomes_details.deleted_at', NULL)->where('incomes_details.cantRestante','>',0)
+                ->select('incomes_details.article_id', 'a.name as article', 'a.image', 'c.name as category',  'incomes_details.income_id', 'incomes_details.expiration', 'incomes_details.price', DB::raw("SUM(incomes_details.cantRestante) as stock"))
+                ->orderBy('incomes_details.id', 'DESC')->groupBy('incomes_details.article_id', 'incomes_details.price', 'incomes_details.   ')->paginate($paginate);
+
+        // $data = IncomesDetail::with(['article', 'income'])
+        //         ->where('deleted_at', NULL)->where('cantRestante','>',0)->select('article_id', 'income_id', 'id', 'expiration', 'price', DB::raw("SUM(cantRestante) as stock"))->orderBy('id', 'DESC')->groupBy('article_id', 'price', 'expiration')->paginate($paginate);
 
         // return $data;
         // dump($data);

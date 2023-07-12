@@ -24,8 +24,18 @@ class IncomesDetail extends Model
         'deleted_at',
         'deletedUser_id'
     ];
+
+    public function income()
+    {
+        return $this->belongsTo(Income::class, 'income_id');
+    }
     public function article()
     {
         return $this->belongsTo(Article::class, 'article_id');
     }
+
+    // public function articles()
+    // {
+    //     return $this->belongsTo(Article::class, 'article_id');
+    // }
 }

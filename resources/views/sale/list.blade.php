@@ -17,18 +17,24 @@
                         <table>
                             @php
                                 $image = asset('image/default.jpg');
-                                if($item->people->image){
-                                    $image = asset('storage/'.str_replace('.', '-cropped.', $item->people->image));
+                                if($item->people_id){
+                                    if($item->people->image){
+                                        $image = asset('storage/'.str_replace('.', '-cropped.', $item->people->image));
+                                    }
                                 }
                                 $now = \Carbon\Carbon::now();
                                
                             @endphp
                             <tr>
-                                <td><img src="{{ $image }}" alt="{{ $item->people->first_name }} " style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
+                                <td><img src="{{ $image }}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 10px"></td>
                                 <td>
-                                    <small>CI / PASS. </small>{{ $item->people->ci }}
+                                    
+                                    @if ($item->people_id)
+                                        <small>CI / PASS. </small>{{ $item->people->ci??'SN' }}
                                         <br>
-                                    {{ strtoupper($item->people->first_name) }} {{ strtoupper($item->people->last_name) }}
+                                        {{ strtoupper($item->people->first_name) }} {{ strtoupper($item->people->last_name) }}
+                                    @endif
+                                    
                                     @if ($item->serviceRoom_id)<br>
                                         <small style="color: red">PIEZA N°. {{ $item->serviceroom->number }}</small>
                                     @endif

@@ -16,7 +16,7 @@
 
     @section('content')
         <div class="page-content edit-add container-fluid">    
-            <form id="agent" action="{{route('serviceroom-article.store')}}" method="POST">
+            <form id="agent" action="{{route('sales.store')}}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-8">
@@ -65,7 +65,7 @@
                                 <div class="form-group col-md-12">
                                     <label for="customer_id">Cliente</label>
                                     <div class="input-group">
-                                        <select name="people_id" class="form-control" id="select_people_id" required></select>
+                                        <select name="people_id" class="form-control" id="select_people_id"></select>
                                         <span class="input-group-btn">
                                             <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="form-group col-md-12 text-center">
                                     <button type="submit" id="btn-submit" class="btn btn-primary btn-block">Registrar <i class="voyager-basket"></i></button>
-                                    <a href="{{ route('incomes.index') }}" >Volver a la lista</a>
+                                    <a href="{{ route('sales.index') }}" >Volver a la lista</a>
                                 </div>
                             </div>
                         </div>

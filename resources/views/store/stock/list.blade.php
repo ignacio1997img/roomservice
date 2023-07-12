@@ -16,17 +16,17 @@
                     <td>
                         @php
                             $image = asset('image/default.jpg');
-                            if($item->article->image){
-                                $image = asset('storage/'.str_replace('.', '-cropped.', $item->article->image));
+                            if($item->image){
+                                $image = asset('storage/'.str_replace('.', '-cropped.', $item->image));
                             }
                         @endphp
                         <div style="display: flex">
                             <div style="margin: 0px 10px">
-                                <img src="{{ $image }}" alt="{{ $item->article->name }} " width="50px" />
+                                <img src="{{ $image }}" alt="{{ $item->article }} " width="50px" />
                             </div>
                             <div>
-                                <b style="font-size: 16px">{{ $item->article->name }}</b><br>
-                                <small>Categoría: </small>{{ $item->article->category->name }} 
+                                <b style="font-size: 16px">{{ $item->article }}</b><br>
+                                <small>Categoría: </small>{{ $item->category }} 
                                 @if ($item->expiration)
                                     <br>
                                     <small style="color: red">Expiración: </small>{{ $item->expiration }}
