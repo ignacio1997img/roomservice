@@ -107,6 +107,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     // :::::::::::::::::::::::Para limpieza :::::::::::::::::::::::::
     Route::resource('cleaning', CleaningController::class);
+    Route::get('cleaning/article/stock/ajax', [CleaningController::class, 'ajaxProductExists']);//Para obtener los produxtos para la limpieza
+    Route::post('cleaning/start', [CleaningController::class, 'cleaningStart'])->name('cleaning.start');
+    Route::post('cleaning/finish', [CleaningController::class, 'cleaningFinish'])->name('cleaning.finish');
+    Route::post('cleaning/room/product/store', [CleaningController::class, 'storeRoomProduct'])->name('cleaning-room-product.store');
+    Route::get('cleaning/ajax/list/{search?}', [CleaningController::class, 'list']);
     Route::get('cleaning/asignation/index', [CleaningController::class, 'indexAsignation'])->name('cleaning-asignation.index');
     Route::get('cleaning/asignation/list/{search?}', [CleaningController::class, 'ListAsignation']);
     Route::get('cleaning/asignation/{user_id?}/room/index', [CleaningController::class, 'indexAsignationRoom'])->name('cleaning-asignation-room.index');

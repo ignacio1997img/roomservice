@@ -16,6 +16,7 @@ class Room extends Model
         'amount',
         'amount1',
         'status',
+        'cleaning',
         'registerUser_id',
         'deletedUser_id',
         'deleted_at'

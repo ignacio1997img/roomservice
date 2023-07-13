@@ -185,15 +185,15 @@
 
         $('#category_id').change(function(){
             let rooms = $('#category_id option:selected').data('rooms');
-            let rooms_list = '<option value="">--Seleccione una habita--</option>';
-            if(rooms.length){
+            let rooms_list = '<option value="" disabled selected>--Seleccione una habitacion--</option>';
+            // if(rooms.length){
  
                 rooms.map(room => {
                     rooms_list += `<option value="${room.id}">${room.number}</option>`;
                 });
-            }else{
-                rooms_list += `<option value="">Ninguna</option>`;
-            }
+            // }else{
+            //     rooms_list += `<option value="">Ninguna</option>`;
+            // }
             $('#room_id').html(rooms_list);
         });
 
