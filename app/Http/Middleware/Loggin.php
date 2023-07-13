@@ -24,7 +24,7 @@ class Loggin
     {
         if(Auth::user())
         {
-            if(!Auth::user()->hasRole('admin') && Auth::user()->status == 0){
+            if(!Auth::user()->hasRole('admin') && (Auth::user()->status == 0 || Auth::user()->people_id == '')){
                 // return redirect('/admin/notice');
                 Auth::logout();
             }
