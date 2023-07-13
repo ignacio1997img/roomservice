@@ -325,6 +325,24 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-06-20 02:33:33',
                 'updated_at' => '2023-06-20 02:36:07',
             ),
+            17 => 
+            array (
+                'id' => 24,
+                'name' => 'jobs',
+                'slug' => 'jobs',
+                'display_name_singular' => 'Cargo',
+                'display_name_plural' => 'Cargos',
+                'icon' => 'fa-solid fa-list',
+                'model_name' => 'App\\Models\\Job',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2023-07-13 18:02:14',
+                'updated_at' => '2023-07-13 18:21:09',
+            ),
         ));
         
         
