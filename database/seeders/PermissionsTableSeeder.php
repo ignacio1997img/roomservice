@@ -95,6 +95,21 @@ class PermissionsTableSeeder extends Seeder
             ]);
         }
 
+        // Para la asignacion de habitaciones para que los empleado con ROL limpieza 
+        $keys = [
+            'browse_cleaningasignationindex',
+            // 'add_cleaningproducts',
+            // 'print_cleaningproducts',
+            // 'browse_cleaningproductsstockarticle'
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'cleaning',
+            ]);
+        }
+
         // Para los productos de limpieza
         $keys = [
             'browse_cleaningproducts',
