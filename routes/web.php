@@ -10,6 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ServiceRoomController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\WorkerController;
 use App\Models\CategoriesRoom;
@@ -145,6 +146,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::post('report-salefoodserviceroom/list', [ReportController::class, 'saleFoodServiceRoomList'])->name('report-salefoodserviceroom.list');
 
 
+
+
+    Route::post('register-users', [UserController::class, 'create_user'])->name('store.users');
+    Route::put('update-user/{user}' ,[UserController::class ,'update_user'])->name('update.users');
 
 
 

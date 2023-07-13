@@ -16,7 +16,10 @@
 @section('content')
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+              {{-- action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif" --}}
+              
+              action="@if(!is_null($dataTypeContent->getKey())){{ route('update.users', $dataTypeContent->getKey()) }}@else{{ route('store.users') }}@endif"
+              
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             @if(isset($dataTypeContent->id))
@@ -39,11 +42,21 @@
                         @endif
 
                         <div class="panel-body">
+
                             <div class="form-group">
+                                <label>Persona</label>
+                                @if(isset($dataTypeContent->password))
+                                    <br>
+                                    <small>Dejar vacío para mantener el mismo</small>
+                                @endif
+                                <select class="form-control" id="select_people_id" name="people_id" @if(!isset($dataTypeContent->id)) required @endif></select>
+                            </div>
+
+                            {{-- <div class="form-group">
                                 <label for="name">{{ __('voyager::generic.name') }}</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('voyager::generic.name') }}"
                                        value="{{ old('name', $dataTypeContent->name ?? '') }}">
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <label for="email">{{ __('voyager::generic.email') }}</label>
@@ -142,5 +155,80 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
         });
+
+
+
+        $(document).ready(function(){
+                var peopleSelected;
+                var recommendedSelected;
+                
+                $('#select_people_id').select2({
+                // tags: true,
+                    placeholder: '<i class="fa fa-search"></i> Buscar...',
+                    escapeMarkup : function(markup) {
+                        return markup;
+                    },
+                    language: {
+                        inputTooShort: function (data) {
+                            return `Por favor ingrese ${data.minimum - data.input.length} o más caracteres`;
+                        },
+                        noResults: function () {
+                            return `<i class="far fa-frown"></i> No hay resultados encontrados`;
+                        }
+                    },
+                    quietMillis: 250,
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: "{{ url('admin/worker/people/ajax') }}",        
+                        processResults: function (data) {
+                            let results = [];
+                            data.map(data =>{
+                                results.push({
+                                    ...data,
+                                    disabled: false
+                                });
+                            });
+                            return {
+                                results
+                            };
+                        },
+                        cache: true
+                    },
+                    templateResult: formatResultCustomers,
+                    templateSelection: (opt) => {
+                        peopleSelected = opt;
+
+                        
+                        return opt.id?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
+                    }
+                }).change(function(){
+                   
+                });       
+
+            })
+
+            function formatResultCustomers(option){
+            // Si está cargando mostrar texto de carga
+                if (option.loading) {
+                    return '<span class="text-center"><i class="fas fa-spinner fa-spin"></i> Buscando...</span>';
+                }
+                let image = "{{ asset('image/default.jpg') }}";
+                if(option.image){
+                    image = "{{ asset('storage') }}/"+option.image.replace('.', '-cropped.');
+                    // alert(image)
+                }
+                
+                // Mostrar las opciones encontradas
+                return $(`  <div style="display: flex">
+                                <div style="margin: 0px 10px">
+                                    <img src="${image}" width="50px" />
+                                </div>
+                                <div>
+                                    <small>CI: </small>${option.ci}<br>
+                                    <b style="font-size: 16px">${option.first_name} ${option.last_name}<br>
+                                    <small>Nacionalidad: </small>${option.nationality?option.nationality.name:'SN'}
+                                </div>
+                            </div>`);
+            }
     </script>
 @stop

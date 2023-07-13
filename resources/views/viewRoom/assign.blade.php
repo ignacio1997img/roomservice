@@ -70,7 +70,7 @@
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
                                     <select name="people_id" class="form-control" id="select_people_id" required></select>
-                                    <span class="input-group-btn">
+                                    <span class="input-group-btn">  
                                         <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                         </button>

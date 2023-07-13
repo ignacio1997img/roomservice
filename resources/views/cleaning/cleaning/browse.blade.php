@@ -2,7 +2,7 @@
 
 @section('page_title', 'Viendo Ingreso')
 
-@if (auth()->user()->hasPermission('browse_cleaningasignationindex'))
+@if (auth()->user()->hasRole('limpieza'))
 
 @section('page_header')
     <div class="container-fluid">
