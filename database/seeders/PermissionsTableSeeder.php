@@ -67,6 +67,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('departments');
         Permission::generateFor('provinces');
         Permission::generateFor('cities');
+        Permission::generateFor('jobs');
 
 
         $keys = [
