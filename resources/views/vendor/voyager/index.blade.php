@@ -13,7 +13,9 @@
             </div>
         </div>
 
-        @if(auth()->user()->hasPermission('graphic') || 1==1)
+        {{-- @if(auth()->user()->hasRole('limpieza') ) --}}
+
+        @if(auth()->user()->hasPermission('graphic') )
             @php
                 // $date = date()
                 $saleproduct = App\Models\EgresDeatil::WhereHas('egres', function($query) {
@@ -128,6 +130,7 @@
             
         @endif
         
+        @if(auth()->user()->hasRole('admin') )
             <div class="row" style="text-align: center">
                 @php
                     $pdf =  \App\Models\CategoriesFacility::where('deleted_at',null)->get();
@@ -165,6 +168,7 @@
                 @endforelse
 
             </div>
+        @endif
             
             
             
@@ -189,134 +193,137 @@
 @section('javascript')
  
     <script src="{{ asset('js/plugins/chart.min.js') }}"></script>
-    <script>
-        $(document).ready(function(){
-            
 
-            // ==============================================
-       
-            labels = [];
-            values = [];
+    @if(auth()->user()->hasPermission('graphic') )
+        <script>
+            $(document).ready(function(){
+                
 
+                // ==============================================
         
-            labels.push('Ingreso del Día');
-            values.push({{$saleproduct + $salefood}});
-      
+                labels = [];
+                values = [];
 
-            var data = {
-                labels,
-                datasets: [{
-                    label: 'Bs. Productos & Comidas del día',
-                    data: values,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 205, 86, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(39, 174, 96, 1)',
-                        'rgba(155, 89, 182, 1)',
-                        'rgba(235, 152, 78, 1)',
-                        'rgba(52, 73, 94, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 205, 86, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(39, 174, 96, 1)',
-                        'rgba(155, 89, 182, 1)',
-                        'rgba(235, 152, 78, 1)',
-                        'rgba(52, 73, 94, 1)'
-                    ],
-                }]
-            };
-            var config = {
-                type: 'bar',
-                data,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    }
-                },
-            };
-            var myChart = new Chart(
-                document.getElementById('bar-chart'),
-                config
-            );
-
-            // ==============================================
-            let productDay = @json($productDay);
-            labels = [];
-            values = [];
-            color = [];
-
-            productDay.map(item => {
-                labels.push(item.article.name);
-                values.push(parseInt(item.total));
-
-                color.push(colorRGB());
-            });
-
-            var data = {
-                labels,
-                datasets: [{
-                    label: 'Productos más vendidos',
-                    data: values,
-                    backgroundColor: color,
-                    hoverOffset: 4
-                }]
-            };
-            var config = {
-                type: 'doughnut',
-                data
-            };
-            var myChart = new Chart(
-                document.getElementById('product-chart'),
-                config
-            );
-
-            // ==============================================
-            let foodDay = @json($foodDay);
-            labels = [];
-            values = [];
-            color = [];
-
-            foodDay.map(item => {
-                labels.push(item.food.name);
-                values.push(parseInt(item.total));
-
-                color.push(colorRGB());
-            });
-
-            var data = {
-                labels,
-                datasets: [{
-                    label: 'Comida más vendidos',
-                    data: values,
-                    backgroundColor: color,
-                    hoverOffset: 4
-                }]
-            };
-            var config = {
-                type: 'doughnut',
-                data
-            };
-            var myChart = new Chart(
-                document.getElementById('food-chart'),
-                config
-            );
             
-        });
+                labels.push('Ingreso del Día');
+                values.push({{$saleproduct + $salefood}});
+        
 
-        function generarNumero(numero){
-            return (Math.random()*numero).toFixed(0);
-        }
-        function colorRGB(){
-            var coolor = "("+generarNumero(255)+"," + generarNumero(255) + "," + generarNumero(255) +")";
-            return "rgb" + coolor;
-        }
-    </script>
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Bs. Productos & Comidas del día',
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 205, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(39, 174, 96, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(235, 152, 78, 1)',
+                            'rgba(52, 73, 94, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 205, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(39, 174, 96, 1)',
+                            'rgba(155, 89, 182, 1)',
+                            'rgba(235, 152, 78, 1)',
+                            'rgba(52, 73, 94, 1)'
+                        ],
+                    }]
+                };
+                var config = {
+                    type: 'bar',
+                    data,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    },
+                };
+                var myChart = new Chart(
+                    document.getElementById('bar-chart'),
+                    config
+                );
+
+                // ==============================================
+                let productDay = @json($productDay);
+                labels = [];
+                values = [];
+                color = [];
+
+                productDay.map(item => {
+                    labels.push(item.article.name);
+                    values.push(parseInt(item.total));
+
+                    color.push(colorRGB());
+                });
+
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Productos más vendidos',
+                        data: values,
+                        backgroundColor: color,
+                        hoverOffset: 4
+                    }]
+                };
+                var config = {
+                    type: 'doughnut',
+                    data
+                };
+                var myChart = new Chart(
+                    document.getElementById('product-chart'),
+                    config
+                );
+
+                // ==============================================
+                let foodDay = @json($foodDay);
+                labels = [];
+                values = [];
+                color = [];
+
+                foodDay.map(item => {
+                    labels.push(item.food.name);
+                    values.push(parseInt(item.total));
+
+                    color.push(colorRGB());
+                });
+
+                var data = {
+                    labels,
+                    datasets: [{
+                        label: 'Comida más vendidos',
+                        data: values,
+                        backgroundColor: color,
+                        hoverOffset: 4
+                    }]
+                };
+                var config = {
+                    type: 'doughnut',
+                    data
+                };
+                var myChart = new Chart(
+                    document.getElementById('food-chart'),
+                    config
+                );
+                
+            });
+
+            function generarNumero(numero){
+                return (Math.random()*numero).toFixed(0);
+            }
+            function colorRGB(){
+                var coolor = "("+generarNumero(255)+"," + generarNumero(255) + "," + generarNumero(255) +")";
+                return "rgb" + coolor;
+            }
+        </script>
+    @endif
     
 
 @stop
