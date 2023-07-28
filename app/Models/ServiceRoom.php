@@ -42,6 +42,10 @@ class ServiceRoom extends Model
         'debt'
     ];
 
+    public function client()
+    {
+        return $this->hasMany(ServiceRoomsClient::class, 'serviceRoom_id');
+    }
 
 
     public function room()

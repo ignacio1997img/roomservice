@@ -362,7 +362,7 @@ class ServiceRoomController extends Controller
     // PARA SACAR LOS DIAS QUE SE DEBE DE LA HABITACION PARA PODER FINALIZAR EL HOSPEDAJE MEDIANTE LA FECHA DE INICIO
     public function ajaxFinishPieza($id, $dateFinishClose)
     {
-        $service =  ServiceRoom::where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
+        $service =  ServiceRoom::with(['client'])->where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
             ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount', 'debt')
             ->first();  
 
