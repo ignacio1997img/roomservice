@@ -63,22 +63,9 @@
                                 @endif
                             </div>
                             <hr style="margin:0;">
-                        </div>                  
-                  
-                        <div class="col-md-6">
-                            <div class="panel-body">
-                                <label><small>Cliente</small></label>
-                                <div class="input-group">
-                                    <select name="people_id" class="form-control" id="select_people_id" required></select>
-                                    <span class="input-group-btn">  
-                                        <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>   
-                        <div class="col-md-6">
+                        </div>        
+                        
+                        <div class="col-md-12">
                             <div class="panel-body">
                                 <label><small>Recomendado Por</small></label>
                                 <div class="input-group">
@@ -91,6 +78,48 @@
                                 </div>
                             </div>
                         </div>
+                  
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <label><small>Cliente</small></label>
+                                <div class="input-group">
+                                    <select class="form-control" id="select_people_id" required></select>
+                                    <span class="input-group-btn">  
+                                        <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <br>
+                                <div class="table-responsive">
+                                    <table id="dataTable" class="tables tablesClient table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center; width: 5%">N&deg;</th>
+                                                <th style="text-align: center; width: 150px">Nombre Completo</th>  
+                                                <th style="text-align: center; width: 80px">Nacionalidad</th>  
+                                                <th style="text-align: center; width: 80px">Fecha de Nacimiento</th>  
+                                                <th style="text-align: center; width: 80px">Telefono</th>  
+                                                <th style="text-align: center; width: 80px">Dirección</th>  
+                                                <th style="text-align: center; width: 5%">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-bodyClient">
+                                            <tr id="tr-emptyClient">
+                                                <td colspan="7" style="height: 120px">
+                                                    <h4 class="text-center text-muted" style="margin-top: 10px">
+                                                        <i class="fa-solid fa-list" style="font-size: 30px"></i> <br><br>
+                                                        Lista de cliente en la habitación vacía
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>   
+                        
                         
                         
                         
@@ -524,7 +553,42 @@
                         return opt.id?opt.first_name+' '+opt.last_name:'<i class="fa fa-search"></i> Buscar... ';
                     }
                 }).change(function(){
-                   
+                    if($('#select_people_id option:selected').val()){
+                        let people = peopleSelected;
+                        if($('.tablesClient').find(`#tr-item-client-${people.id}`).val() === undefined){
+                        // alert(product.name);
+
+                            $('#table-bodyClient').append(`
+                                <tr class="tr-item" id="tr-item-client-${people.id}">
+                                    <td style="text-align: center" class="td-itemClient"></td>
+                                    <td>
+                                        <b class="label-description" ><small>CI: ${people.ci}</small></b><br>
+                                        <b class="label-description" ><small>Nombre: ${people.first_name} ${people.last_name}</small></b><br>
+                                        <input type="hidden" name="people_id[]" value="${people.id}" />
+
+                                    </td>
+
+                                    <td>
+                                        <b class="label-description" ><small>${people.nationality?people.nationality.name:'SN'}</small></b>
+                                    </td>
+                                    <td>
+                                        <b class="label-description" ><small>${people.birth_date?people.birth_date:'SN'}</small></b>
+                                    </td>
+                                    <td>
+                                        <b class="label-description" ><small>${people.cell_phone?people.cell_phone:'SN'}</small></b>
+                                    </td>
+                                    <td>
+                                        <b class="label-description" ><small>${people.address?people.address:'SN'}</small></b>
+                                    </td>
+                                    <td class="text-right"><button type="button" onclick="removeTrClient(${people.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
+                                </tr>
+                            `);
+                            toastr.success('Persona agregada a la habitación', 'Información')
+                        }else{
+                            toastr.error('La persona ya está agregada', 'Información')
+                        }
+                        setNumberClient();
+                    }
                 });
 
                 $('#select_recommended_id').select2({
@@ -674,6 +738,27 @@
                             </div>`);
             }
 
+
+            //para la opcion de menu
+        function setNumberClient(){
+            var length = 0;
+            $(".td-itemClient").each(function(index) {
+                $(this).text(index +1);
+                length++;
+            });
+
+            if(length > 0){
+                $('#tr-emptyClient').css('display', 'none');
+            }else{
+                $('#tr-emptyClient').fadeIn('fast');
+            }
+        }
+
+        function removeTrClient(id){
+            $(`#tr-item-client-${id}`).remove();
+            $('#select_people_id').val("").trigger("change");
+            setNumberClient();
+        }
 
 
             

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryRoomController;
 use App\Http\Controllers\CleaningController;
 use App\Http\Controllers\CleaningProductController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FoodMenuController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PeopleController;
@@ -150,6 +151,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
 
     Route::post('register-users', [UserController::class, 'create_user'])->name('store.users');
     Route::put('update-user/{user}' ,[UserController::class ,'update_user'])->name('update.users');
+
+
+
+
+
+
+    // Para las contrataciones 
+    Route::resource('contracts', ContractController::class);
+
+
 
 
 

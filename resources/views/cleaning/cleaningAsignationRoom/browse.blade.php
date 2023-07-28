@@ -186,6 +186,7 @@
         $('#category_id').change(function(){
             let rooms = $('#category_id option:selected').data('rooms');
             let rooms_list = '<option value="" disabled selected>--Seleccione una habitacion--</option>';
+            alert(rooms)
             // if(rooms.length){
  
                 rooms.map(room => {

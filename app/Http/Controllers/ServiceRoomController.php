@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\IncomesDetail;
 use App\Models\People;
+use App\Models\ServiceRoomsClient;
 use App\Models\ServiceRoomsExtra;
 use App\Models\ServiceTransaction;
 use Illuminate\Support\Facades\Http;
@@ -37,11 +38,20 @@ class ServiceRoomController extends Controller
         $people = People::where('id', $request->people_id)->first();
         try {      
 
+            
+
             $ok = Room::where('id', $request->room_id)->where('deleted_at', null)->first();
             // return $ok;
             if($ok->status == 0)
             {
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'La habitación se encuentra asignada.', 'alert-type' => 'warning']);
+            }
+
+            $cant = count($request->people_id);
+            // return $cant;
+            if($cant <= 0)
+            {
+                return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ingrese las personas que formaran parte del hospedaje de la habitación.', 'alert-type' => 'warning']);
             }
 
             if($request->amount == 'aire')
@@ -64,7 +74,7 @@ class ServiceRoomController extends Controller
             // return $aux;
 
             $ser = ServiceRoom::create([
-                'people_id'=>$request->people_id,
+                'people_id'=>$request->people_id[0],
                 'recommended_id'=>$request->recommended_id??null,
                 'room_id'=>$request->room_id,
                 'number' => $ok->number,
@@ -84,6 +94,14 @@ class ServiceRoomController extends Controller
                 'registerUser_id'=>Auth::user()->id
 
             ]);
+
+            for ($i=0; $i < count($request->people_id); $i++) { 
+                ServiceRoomsClient::create([
+                    'people_id'=>$request->people_id[$i],
+                    'payment' => 0,
+                    'serviceRoom_id'=>$ser->id
+                ]);
+            }
 
             if($request->country_id==1)
             {
