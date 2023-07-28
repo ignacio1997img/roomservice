@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ServiceRoom;
 use DateTime;
 use App\Http\Controllers\ServiceRoomController;
+use App\Models\ServiceRoomsClient;
 use App\Models\ServiceRoomsExtra;
+use GuzzleHttp\Promise\Create;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -28,13 +30,26 @@ class ViewController extends Controller
     }
     public function index($planta)
     {
-
+        // return 1;
         $service =  ServiceRoom::where('room_id',2)->where('status', 'asignado')->where('deleted_at',null)
             ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount')
             ->first();  
         // $service->dia=;
 
         // return $service;
+
+
+        // $service = ServiceRoom::where('deleted_at', null)->get();
+
+
+        // foreach($service as $item)
+        // {
+        //     ServiceRoomsClient::create([
+        //         'people_id'=>$item->people_id,
+        //         'payment' => 1,
+        //         'serviceRoom_id'=>$item->id
+        //     ]);
+        // }
       
 
 
