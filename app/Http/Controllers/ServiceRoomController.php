@@ -154,9 +154,6 @@ class ServiceRoomController extends Controller
 
 
 
-
-
-
             // return 1;
             for ($i=0; $i < count($request->part); $i++) { 
                 ServiceRoomsDetail::create([
