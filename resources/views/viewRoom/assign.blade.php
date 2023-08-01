@@ -84,7 +84,7 @@
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
-                                    <select class="form-control" id="select_people_id" required></select>
+                                    <select class="form-control" id="select_people_id"></select>
                                     <span class="input-group-btn">  
                                         <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
