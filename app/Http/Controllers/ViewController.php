@@ -106,6 +106,7 @@ class ViewController extends Controller
     public function readAsignar($room)
     {
         // date('Y'):
+        // return $room;
 
         $obj = new ServiceRoomController;       
 
@@ -115,7 +116,7 @@ class ViewController extends Controller
                 ->where('id', $room)->first();
         // return $room;
         
-        $service =  ServiceRoom::with(['people', 'recommended' , 'transaction'])
+        $service =  ServiceRoom::with(['people', 'recommended' , 'transaction', 'client.people', 'client.country', 'client.department', 'client.province', 'client.city'])
             ->where('room_id', $room->id)->whereRaw('(status = "asignado" or status = "reservado")')->where('deleted_at', null)->first(); 
       
         $egre = DB::table('egres as e')

@@ -63,24 +63,93 @@
                             </div>
                             <hr style="margin:0;">
                         </div>  
-                        <div class="col-md-3">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">CI / Pasaporte</h3>
+
+
+                        <div class="col-md-12">
+                            <div class="panel-body text-center">                                          
+                                <small style="font-size: 20px">Clientes / Personas hospedad en la habitación</small>
+                                <hr style="border-radius: 5px; border: 3px solid #22a7f0;">
                             </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{$service->people->ci}}</p>
+                        </div>
+
+
+                        @foreach ($service->client as $item)
+                            <div class="col-md-3">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h3 class="panel-title">CI / Pasaporte</h3>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p>{{$item->people->ci}}</p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div>  
+                            <div class="col-md-8">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h3 class="panel-title">Nombre</h3>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p>{{$item->people->first_name}} {{$item->people->last_name}}</p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div> 
+
+                            <div class="col-md-3">
+                                <div class="panel-heading" style="border-bottom:0;">
+                                    <h3 class="panel-title">País de Procedencia</h3>
+                                </div>
+                                <div class="panel-body" style="padding-top:0;">
+                                    <p>{{$item->country->name}}</p>
+                                </div>
+                                <hr style="margin:0;">
+                            </div> 
+                            @if ($item->country_id==1)
+                                <div class="col-md-3">
+                                    <div class="panel-heading" style="border-bottom:0;">
+                                        <h3 class="panel-title">Departamento</h3>
+                                    </div>
+                                    <div class="panel-body" style="padding-top:0;">
+                                        <p>{{$item->department?$item->department->name:'SN'}}</p>
+                                    </div>
+                                    <hr style="margin:0;">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel-heading" style="border-bottom:0;">
+                                        <h3 class="panel-title">Provincia</h3>
+                                    </div>
+                                    <div class="panel-body" style="padding-top:0;">
+                                        <p>{{$item->province?$item->province->name:'SN'}}</p>
+                                    </div>
+                                    <hr style="margin:0;">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel-heading" style="border-bottom:0;">
+                                        <h3 class="panel-title">Ciudad</h3>
+                                    </div>
+                                    <div class="panel-body" style="padding-top:0;">
+                                        <p>{{$item->city?$item->city->name:'SN'}}</p>
+                                    </div>
+                                    <hr style="margin:0;">
+                                </div>
+                            @else
+                                <div class="col-md-9">
+                                    <div class="panel-heading" style="border-bottom:0;">
+                                        <h3 class="panel-title">Procedencia</h3>
+                                    </div>
+                                    <div class="panel-body" style="padding-top:0;">
+                                        <p>{{$item->origin}}</p>
+                                    </div>
+                                    <hr style="margin:0;">
+                                </div> 
+                            @endif
+
+                            <div class="col-md-12">
+                                <div class="panel-body text-center">                                   
+                                    <hr style="border-radius: 5px; border: 3px solid #22a7f0;">
+                                </div>
                             </div>
-                            <hr style="margin:0;">
-                        </div>       
-                        <div class="col-md-3">
-                            <div class="panel-heading" style="border-bottom:0;">
-                                <h3 class="panel-title">Nombre</h3>
-                            </div>
-                            <div class="panel-body" style="padding-top:0;">
-                                <p>{{$service->people->first_name}} {{$service->people->last_name}}</p>
-                            </div>
-                            <hr style="margin:0;">
-                        </div>     
+                        @endforeach
+                         
+                            
                         <div class="col-md-3">
                             <div class="panel-heading" style="border-bottom:0;">
                                 <h3 class="panel-title">Fecha Inicio</h3>
@@ -90,7 +159,7 @@
                             </div>
                             <hr style="margin:0;">
                         </div>       
-                        <div class="col-md-3">
+                        <div class="col-md-9">
                             <div class="panel-heading" style="border-bottom:0;">
                                 <h3 class="panel-title">Recomendado Por</h3>
                             </div>

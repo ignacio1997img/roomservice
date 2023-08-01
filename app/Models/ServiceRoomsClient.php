@@ -28,4 +28,20 @@ class ServiceRoomsClient extends Model
     {
         return $this->belongsTo(People::class, 'people_id');
     }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }
