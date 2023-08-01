@@ -39,17 +39,17 @@ class ViewController extends Controller
         // return $service;
 
 
-        $service = ServiceRoom::where('deleted_at', null)->get();
+        // $service = ServiceRoom::where('deleted_at', null)->get();
 
 
-        foreach($service as $item)
-        {
-            ServiceRoomsClient::create([
-                'people_id'=>$item->people_id,
-                'payment' => 1,
-                'serviceRoom_id'=>$item->id
-            ]);
-        }
+        // foreach($service as $item)
+        // {
+        //     ServiceRoomsClient::create([
+        //         'people_id'=>$item->people_id,
+        //         'payment' => 1,
+        //         'serviceRoom_id'=>$item->id
+        //     ]);
+        // }
       
 
 
