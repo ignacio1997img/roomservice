@@ -36,7 +36,6 @@ class ServiceRoomController extends Controller
     {
         // return $request;
         DB::beginTransaction();
-        $people = People::where('id', $request->people_id)->first();
         try {      
 
             
@@ -47,13 +46,24 @@ class ServiceRoomController extends Controller
             {
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'La habitación se encuentra asignada.', 'alert-type' => 'warning']);
             }
+            // return 1;
+
+            if(!isset($request->people_id))
+            {
+                return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ingrese las personas que formaran parte del hospedaje de la habitación.', 'alert-type' => 'warning']);
+            }
+
+
 
             $cant = count($request->people_id);
-            // return $cant;
             if($cant <= 0)
             {
                 return redirect()->route('view.planta', ['planta'=>$ok->categoryFacility_id])->with(['message' => 'Ingrese las personas que formaran parte del hospedaje de la habitación.', 'alert-type' => 'warning']);
             }
+            $people = People::where('id', $request->people_id[0])->first();
+
+            // return 1;
+            // return $people;
 
             if($request->amount == 'aire')
             {
@@ -166,12 +176,20 @@ class ServiceRoomController extends Controller
                 ]);
             }
 
+            // return $request;
+            // return $people->cell_phone;
             if($request->type=='asignado')
             {
+                // return 1;
+
                 Http::get('http://tecnologiaweb.org/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0A      PARA CONECTARSE AL WIFI%0A%0ANombre: '.$facility->wifiName.'%0AContraseña: '.$facility->wifiPassword);
+                // return 1;
                 Http::get('http://tecnologiaweb.org/?number=591'.$people->cell_phone.'&message=Hola *'.$people->first_name.' '.$people->last_name.'*.%0A%0ASe le asigno la habitacion Nº '.$ok->number.'.%0ACategoria: '.$category->name.'.%0ACosto de la habitacion con '.($request->amount=='ventilador'?'Ventilador':'Aire Acondicionado').' por dia Bs. '.$aux);
             }
+            // return 1;
             $ok->update(['status'=>0]);
+            // return 1;
+
 
             
             
@@ -211,6 +229,8 @@ class ServiceRoomController extends Controller
                 
             }
 
+            $client = ServiceRoomsClient::where('serviceRoom_id', $service->id)->where('people_id', $request->client_id)->first();
+            $client->update(['payment'=>1]);
 
             $service->update(['status'=>'finalizado', 'amount'=>$request->pagarf, 'amountTotal'=>$pago, 'qr'=>$request->qr, 'day'=>$request->diaf]);
 
@@ -398,7 +418,7 @@ class ServiceRoomController extends Controller
     // PARA SACAR LOS DIAS QUE SE DEBE DE LA HABITACION PARA PODER FINALIZAR EL HOSPEDAJE MEDIANTE LA FECHA DE INICIO
     public function ajaxFinishPieza($id, $dateFinishClose)
     {
-        $service =  ServiceRoom::with(['client'])->where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
+        $service =  ServiceRoom::with(['client','client.people'])->where('room_id',$id)->where('status', 'asignado')->where('deleted_at',null)
             ->select('id', 'room_id','number', 'start', 'typePrice', 'typeAmount', 'debt')
             ->first();  
 

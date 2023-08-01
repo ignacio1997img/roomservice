@@ -439,11 +439,6 @@
                             <div class="form-group">
                                 <label><small>Cliente a pagar</small></label>
                                 <select name="client_id" class="form-control select2" id="room_client_id" required>
-                                        {{-- <option value="" selected disabled>--Seleccione una opción--</option> --}}
-                                    <option value="turismo">Turismo.</option>
-                                    <option value="trabajo">Trabajo.</option>
-                                    <option value="salud">Salud.</option>
-                                    <option value="otros">Otros.</option>
                                 </select>
                             </div>
 
@@ -835,10 +830,10 @@
 
             $.get('{{route('serviceroom-finish.rooms')}}/'+id+'/'+dateFinish, function (data) {
                     $('#room_client_id').empty();
-                    alert(data.client.length)
+                    // alert(data.client.length)
                     for (let x = 0; x < data.client.length; x++) {
                         $('#room_client_id').append(`   
-                            <option value="turismo">${data.client[x].first_name}</option>                                                                                                      
+                            <option value="${data.client[x].people.id}">${data.client[x].people.first_name} ${data.client[x].people.last_name}</option>                                                                                                      
                         `
                         );
                         
