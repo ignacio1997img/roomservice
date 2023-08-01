@@ -83,14 +83,14 @@
                             <div class="panel-body">
                                 <label><small>Cliente</small></label>
                                 <div class="input-group">
-                                    <select class="form-control" id="select_people_id" required></select>
+                                    <select class="form-control" id="select_people_id"></select>
                                     <span class="input-group-btn">  
                                         <button class="btn btn-primary" title="Nueva persona" data-target="#modal-create-customer" data-toggle="modal" style="margin: 0px" type="button">
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                         </button>
                                     </span>
                                 </div>
-                                <br>
+                                {{-- <br>
                                 <div class="table-responsive">
                                     <table id="dataTable" class="tables tablesClient table-bordered table-hover">
                                         <thead>
@@ -115,82 +115,29 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> --}}
                             </div>
                             
                         </div>   
                         
                         
+                        <div id="divPeople">
+                            
+                            
+
+
+
+                        </div>
                         
-                        
-                        {{-- <div class="col-md-12">
+                        <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <input type="radio" id="html" name="type" value="asignado" checked>
-                                    <label for="html"><small style="font-size: 15px">Asignar</small></label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="radio" id="css" name="type" value="reservado">
-                                    <label for="css"><small style="font-size: 15px">Reservar</small></label><br>
-                                </div>
-                            </div>
-                        </div>  --}}
-                        <div class="col-md-3">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label><small>País de Procedencia</small></label>
-                                    <select name="country_id" class="form-control select2" id="select-country_id" required>
-                                        @foreach ($country as $item)
-                                            <option value="{{$item->id}}" @if($item->id==1) selected @endif>{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <hr style="  border-radius: 5px; border: 5px solid green;"> 
                             </div>
                         </div>
-
-                        <div class="col-md-3 div-nacional">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="state_id"><small>Departamento</small></label>
-                                    <select name="state_id" id="select-state_id" class="form-control select2">
-                                        <option value="" disabled selected>--Selecciona el departamento--</option>
-                                        @foreach (\App\Models\Department::with('provinces.cities')->where('deleted_at', NULL)->get() as $item)
-                                            <option value="{{ $item->id }}" data-provinces="{{ $item->provinces }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="col-md-3 div-nacional">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="province_id"><small>Provincia</small></label>
-                                    <select name="province_id" id="select-province_id" class="form-control select2">
-                                    </select>
-                                </div>
-                            </div>                            
-                        </div>
-
-                        <div class="col-md-3 div-nacional">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="city_id"><small>Ciudad</small></label>
-                                    <select name="city_id" id="select-city_id" class="form-control select2">
-                                    </select>
-                                </div>
-                            </div>                               
-                        </div>
+                           
 
 
 
-                        <div class="col-md-9 div-extranjero" style="display: none">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="origin"><small>Procedencia</small></label>
-                                    <input type="text" class="form-control" name="origin" placeholder="Lugar de ingreso al país">
-                                </div>
-                            </div>                            
-                        </div>
                      
                         <div class="col-md-2">
                             <div class="panel-body">
@@ -250,12 +197,7 @@
                             </div>
                         </div>
                         
-                        {{-- <div class="col-md-3">
-                            <div class="panel-body">
-                                <label><small>Fecha Fin</small></label>
-                                <input type="datetime-local" id="finish" name="finish" value="{{date('Y-m-d h:i',strtotime(date('Y-m-d h:i')."+ 1 days"))}}" class="form-control" required>
-                            </div>
-                        </div> --}}
+
                        
                         <div class="col-md-7">
                             <div class="panel-body">
@@ -468,11 +410,10 @@
             /* max-height: 460px; */
         }
      
-      
-
-        /* .carousel-inner{
-        height: 200px;
-        } */
+        .select2{
+            width: 100% !important;
+        }
+        
     </style>
 @stop
 
@@ -555,39 +496,94 @@
                 }).change(function(){
                     if($('#select_people_id option:selected').val()){
                         let people = peopleSelected;
-                        if($('.tablesClient').find(`#tr-item-client-${people.id}`).val() === undefined){
-                        // alert(product.name);
-
-                            $('#table-bodyClient').append(`
-                                <tr class="tr-item" id="tr-item-client-${people.id}">
-                                    <td style="text-align: center" class="td-itemClient"></td>
-                                    <td>
-                                        <b class="label-description" ><small>CI: ${people.ci}</small></b><br>
-                                        <b class="label-description" ><small>Nombre: ${people.first_name} ${people.last_name}</small></b><br>
-                                        <input type="hidden" name="people_id[]" value="${people.id}" />
-
-                                    </td>
-
-                                    <td>
-                                        <b class="label-description" ><small>${people.nationality?people.nationality.name:'SN'}</small></b>
-                                    </td>
-                                    <td>
-                                        <b class="label-description" ><small>${people.birth_date?people.birth_date:'SN'}</small></b>
-                                    </td>
-                                    <td>
-                                        <b class="label-description" ><small>${people.cell_phone?people.cell_phone:'SN'}</small></b>
-                                    </td>
-                                    <td>
-                                        <b class="label-description" ><small>${people.address?people.address:'SN'}</small></b>
-                                    </td>
-                                    <td class="text-right"><button type="button" onclick="removeTrClient(${people.id})" class="btn btn-link"><i class="voyager-trash text-danger"></i></button></td>
-                                </tr>
+                        if($('#divPart-'+people.id).val() === undefined){
+                            $('#divPeople').append(`
+                                <div id="divPart-${people.id}">
+                                    <div class="col-md-12">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <hr style="  border-radius: 5px; border: 5px solid green;">                                        
+                                                <button  id="btn-${people.id}" onclick="removeDiv(${people.id})" title="Borrar" class="btn btn-sm btn-danger delete"><i class="voyager-trash"></i></button>
+                                                <br>
+                                                <label><small style="font-size: 15px" id="titlePeople">${people.first_name} ${people.last_name}</small></label><br>
+                                                <label><small style="font-size: 15px" id="titlePeople">CI/PASAPORTE: ${people.ci}</small></label><br>
+                                                <label><small style="font-size: 15px" id="titlePeople">NACIONALIDAD: ${people.nationality?people.nationality.name:'SN'}</small></label><br>
+                                                <input type="hidden" id="people_id" name="people_id[]" value="${people.id}">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-md-3">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label><small>País de Procedencia</small></label>
+                                                <select name="country_id-${people.id}" onchange="mostrarProdecencia(${people.id});" class="form-control select2" id="select-country_id-${people.id}" required>
+                                                    @foreach ($country as $item)
+                                                        <option value="{{$item->id}}" @if($item->id==1) selected @endif>{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-3 div-nacional-${people.id}">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="state_id"><small>Departamento</small></label>
+                                                <select name="state_id-${people.id}" onchange="mostrarDepartamento(${people.id});" id="select-state_id-${people.id}" class="form-control select2">
+                                                    <option value="" disabled selected>--Selecciona el departamento--</option>
+                                                    @foreach (\App\Models\Department::with('provinces.cities')->where('deleted_at', NULL)->get() as $item)
+                                                        <option value="{{ $item->id }}" data-provinces="{{ $item->provinces }}">{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>                            
+                                    </div>
+            
+                                    <div class="col-md-3 div-nacional-${people.id}">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="province_id"><small>Provincia</small></label>
+                                                <select name="province_id-${people.id}" onchange="mostrarProvincia(${people.id});" id="select-province_id-${people.id}" class="form-control select2">
+                                                </select>
+                                            </div>
+                                        </div>                            
+                                    </div>
+            
+                                    <div class="col-md-3 div-nacional-${people.id}">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="city_id"><small>Ciudad</small></label>
+                                                <select name="city_id-${people.id}" id="select-city_id-${people.id}" class="form-control select2">
+                                                </select>
+                                            </div>
+                                        </div>                               
+                                    </div>
+            
+            
+            
+                                    <div class="col-md-9 div-extranjero-${people.id}" style="display: none">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="origin"><small>Procedencia</small></label>
+                                                <input type="text" class="form-control" name="origin-${people.id}" placeholder="Lugar de ingreso al país">
+                                            </div>
+                                        </div>                            
+                                    </div>
+                                </div>
                             `);
                             toastr.success('Persona agregada a la habitación', 'Información')
+                            $('#select-country_id-'+people.id).select2();
+                            $('#select-state_id-'+people.id).select2();
+                            $('#select-province_id-'+people.id).select2();
+                            $('#select-city_id-'+people.id).select2();
+
+
                         }else{
                             toastr.error('La persona ya está agregada', 'Información')
                         }
-                        setNumberClient();
+                        $('#select_people_id').empty();     
                     }
                 });
 
@@ -655,62 +651,60 @@
                 });
 
                 // #################################################################################################################
-                var provinces_country = [];
 
-                $('#select-state_id').change(function(){
-                    let provinces = $('#select-state_id option:selected').data('provinces');
-                    let provinces_list = '<option value="">--Selecciona la provincia--</option>';
-                    if(provinces.length){
-                        provinces_country = provinces; 
-                        provinces.map(province => {
-                            provinces_list += `<option value="${province.id}">${province.name}</option>`;
-                        });
-                    }else{
-                        provinces_list += `<option value="">Ninguna</option>`;
-                    }
-                    $('#select-province_id').html(provinces_list);
-                    // inicializar_select2('province_id');
-                    $('#select-city_id').html('');
-                });
+                // $('#select-state_id').change(function(){
+                //     let provinces = $('#select-state_id option:selected').data('provinces');
+                //     let provinces_list = '<option value="">--Selecciona la provincia--</option>';
+                //     if(provinces.length){
+                //         provinces_country = provinces; 
+                //         provinces.map(province => {
+                //             provinces_list += `<option value="${province.id}">${province.name}</option>`;
+                //         });
+                //     }else{
+                //         provinces_list += `<option value="">Ninguna</option>`;
+                //     }
+                //     $('#select-province_id').html(provinces_list);
+                //     // inicializar_select2('province_id');
+                //     $('#select-city_id').html('');
+                // });
 
-                $('#select-province_id').change(function(){
-                    let id = $('#select-province_id option:selected').val();
-                    let cities = [];
-                    provinces_country.map(item => {
-                        if(id == item.id){
-                            cities = item.cities;
-                        }
-                    });
+                // $('#select-province_id').change(function(){
+                //     let id = $('#select-province_id option:selected').val();
+                //     let cities = [];
+                //     provinces_country.map(item => {
+                //         if(id == item.id){
+                //             cities = item.cities;
+                //         }
+                //     });
 
-                    let cities_list = '';
-                    if(cities.length){
-                        cities.map(city => {
-                            cities_list += `<option value="${city.id}">${city.name}</option>`;
-                        });
-                    }else{
-                        cities_list += `<option value="">Ninguna</option>`;
-                    }
-                    $('#select-city_id').html(cities_list);
-                    // inicializar_select2('city_id');
-                });
+                //     let cities_list = '';
+                //     if(cities.length){
+                //         cities.map(city => {
+                //             cities_list += `<option value="${city.id}">${city.name}</option>`;
+                //         });
+                //     }else{
+                //         cities_list += `<option value="">Ninguna</option>`;
+                //     }
+                //     $('#select-city_id').html(cities_list);
+                //     // inicializar_select2('city_id');
+                // });
 
 
-                $('#select-country_id').change(function(){
-                    let id = $('#select-country_id option:selected').val();
-                    // alert(id)
-                    if(id == 1){
-                        $('#select-state_id').val(1).change();
-                        // $('#select-state_id').reset('');
-                        $('.div-nacional').fadeIn();
-                        $('.div-extranjero').fadeOut();
+                // $('#select-country_id').change(function(){
+                //     let id = $('#select-country_id option:selected').val();
+                //     // alert(id)
+                //     if(id == 1){
+                //         $('#select-state_id').val(1).change();
+                //         $('.div-nacional').fadeIn();
+                //         $('.div-extranjero').fadeOut();                        
+                //     }
+                //     else{
+                //         $('#select-city_id').html('');
                         
-                    }else{
-                        $('#select-city_id').html('');
-                        
-                        $('.div-nacional').fadeOut();
-                        $('.div-extranjero').fadeIn();
-                    }
-                });
+                //         $('.div-nacional').fadeOut();
+                //         $('.div-extranjero').fadeIn();
+                //     }
+                // });
 
             })
 
@@ -739,6 +733,76 @@
             }
 
 
+            // __________________________________________
+
+            function mostrarProdecencia(id)
+            {
+                let country = $('#select-country_id-'+id+' option:selected').val();
+                    // alert(id)
+                    if(country == 1){
+                        // $('#select-state_id').val(1).change();
+                        $('.div-nacional-'+id).fadeIn();
+                        $('.div-extranjero-'+id).fadeOut();                        
+                    }
+                    else{
+                        $('#select-city_id-'+id).html('');
+                        
+                        $('.div-nacional-'+id).fadeOut();
+                        $('.div-extranjero-'+id).fadeIn();
+                    }
+            }
+
+            var provinces_country = [];
+
+            function mostrarDepartamento(id)
+            {
+                let provinces = $('#select-state_id-'+id+' option:selected').data('provinces');
+                    let provinces_list = '<option value="">--Selecciona la provincia--</option>';
+                    if(provinces.length){
+                        provinces_country = provinces; 
+                        provinces.map(province => {
+                            provinces_list += `<option value="${province.id}">${province.name}</option>`;
+                        });
+                    }else{
+                        provinces_list += `<option value="">Ninguna</option>`;
+                    }
+                    $('#select-province_id-'+id).html(provinces_list);
+                    // inicializar_select2('province_id');
+                    $('#select-city_id-'+id).html('');
+            }
+
+            function mostrarProvincia(id)
+            {
+                let auxid = $('#select-province_id-'+id+' option:selected').val();
+                    let cities = [];
+                    provinces_country.map(item => {
+                        if(auxid == item.id){
+                            cities = item.cities;
+                        }
+                    });
+
+                    let cities_list = '';
+                    if(cities.length){
+                        cities.map(city => {
+                            cities_list += `<option value="${city.id}">${city.name}</option>`;
+                        });
+                    }else{
+                        cities_list += `<option value="">Ninguna</option>`;
+                    }
+                    $('#select-city_id-'+id).html(cities_list);
+            }
+            
+
+
+
+
+
+
+
+
+
+
+
             //para la opcion de menu
         function setNumberClient(){
             var length = 0;
@@ -754,10 +818,10 @@
             }
         }
 
-        function removeTrClient(id){
-            $(`#tr-item-client-${id}`).remove();
-            $('#select_people_id').val("").trigger("change");
-            setNumberClient();
+        function removeDiv(id){
+            $(`#divPart-${id}`).remove();
+            // $('#select_people_id').val("").trigger("change");
+            // setNumberClient();
         }
 
 

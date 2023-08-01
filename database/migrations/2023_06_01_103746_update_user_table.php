@@ -15,6 +15,8 @@ class UpdateUserTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('status')->default(1);
+            $table->foreignId('people_id')->nullable()->constrained('people');
+
             $table->softDeletes();
         });
     }

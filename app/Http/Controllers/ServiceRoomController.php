@@ -22,6 +22,7 @@ use App\Models\ServiceTransaction;
 use Illuminate\Support\Facades\Http;
 use DateTime;
 use Doctrine\DBAL\Driver\IBMDB2\DB2Driver;
+use PhpParser\Node\Stmt\Return_;
 use Symfony\Contracts\Service\Test\ServiceLocatorTest;
 
 class ServiceRoomController extends Controller
@@ -95,32 +96,70 @@ class ServiceRoomController extends Controller
 
             ]);
 
+            // return $request;
             for ($i=0; $i < count($request->people_id); $i++) { 
-                ServiceRoomsClient::create([
-                    'people_id'=>$request->people_id[$i],
-                    'payment' => 0,
-                    'serviceRoom_id'=>$ser->id
-                ]);
+
+                $idPeople = $request->people_id[$i];
+                // return $request['country_id-'.$idPeople];
+                // return $re
+                
+                if($request['country_id-'.$idPeople]==1)
+                {
+                    ServiceRoomsClient::create([
+                        'people_id'=>$idPeople,
+                        'payment' => 0,
+                        'serviceRoom_id'=>$ser->id,
+
+                        'foreign'=>0,
+                        'country_id'=>$request['country_id-'.$idPeople],
+                        'department_id'=>$request['state_id-'.$idPeople]??null,
+                        'province_id'=>$request['province_id-'.$idPeople]??null,
+                        'city_id'=>$request['city_id-'.$idPeople]??null
+                    ]);
+                }
+                else
+                {
+
+                    ServiceRoomsClient::create([
+                        'people_id'=>$idPeople,
+                        'payment' => 0,
+                        'serviceRoom_id'=>$ser->id,
+
+                        'foreign'=>1,
+                        'country_id'=>$request['country_id-'.$idPeople],
+                        'origin'=>$request['origin-'.$idPeople]
+                    ]);
+                }
             }
 
-            if($request->country_id==1)
-            {
-                $ser->update([
-                    'foreign'=>0,
-                    'country_id'=>$request->country_id,
-                    'department_id'=>$request->state_id??null,
-                    'province_id'=>$request->province_id??null,
-                    'city_id'=>$request->city_id??null
-                ]);
-            }
-            else
-            {
-                $ser->update([
-                    'foreign'=>1,
-                    'country_id'=>$request->country_id,
-                    'origin'=>$request->origin
-                ]);
-            }
+
+
+
+            // return 1;
+            // if($request->country_id==1)
+            // {
+            //     $ser->update([
+            //         'foreign'=>0,
+            //         'country_id'=>$request->country_id,
+            //         'department_id'=>$request->state_id??null,
+            //         'province_id'=>$request->province_id??null,
+            //         'city_id'=>$request->city_id??null
+            //     ]);
+            // }
+            // else
+            // {
+            //     $ser->update([
+            //         'foreign'=>1,
+            //         'country_id'=>$request->country_id,
+            //         'origin'=>$request->origin
+            //     ]);
+            // }
+
+
+
+
+
+
             // return 1;
             for ($i=0; $i < count($request->part); $i++) { 
                 ServiceRoomsDetail::create([

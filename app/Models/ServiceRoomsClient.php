@@ -13,8 +13,15 @@ class ServiceRoomsClient extends Model
         'people_id',
         'serviceRoom_id',
         'payment',
-        'deleted_at'
+        'deleted_at',
+        'foreign',
+        'country_id',
+        'department_id',
+        'province_id',
+        'city_id',
+        'origin'
     ];
+
 
 
     public function people()
