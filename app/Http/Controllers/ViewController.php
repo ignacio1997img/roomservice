@@ -39,16 +39,16 @@ class ViewController extends Controller
         // return $service;
 
 
-        $service = ServiceRoom::where('deleted_at', null)->where('status', 'finalizado')->get();
+        // $service = ServiceRoom::where('deleted_at', null)->where('status', 'finalizado')->get();
 
-        // return $service;
-        foreach($service as $item)
-        {
-            $item->update([
-                'finish'=>$item->updated_at,
+        // // return $service;
+        // foreach($service as $item)
+        // {
+        //     $item->update([
+        //         'finish'=>$item->updated_at,
 
-            ]);
-        }
+        //     ]);
+        // }
       
 
 
