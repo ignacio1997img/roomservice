@@ -1,7 +1,7 @@
 @extends('layout-print.template-print-alt')
 
 @section('page_title', 'Reporte')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @section('content')
     @php
         $months = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');    
@@ -49,7 +49,15 @@
             </td>
         </tr>
     </table>
+    <br>
     @forelse ($data as $item)
+            <table style="width: 100%; font-size: 8px"  cellspacing="0" cellpadding="4">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center"><small style="font-size: 15px">DETALLE DE LA HABITACION N&deg; {{$item->number}}</small></td>
+                    </tr>
+                </tbody>
+            </table>
                 <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
                     <thead>
                         <tr>
@@ -77,7 +85,7 @@
                 <table style="width: 100%; font-size: 8px"  cellspacing="0" cellpadding="4">
                     <tbody>
                         <tr>
-                            <td style="text-align: center"><small style="font-size: 15px">Cliente/Personas Hospedada en la Habitacion N&deg; {{$item->number}}</small></td>
+                            <td style="text-align: center"><small style="font-size: 10px">Cliente/Personas Hospedada en la Habitacion N&deg; {{$item->number}}</small></td>
                         </tr>
                     </tbody>
                 </table>
@@ -92,29 +100,34 @@
                             </tr>
                             <tr>
                                 <th style="width:10%">CI / PASAPORTE</th>
-                                <td style="width:10%; text-align: left">{{$client->people->ci}}</td>
+                                <td style="width:15%; text-align: left">{{$client->people->ci}}</td>
                                 <th style="width:10%">FECHA N.</th>
                                 <td style="width:15%; text-align: left">{{date('d/m/Y', strtotime($client->people->birth_date))}}</td>
                                 <th style="width:10%">CELULER</th>
-                                <td style="text-align: left">{{$client->people->cell_phone??'SN'}}</td>
+                                <td style="width:15%; text-align: left">{{$client->people->cell_phone??'SN'}}</td>
                                 <th style="width:10%">GENERO</th>
-                                <td style="text-align: left">{{$client->people->gender=='masculino'?'MASCULINO':'FEMENINO'}}</td>                                
+                                <td style="width:15%; text-align: left">{{$client->people->gender=='masculino'?'MASCULINO':'FEMENINO'}}</td>                                
                             </tr>
                             <tr>
                                 <th style="width:10%">DIRECCION</th>
-                                <td colspan="5" style="width:65%; text-align: left">{{$client->address??'SN'}}</td>
+                                <td colspan="7" style="width:65%; text-align: left">{{$client->address??'SN'}}</td>
                             </tr>
-                        </tbody>
+                        {{-- </tbody>
                     </table>
-                    <br>
+                   <br>
                     <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
-                        <tbody>
+                        <tbody> --}}
                             @if ($client->country_id == 1)
                                 <tr>
                                     <th style="width:10%">PAIS PROCEDENCIA</th>
                                     <td style="width:15%; text-align: left">{{$client->country->name}}</td>
                                     <th style="width:10%">DEPARTAMENTO</th>
                                     <td style="width:15%; text-align: left">{{$client->department->name}}</td>
+                                    <th style="width:10%">PROVINCIA</th>
+                                    <td style="width:15%; text-align: left">{{$client->province?$client->province->name:'SN'}}</td>
+                                    <th style="width:10%">CIUDAD</th>
+                                    <td style="width:15%; text-align: left">{{$client->city?$client->city->name:'SN'}}</td>
+                                    
                                 </tr>
                             @else
                                 <tr>
@@ -126,7 +139,150 @@
                             @endif
                         </tbody>
                     </table>
+                    <br>
                 @endforeach
+
+                <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="text-align: center"><i class="fa-solid fa-cart-shopping"></i> Pedidos del Hotel</th>
+                        </tr>
+                        <tr>
+                            <th style="width:8%">N&deg;</th>
+                            <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Precio</th>
+                            <th style="text-align: center">Cantidad</th>
+                            <th style="text-align: center; width:80px">SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $i=1;
+                            $detailTotal=0;
+                        @endphp
+                        @php
+                            $detail = $item->egres->where('deleted_at', null)->first();
+                        @endphp
+                        @if ($detail)
+                            @forelse ($detail->detail as $det)
+                                <tr>
+                                    <td style="text-align: center">{{$i}}</td>
+                                    <td style="text-align: left">{{$det->article->name}}</td>
+                                    <td style="text-align: right">{{ number_format($det->price, 2, ',', '.') }}</td>
+                                    <td style="text-align: right">{{ number_format($det->cantSolicitada, 2, ',', '.') }}</td>
+                                    <td style="text-align: right">{{ number_format($det->price*$det->cantSolicitada, 2, ',', '.') }}</td>
+                                </tr>
+                                @php
+                                    $i++;
+                                    $detailTotal+=$det->price*$det->cantSolicitada;
+                                @endphp
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="text-align: center">Sin datos...</td>
+                                </tr>
+                            @endforelse
+                        @else
+                            <tr>
+                                <td colspan="5" style="text-align: center">Sin datos...</td>
+                            </tr>
+                        @endif  
+
+                        <tr>
+                            <td style="text-align: center"><p>Total</p></td>
+                            <td colspan="4" style="text-align: right"><p>Bs. {{ number_format($detailTotal, 2, ',', '.') }}</p></td>
+                        </tr> 
+                    </tbody>
+                </table>
+                <br>
+                <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="text-align: center"><i class="fa-solid fa-bowl-food"></i> Pedidos del Hotel</th>
+                        </tr>
+                        <tr>
+                            <th style="width:8%">N&deg;</th>
+                            <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Precio</th>
+                            <th style="text-align: center">Cantidad</th>
+                            <th style="text-align: center; width:80px">SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $i=1;
+                            $menuTotal=0;
+                        @endphp
+                        @php
+                            $menu = $item->egres->where('deleted_at', null)->first();
+                        @endphp
+                        @if ($menu)
+                            @forelse ($menu->menu as $men)
+                                <tr>
+                                    <td style="text-align: center">{{$i}}</td>
+                                    <td style="text-align: left">{{$men->food->name}}</td>
+                                    <td style="text-align: right">{{ number_format($men->price, 2, ',', '.') }}</td>
+                                    <td style="text-align: right">{{ number_format($men->cant, 2, ',', '.') }}</td>
+                                    <td style="text-align: right">{{ number_format($men->amount, 2, ',', '.') }}</td>
+                                </tr>
+                                @php
+                                    $i++;
+                                    $menuTotal+=$men->amount;
+                                @endphp
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="text-align: center">Sin datos...</td>
+                                </tr>
+                            @endforelse
+                        @else
+                            <tr>
+                                <td colspan="5" style="text-align: center">Sin datos...</td>
+                            </tr>
+                        @endif  
+
+                        <tr>
+                            <td style="text-align: center"><p>Total</p></td>
+                            <td colspan="4" style="text-align: right"><p>Bs. {{ number_format($menuTotal, 2, ',', '.') }}</p></td>
+                        </tr>                  
+                    </tbody>
+                </table>
+                <br>
+                <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="text-align: center"><i class="fa-solid fa-cart-plus"></i> Servicios Extras</th>
+                        </tr>
+                        <tr>
+                            <th style="width:8%">N&deg;</th>
+                            <th style="text-align: center">Detalle</th>
+                            <th style="text-align: center; width:10%">SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $i=1;
+                            $extraTotal=0;
+                        @endphp
+                        @forelse ($item->extra as $extra)
+                            <tr>
+                                <td style="text-align: center">{{$i}}</td>
+                                <td style="text-align: left">{{$extra->detail}}</td>
+                                <td style="text-align: right">{{ number_format($extra->amount, 2, ',', '.') }}</td>
+                            </tr>
+                            @php
+                                $i++;
+                                $extraTotal+=$extra->amount;
+                            @endphp
+                        @empty
+                            <tr>
+                                <td colspan="3" style="text-align: center">Sin datos...</td>
+                            </tr>
+                        @endforelse    
+                        <tr>
+                            <td style="text-align: center"><p>Total</p></td>
+                            <td colspan="2" style="text-align: right"><p>Bs. {{ number_format($extraTotal, 2, ',', '.') }}</p></td>
+                        </tr>                  
+                    </tbody>
+                </table>
 
                 
 

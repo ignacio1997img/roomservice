@@ -118,7 +118,27 @@ class ReportController extends Controller
 
         
 
-        $data = serviceRoom::with(['recommended', 'detailPart' , 'transaction', 'client.people', 'client.country', 'client.department', 'client.province', 'client.city'])
+        $data = serviceRoom::with(['recommended',
+            'detailPart',
+            'extra:serviceRoom_id,id,detail,amount',
+            'egres'=>function($q)
+            {
+                $q->where('deleted_at',null);
+            },
+            'egres.menu',
+            'egres.detail'=>function($q)
+            {
+                $q->where('deleted_at',null)
+                ->select('article_id', 'egre_id',  'price', DB::raw("SUM(cantSolicitada) as cantSolicitada"))
+                ->groupBy('article_id', 'egre_id', 'price');
+            },
+            'transaction',
+            'client:serviceRoom_id,people_id,payment,foreign,country_id,department_id,province_id,city_id,origin',
+            'client.people',
+            'client.country:id,name',
+            'client.department:id,name',
+            'client.province:id,name',
+            'client.city:id,name'])
             ->where('deleted_at', null)
             // ->where('status', 'finalizado')
             // ->groupBy('name', 'food_id', 'egre_id', 'price')

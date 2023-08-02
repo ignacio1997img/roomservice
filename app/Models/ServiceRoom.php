@@ -74,4 +74,14 @@ class ServiceRoom extends Model
     {
         return $this->hasMany(ServiceRoomsDetail::class, 'serviceRoom_id');
     }
+
+    public function extra()
+    {
+        return $this->hasMany(ServiceRoomsExtra::class, 'serviceRoom_id');
+    }
+
+    public function egres()
+    {
+        return $this->hasMany(Egre::class, 'serviceRoom_id');
+    }
 }
