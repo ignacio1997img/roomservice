@@ -29,6 +29,10 @@
                             <td style="text-align: center">{{$item->facility}}</td>
                             <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->start))}}</td>
                             <td style="text-align: center">{{$item->finish?date('d/m/Y H:i:s', strtotime($item->finish)):'SN'}}</td>
+                            <td style="text-align: center">{{$item->day}}</td>
+                            <td style="text-align: right">{{ number_format($item->amountTotal, 2, ',', '.') }}</td>
+
+
 
                         </tr>
                     </tbody>

@@ -39,26 +39,16 @@ class ViewController extends Controller
         // return $service;
 
 
-        // $service = ServiceRoom::where('deleted_at', null)->get();
+        $service = ServiceRoom::where('deleted_at', null)->where('status', 'finalizado')->get();
 
-        // // return $service;
-        // foreach($service as $item)
-        // {
-        //     ServiceRoomsClient::create([
-        //         'people_id'=>$item->people_id,
+        // return $service;
+        foreach($service as $item)
+        {
+            $item->update([
+                'finish'=>$item->updated_at,
 
-        //         'payment' => $item->status=='finalizado'?1:0,
-        //         'serviceRoom_id'=>$item->id,
-
-        //         'foreign'=>$item->foreign,
-        //         'country_id'=>$item->country_id,
-        //         'department_id'=>$item->department_id,
-        //         'province_id'=>$item->province_id,
-        //         'city_id'=>$item->city_id,
-        //         'origin'=>$item->origin,
-
-        //     ]);
-        // }
+            ]);
+        }
       
 
 
