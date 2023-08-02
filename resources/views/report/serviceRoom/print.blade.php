@@ -109,8 +109,13 @@
                     <br>
                     <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
                         <tbody>
-                            @if ($client->country_id==1)
-
+                            @if ($client->country_id == 1)
+                                <tr>
+                                    <th style="width:10%">PAIS PROCEDENCIA</th>
+                                    <td style="width:15%; text-align: left">{{$client->country->name}}</td>
+                                    <th style="width:10%">DEPARTAMENTO</th>
+                                    <td style="width:15%; text-align: left">{{$client->department->name}}</td>
+                                </tr>
                             @else
                                 <tr>
                                     <th style="width:10%">PAIS PROCEDENCIA</th>
