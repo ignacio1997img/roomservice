@@ -49,69 +49,87 @@
             </td>
         </tr>
     </table>
-    <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
-        <thead>
-            <tr>
-                <th style="width:5px">N&deg;</th>
-                <th style="text-align: center">CLIENTE</th>
-                <th style="text-align: center">ATENDIDO POR</th>
-                <th style="text-align: center">FECHA</th>
-                <th style="text-align: center">COMIDA</th>
-                <th style="text-align: center; width:5px">CANTIDAD</th>
-                <th style="text-align: center; width:5px">PRECIO</th>
-
-                <th style="text-align: center; width:80px">TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-                    @php
-                        $count = 1;
-                        $total = 0;
-                    @endphp
-                    @forelse ($data as $item)
+    @forelse ($data as $item)
+                <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                    <thead>
                         <tr>
-                            <td>{{ $count }}</td>
-                            <td>
-                                <small>Nombre:</small> 
-                                @if ($item->first_name)
-                                    {{ $item->first_name}} {{ $item->last_name}}<br>
-                                @else
-                                    <small>SN</small>
-                                @endif
-
-
-
-                                @if ($item->number)
-                                    <small>Nro Habitación:</small> {{ $item->number}}
-                                @endif
-                            </td>
-                            <td style="text-align: center">{{$item->user}}</td>
-                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
-                            <td style="text-align: center">{{ $item->name}}</td>
-                            <td style="text-align: right"><b>{{ number_format($item->cantSolicitada,2, ',', '.') }}</b></td>
-                            <td style="text-align: right"><b>{{ number_format($item->price,2, ',', '.') }}</b></td>
-                            <td style="text-align: right"><b>{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</b></td>                                                                                  
-                            
+                            <th style="width:8%">N&deg; Habitacion</th>
+                            <th style="text-align: center">Categoría</th>
+                            <th style="text-align: center">Planta de Hotel</th>
+                            <th style="text-align: center">Fecha Inicio</th>
+                            <th style="text-align: center">Fecha Fin</th>
+                            <th style="text-align: center">Total Dias</th>
+                            <th style="text-align: center; width:80px">Total Bs.</th>
                         </tr>
-                        @php
-                            $count++;
-                            $total = $total + ($item->cantSolicitada * $item->price);                            
-                        @endphp
-                        
-                    @empty
-                        <tr style="text-align: center">
-                            <td colspan="10">No se encontraron registros.</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center">N&deg; {{$item->number}}</td>
+                            <td style="text-align: center">{{$item->category}}</td>
+                            <td style="text-align: center">{{$item->facility}}</td>
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->start))}}</td>
+                            <td style="text-align: center">{{$item->finish?date('d/m/Y H:i:s', strtotime($item->finish)):'SN'}}</td>
+                            <td style="text-align: center">{{$item->day}}</td>
+                            <td style="text-align: right">{{ number_format($item->amountTotal, 2, ',', '.') }}</td>
                         </tr>
-                    @endforelse
+                    </tbody>
+                </table>
+                <table style="width: 100%; font-size: 8px"  cellspacing="0" cellpadding="4">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center"><small style="font-size: 15px">Cliente/Personas Hospedada en la Habitacion N&deg; {{$item->number}}</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+                @foreach ($item->client as $client)
+                    <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                        <tbody>
+                            <tr>
+                                <th style="width:10%">NOMBRE</th>
+                                <td colspan="5" style="width:65%; text-align: left">{{$client->people->first_name}} {{$client->people->last_name}}</td>
+                                <th style="width:10%">NACIONALIDAD</th>
+                                <td style="width:15%; text-align: left">{{$client->people->nationality?$client->people->nationality->name:'SN'}}</td>
+                            </tr>
+                            <tr>
+                                <th style="width:10%">CI / PASAPORTE</th>
+                                <td style="width:10%; text-align: left">{{$client->people->ci}}</td>
+                                <th style="width:10%">FECHA N.</th>
+                                <td style="width:15%; text-align: left">{{date('d/m/Y', strtotime($client->people->birth_date))}}</td>
+                                <th style="width:10%">CELULER</th>
+                                <td style="text-align: left">{{$client->people->cell_phone??'SN'}}</td>
+                                <th style="width:10%">GENERO</th>
+                                <td style="text-align: left">{{$client->people->gender=='masculino'?'MASCULINO':'FEMENINO'}}</td>                                
+                            </tr>
+                            <tr>
+                                <th style="width:10%">DIRECCION</th>
+                                <td colspan="5" style="width:65%; text-align: left">{{$client->address??'SN'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
+                        <tbody>
+                            @if ($client->country_id==1)
 
-                    <tr>
-                        <td colspan="7" style="text-align: right"><b>TOTAL</b></td>
-                        <td style="text-align: right"><b><small>Bs. </small>{{ number_format($total, 2, ',', '.') }}</b></td>
-                    </tr>
-        </tbody>       
-       
+                            @else
+                                <tr>
+                                    <th style="width:10%">PAIS PROCEDENCIA</th>
+                                    <td colspan="5" style="width:65%; text-align: left">{{$client->country->name}}</td>
+                                    <th style="width:10%">PROCEDENCIA</th>
+                                    <td style="width:15%; text-align: left">{{$client->origin}}</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                @endforeach
 
-    </table>
+                
+
+                <br><br><br>
+                
+            @empty
+                
+            @endforelse
 
 
 

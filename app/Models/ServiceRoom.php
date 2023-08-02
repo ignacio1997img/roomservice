@@ -69,4 +69,9 @@ class ServiceRoom extends Model
     {
         return $this->hasMany(ServiceTransaction::class, 'serviceRoom_id');
     }
+
+    public function detailPart()
+    {
+        return $this->hasMany(ServiceRoomsDetail::class, 'serviceRoom_id');
+    }
 }

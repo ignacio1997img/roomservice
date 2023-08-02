@@ -118,8 +118,9 @@ class ReportController extends Controller
 
         
 
-        $data = serviceRoom::with(['recommended', 'recommended' , 'transaction', 'client.people', 'client.country', 'client.department', 'client.province', 'client.city'])
+        $data = serviceRoom::with(['recommended', 'detailPart' , 'transaction', 'client.people', 'client.country', 'client.department', 'client.province', 'client.city'])
             ->where('deleted_at', null)
+            // ->where('status', 'finalizado')
             // ->groupBy('name', 'food_id', 'egre_id', 'price')
             ->orderBy('id', 'ASC')->get();
         
