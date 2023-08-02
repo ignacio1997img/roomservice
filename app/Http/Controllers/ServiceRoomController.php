@@ -232,7 +232,7 @@ class ServiceRoomController extends Controller
             $client = ServiceRoomsClient::where('serviceRoom_id', $service->id)->where('people_id', $request->client_id)->first();
             $client->update(['payment'=>1]);
 
-            $service->update(['status'=>'finalizado', 'amount'=>$request->pagarf, 'amountTotal'=>$pago, 'qr'=>$request->qr, 'day'=>$request->diaf]);
+            $service->update(['status'=>'finalizado', 'amount'=>$request->pagarf, 'amountTotal'=>$pago, 'qr'=>$request->qr, 'day'=>$request->diaf, 'finish'=>$request->finishf]);
 
 
             DB::commit();        
