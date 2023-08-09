@@ -174,6 +174,8 @@ class ReportController extends Controller
             'client.province',
             'client.city'])
             ->where('deleted_at', null)
+            // ->where('bill', 1)
+            ->where('status', 'finalizado')
             ->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->start)))
             ->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->finish)))
             // ->where('status', $request->type)

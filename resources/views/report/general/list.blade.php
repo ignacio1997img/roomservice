@@ -12,23 +12,18 @@
             <table id="dataTable" style="width:100%"  class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:5px">N&deg;</th>
-                        <th rowspan="2" style="text-align: center">NOMBRES Y APELLIDOS</th>
-                        <th rowspan="2" style="text-align: center">N&deg; PIEZA</th>
-                        <th rowspan="2" style="text-align: center">NACIONALIDAD</th>
-                        <th rowspan="2" style="text-align: center">EDAD</th>
-                        <th rowspan="2" style="text-align: center">SEXO</th>
-                        <th rowspan="2" style="text-align: center">E.C.</th>
-                        <th rowspan="2" style="text-align: center">PROFESION</th>
-                        <th rowspan="2" style="text-align: center">FECHA DE INGRESO</th>
-                        <th rowspan="2" style="text-align: center">FECHA DE SALIDA</th>
-                        <th colspan="2" style="text-align: center">MOTIVO DE VIAJE</th>
-                        <th rowspan="2" style="text-align: center">C.I. Y/O PASAPORTE</th>
-                    </tr>
-
-                    <tr>
-                        <th style="text-align: center">TRABAJO</th>
-                        <th style="text-align: center">TURISMO</th>
+                        <th style="width:5px">N&deg;</th>
+                        <th style="text-align: center">NOMBRES Y APELLIDOS</th>
+                        <th style="text-align: center">N&deg; PIEZA</th>
+                        <th style="text-align: center">NACIONALIDAD</th>
+                        <th style="text-align: center">EDAD</th>
+                        <th style="text-align: center">SEXO</th>
+                        <th style="text-align: center">E.C.</th>
+                        <th style="text-align: center">PROFESION</th>
+                        <th style="text-align: center">FECHA DE INGRESO</th>
+                        <th style="text-align: center">FECHA DE SALIDA</th>
+                        <th style="text-align: center">MOTIVO DE VIAJE</th>
+                        <th style="text-align: center">C.I. Y/O PASAPORTE</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,28 +51,53 @@
 
                                
                             </td>
-                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)
+                                    @php
+                                        $now = \Carbon\Carbon::now();
+                                        $birthday = new \Carbon\Carbon($client->people->birth_date);
+                                        $age = $birthday->diffInYears($now);
+                                    @endphp               
+                                    {{ date('d/m/Y', strtotime($client->people->birth_date)) }} <br> <small>{{ $age }} años</small>                    
+                                @endforeach                                
+                            </td>
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)
+                                    <small>{{strtoupper($client->people->gender)}}</small>                                    
+                                @endforeach
+                            </td>
+
                             <td style="text-align: center">{{ $item->name}}</td>
-                            <td style="text-align: right"><small>{{ number_format($item->cantSolicitada,2, ',', '.') }}</small></td>
-                            <td style="text-align: right"><small>{{ number_format($item->price,2, ',', '.') }}</small></td>
-                            <td style="text-align: right"><small>{{ number_format(($item->cantSolicitada * $item->price),2, ',', '.') }}</small></td>                                                                                
+
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)                                          
+                                    @if ($client->people->profession)
+                                        <small>{{$client->people->profession}}</small>                             
+                                    @else
+                                        <small>SN</small>
+                                    @endif                             
+                                @endforeach
+                            </td>
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->start))}}</td>
+                            <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->finish))}}</td>
+
+                            <td style="text-align: center">{{ strtoupper($item->typeHospedaje)}}</td>
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)
+                                    <small>{{strtoupper($client->people->ci)}}</small>                                    
+                                @endforeach
+                            </td>                                                                              
                             
                         </tr>
                         @php
-                            $count++;
-                            $total = $total + ($item->cantSolicitada * $item->price);                            
+                            $count++;                         
                         @endphp
                         
                     @empty
                         <tr style="text-align: center">
-                            <td colspan="10">No se encontraron registros.</td>
+                            <td colspan="12">No se encontraron registros.</td>
                         </tr>
                     @endforelse
-
-                    <tr>
-                        <td colspan="7" style="text-align: right"><b>TOTAL</b></td>
-                        <td style="text-align: right"><b><small>Bs. </small>{{ number_format($total, 2, ',', '.') }}</b></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
