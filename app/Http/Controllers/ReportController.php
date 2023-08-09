@@ -159,19 +159,20 @@ class ReportController extends Controller
 
     public function generalList(Request $request)
     {
+        // dump($request);
         $data = serviceRoom::with([
             'transaction',
-            'client:serviceRoom_id,people_id,payment,foreign,country_id,department_id,province_id,city_id,origin'=>function($q)
+            'client'=>function($q)
             {
-                $q->where('deleted_at',null)
-                ->select('article_id', 'egre_id',  'price', DB::raw("SUM(cantSolicitada) as cantSolicitada"))
-                ->groupBy('article_id', 'egre_id', 'price');
+                $q->where('payment',1)
+                ->where('deleted_at', null);
             },
             'client.people',
-            'client.country:id,name',
-            'client.department:id,name',
-            'client.province:id,name',
-            'client.city:id,name'])
+            'client.people.nationality',
+            'client.country',
+            'client.department',
+            'client.province',
+            'client.city'])
             ->where('deleted_at', null)
             ->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->start)))
             ->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->finish)))
@@ -179,7 +180,7 @@ class ReportController extends Controller
             ->orderBy('id', 'ASC')->get();
 
      
-        dump($data);
+        // dump($data);
         if($request->print){
             $start = $request->start;
             $finish = $request->finish;

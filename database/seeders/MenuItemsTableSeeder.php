@@ -739,6 +739,22 @@ class MenuItemsTableSeeder extends Seeder
                 'route' => 'report.serviceroom',
                 'parameters' => NULL,
             ),
+            45 => 
+            array (
+                'id' => 53,
+                'menu_id' => 1,
+                'title' => 'General',
+                'url' => '',
+                'target' => '_self',
+                'icon_class' => 'fa-solid fa-print',
+                'color' => '#000000',
+                'parent_id' => 35,
+                'order' => 4,
+                'created_at' => '2023-08-08 19:11:47',
+                'updated_at' => '2023-08-08 19:12:05',
+                'route' => 'report.general',
+                'parameters' => NULL,
+            ),
         ));
         
         

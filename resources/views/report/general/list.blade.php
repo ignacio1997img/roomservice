@@ -40,20 +40,22 @@
                         <tr>
                             <td>{{ $count }}</td>
                             <td>
-                                <small>Nombre:</small> 
-                                @if ($item->first_name)
-                                    {{ $item->first_name}} {{ $item->last_name}}<br>
-                                @else
-                                    <small>SN</small>
-                                @endif
-
-
-
-                                @if ($item->number)
-                                    <small>Nro Habitación:</small> {{ $item->number}}
-                                @endif
+                                @foreach ($item->client as $client)
+                                    <small>{{$client->people->first_name}} {{$client->people->last_name}}</small>                                    
+                                @endforeach
                             </td>
-                            <td style="text-align: center">{{$item->user}}</td>
+                            <td style="text-align: center">{{$item->number}}</td>
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)
+                                    @if ($client->people->nationality)
+                                        <small>{{$client->people->nationality->name}}</small>                            
+                                    @else
+                                        <small>SN</small>
+                                    @endif
+                                @endforeach
+
+                               
+                            </td>
                             <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->created_at))}}</td>
                             <td style="text-align: center">{{ $item->name}}</td>
                             <td style="text-align: right"><small>{{ number_format($item->cantSolicitada,2, ',', '.') }}</small></td>
