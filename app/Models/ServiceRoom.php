@@ -22,6 +22,8 @@ class ServiceRoom extends Model
         'typeAmount',
         'typePrice',
         'qr',
+        'bill',
+        'billNumber',
         'amountFinish',
         'observation',
         'status',

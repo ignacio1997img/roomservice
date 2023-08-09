@@ -25,8 +25,7 @@
                     {{strtoupper(setting('admin.title'))}}<br>
                 </h3>
                 <h4 style="margin-bottom: 0px; margin-top: 5px">
-                    REPORTE DETALLADO DE VENTA DE COMIDA
-                    {{-- Stock Disponible {{date('d/m/Y', strtotime($start))}} Hasta {{date('d/m/Y', strtotime($finish))}} --}}
+                    REPORTE DETALLADO DE LAS HABITACIONES
                 </h4>
                 @if ($start == $finish)
                     <small style="margin-bottom: 0px; margin-top: 5px; font-size: 10px">
@@ -67,7 +66,7 @@
                             <th style="text-align: center">Fecha Inicio</th>
                             <th style="text-align: center">Fecha Fin</th>
                             <th style="text-align: center">Total Dias</th>
-                            <th style="text-align: center; width:80px">Total Bs.</th>
+                            <th style="text-align: center; width:80px">Costo Ha.bitacion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,7 +77,7 @@
                             <td style="text-align: center">{{date('d/m/Y H:i:s', strtotime($item->start))}}</td>
                             <td style="text-align: center">{{$item->finish?date('d/m/Y H:i:s', strtotime($item->finish)):'SN'}}</td>
                             <td style="text-align: center">{{$item->day}}</td>
-                            <td style="text-align: right">{{ number_format($item->amountTotal, 2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format($item->typePrice, 2, ',', '.') }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,9 +88,14 @@
                         </tr>
                     </tbody>
                 </table>
-                @foreach ($item->client as $client)
+                @foreach ($item->client as $client)                    
                     <table style="width: 100%; font-size: 8px" border="1" cellspacing="0" cellpadding="4">
                         <tbody>
+                            @if ($client->payment == 1)
+                                {{-- <tr style="  border-radius: 5px; border: 5px solid green;">
+                                    sgaeg
+                                </tr> --}}
+                            @endif
                             <tr>
                                 <th style="width:10%">NOMBRE</th>
                                 <td colspan="5" style="width:65%; text-align: left">{{$client->people->first_name}} {{$client->people->last_name}}</td>
@@ -280,9 +284,37 @@
                         <tr>
                             <td style="text-align: center"><p>Total</p></td>
                             <td colspan="2" style="text-align: right"><p>Bs. {{ number_format($extraTotal, 2, ',', '.') }}</p></td>
+                        </tr>                 
+                    </tbody>
+                </table>
+                <br>
+                <table style="width: 100%; font-size: 8px"  cellspacing="0" cellpadding="4">
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="text-align: center">Total de pago</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        <tr>
+                            <td colspan="4" style="text-align: right"><p>Total pedido de Articulos</p></td>
+                            <td style="text-align: right"><p>Bs. {{ number_format($detailTotal, 2, ',', '.') }}</p></td>
+                        </tr>  
+                        <tr>
+                            <td colspan="4" style="text-align: right"><p>Total pedido de Comida</p></td>
+                            <td style="text-align: right"><p>Bs. {{ number_format($menuTotal, 2, ',', '.') }}</p></td>
+                        </tr>  
+                        <tr>
+                            <td colspan="4" style="text-align: right"><p>Total de servicios Extras</p></td>
+                            <td style="text-align: right"><p>Bs. {{ number_format($extraTotal, 2, ',', '.') }}</p></td>
+                        </tr>  
+                        <tr>
+                            <td colspan="4" style="text-align: right"><p>Total de la Habitacion</p></td>
+                            <td style="text-align: right"><p>Bs. {{ number_format($item->amountTotal, 2, ',', '.') }}</p></td>
                         </tr>                  
                     </tbody>
                 </table>
+
+
 
                 
 

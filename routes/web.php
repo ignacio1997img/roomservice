@@ -152,6 +152,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'loggin'], function () {
     Route::get('report-serviceroom', [ReportController::class, 'serviceRoom'])->name('report.serviceroom');
     Route::post('report-serviceroom/list', [ReportController::class, 'serviceRoomList'])->name('report-serviceroom.list');
 
+
+     //Para Para las Habitaciones
+    Route::get('report-general', [ReportController::class, 'general'])->name('report.general');
+    Route::post('report-general/list', [ReportController::class, 'generalList'])->name('report-general.list');
+
+
+
+
     Route::post('register-users', [UserController::class, 'create_user'])->name('store.users');
     Route::put('update-user/{user}' ,[UserController::class ,'update_user'])->name('update.users');
 

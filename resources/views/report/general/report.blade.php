@@ -13,11 +13,11 @@
                     <div class="panel-body" style="padding: 0px">
                         <div class="col-md-8" style="padding: 0px">
                             <h1 class="page-title">
-                                <i class="voyager-calendar"></i> Reporte de Habitaciones
+                                <i class="voyager-calendar"></i> Reporte general
                             </h1>
                         </div>
                         <div class="col-md-4" style="margin-top: 30px">
-                            <form name="form_search" id="form-search" action="{{ route('report-serviceroom.list') }}" method="post">
+                            <form name="form_search" id="form-search" action="{{ route('report-general.list') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="print">
                                 
@@ -35,19 +35,6 @@
                                             <div class="form-line">
                                                 <input type="date" name="finish" class="form-control" required>
                                                 <small>Fecha Fin</small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <select name="type" id="type" class="form-control select2" required>
-                                                    <option value="" selected disabled>--Seleccione una opción--</option>
-                                                    <option value="finalizado">Habitaciones Finalizadas</option>
-                                                    <option value="asignado">Habitaciones Vigentes</option>
-                                                </select>
-                                                <small>Tipo</small>
                                             </div>
                                         </div>
                                     </div>
@@ -165,6 +152,10 @@
 
 @section('javascript')
 
+    {{-- <script src="{{ url('js/main.js') }}"></script> --}}
+    {{-- <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script> --}}
     <script>
 
         $(document).ready(function() {

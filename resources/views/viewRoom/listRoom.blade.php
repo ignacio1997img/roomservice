@@ -441,6 +441,22 @@
                                 <select name="client_id" class="form-control select2" id="room_client_id" required>
                                 </select>
                             </div>
+                            {{-- <div class="col-md-12">        --}}
+                                <div class="form-group">
+                                    <label><small>Facturación</small></label>
+                                    <select name="bill" class="form-control select2" onchange="billnumber()" id="bill" required>
+                                        <option value="" disabled selected>--Seleccione una opcion--</option>
+                                        <option value="1">
+                                            Con Factura
+                                        </option>
+                                        <option value="0">Sin Factura</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="billNumber" style="display: none">
+                                    <label><small>Nro Factura (Opcional)</small></label>
+                                    <input type="number" step="1" name="billNumber" class="form-control">
+                                </div>
+                            {{-- </div> --}}
 
                             <div class="form-group">
                                 <div class="alert alert-success" style="background: #178a32">
@@ -901,6 +917,24 @@
             
             
         })
+
+        function billnumber()
+        {
+            let bill = $('#bill option:selected').val();
+            if(bill==1)
+            {
+                $('#billNumber').css('display','block');
+            }
+            else
+            {
+                $('#billNumber').css('display','none');
+            }
+        }
+
+
+        
+
+
         function subTotal()
         {
             let dateFinishf = $("#finishf").val();

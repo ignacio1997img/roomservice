@@ -113,11 +113,6 @@ class ReportController extends Controller
 
     public function serviceRoomList(Request $request)
     {
-        // dump($request);
-
-
-        
-
         $data = serviceRoom::with(['recommended',
             'detailPart',
             'extra:serviceRoom_id,id,detail,amount',
@@ -140,36 +135,10 @@ class ReportController extends Controller
             'client.province:id,name',
             'client.city:id,name'])
             ->where('deleted_at', null)
-            // ->where('status', 'finalizado')
-            // ->groupBy('name', 'food_id', 'egre_id', 'price')
+            ->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->start)))
+            ->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->finish)))
+            ->where('status', $request->type)
             ->orderBy('id', 'ASC')->get();
-        
-        // dump($data);
-        
-        // $data = DB::table('egres as e')
-        //     ->join('users as u', 'u.id', 'e.registerUser_id')
-        //     ->join('egres_menus as em', 'em.egre_id', 'e.id')
-
-        //      ->join('food as f', 'f.id', 'em.food_id')
-        //     ->leftJoin('service_rooms as sr', 'sr.id', 'e.serviceRoom_id')
-        //     ->leftJoin('rooms as r', 'r.id', 'sr.room_id')
-        //     ->leftJoin('people as p', 'p.id', 'e.people_id')
-
-        //     ->where('e.type', 'food')
-        //     ->where('e.deleted_at', null)
-        //     ->where('em.deleted_at', null)
-
-        //     ->whereDate('e.created_at', '>=', date('Y-m-d', strtotime($request->start)))
-        //     ->whereDate('e.created_at', '<=', date('Y-m-d', strtotime($request->finish)))
-            
-        //     // ->select('sr.number', 'u.name as user', 'em.price', 'em.cant', 'em.amount',
-        //     //         'em.created_at', 'f.name as food', 'sr.category', 'sr.facility', 'p.first_name', 'p.last_name')
-        //     ->select('sr.number', 'u.name as user', 'sr.category', 'sr.facility', 'p.first_name', 'p.last_name',
-        //             'f.name', 'em.food_id','e.created_at', 'em.egre_id',  'em.price',DB::raw("SUM(em.cant) as cantSolicitada"))
-
-        //     // ->select('*')
-        //     ->groupBy('name', 'food_id', 'egre_id', 'price')->orderBy('e.created_at', 'ASC')->get();
-            
 
         if($request->print){
             $start = $request->start;
@@ -177,6 +146,46 @@ class ReportController extends Controller
             return view('report.serviceRoom.print', compact('data', 'start', 'finish'));
         }else{
             return view('report.serviceRoom.list', compact('data'));
+        }
+        
+    }
+
+
+    //  ############################################ GENERAL ###########################################
+    public function general()
+    {    
+        return view('report.general.report');
+    }
+
+    public function generalList(Request $request)
+    {
+        $data = serviceRoom::with([
+            'transaction',
+            'client:serviceRoom_id,people_id,payment,foreign,country_id,department_id,province_id,city_id,origin'=>function($q)
+            {
+                $q->where('deleted_at',null)
+                ->select('article_id', 'egre_id',  'price', DB::raw("SUM(cantSolicitada) as cantSolicitada"))
+                ->groupBy('article_id', 'egre_id', 'price');
+            },
+            'client.people',
+            'client.country:id,name',
+            'client.department:id,name',
+            'client.province:id,name',
+            'client.city:id,name'])
+            ->where('deleted_at', null)
+            ->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->start)))
+            ->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->finish)))
+            // ->where('status', $request->type)
+            ->orderBy('id', 'ASC')->get();
+
+     
+        dump($data);
+        if($request->print){
+            $start = $request->start;
+            $finish = $request->finish;
+            return view('report.general.print', compact('data', 'start', 'finish'));
+        }else{
+            return view('report.general.list', compact('data'));
         }
         
     }

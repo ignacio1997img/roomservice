@@ -34,6 +34,10 @@ class CreateServiceRoomsTable extends Migration
             $table->string('typeAmount')->nullable();
 
             $table->smallInteger('qr')->nullable();
+            $table->smallInteger('bill')->nullable();
+            $table->smallInteger('billNumber')->nullable();
+
+
             
 
             $table->smallInteger('reserve')->nullable();
