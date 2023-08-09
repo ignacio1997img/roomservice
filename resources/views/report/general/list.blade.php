@@ -20,6 +20,7 @@
                         <th style="text-align: center">SEXO</th>
                         <th style="text-align: center">E.C.</th>
                         <th style="text-align: center">PROFESION</th>
+                        <th style="text-align: center">PROCEDENCIA</th>
                         <th style="text-align: center">FECHA DE INGRESO</th>
                         <th style="text-align: center">FECHA DE SALIDA</th>
                         <th style="text-align: center">MOTIVO DE VIAJE</th>
@@ -67,8 +68,26 @@
                                 @endforeach
                             </td>
 
-                            <td style="text-align: center">{{ $item->name}}</td>
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)                                          
+                                    @if ($client->people->civilStatus)
+                                        <small>{{$client->people->civilStatus}}</small>                             
+                                    @else
+                                        <small>SN</small>
+                                    @endif                             
+                                @endforeach
+                            </td>
 
+
+                            <td style="text-align: center">
+                                @foreach ($item->client as $client)                                          
+                                    @if ($client->people->profession)
+                                        <small>{{$client->people->profession}}</small>                             
+                                    @else
+                                        <small>SN</small>
+                                    @endif                             
+                                @endforeach
+                            </td>
                             <td style="text-align: center">
                                 @foreach ($item->client as $client)                                          
                                     @if ($client->people->profession)
