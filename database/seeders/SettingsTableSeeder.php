@@ -123,11 +123,67 @@ class SettingsTableSeeder extends Seeder
                 'id' => 11,
                 'key' => 'admin.Whatsapp',
                 'display_name' => 'Mensage',
-                'value' => 'Hotel XYZ%0ALa contraseña del WIFI 12345678',
+                'value' => 'Hotel Tarope%0ALa contraseña del WIFI es HT2022., Que tenga un buen día',
                 'details' => NULL,
                 'type' => 'text',
                 'order' => 6,
                 'group' => 'Admin',
+            ),
+            10 => 
+            array (
+                'id' => 12,
+                'key' => 'configuracion.nrolicencia',
+                'display_name' => 'Nro de Licencia de Funcionamiento',
+                'value' => '324523453245',
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 2,
+                'group' => 'Configuración',
+            ),
+            11 => 
+            array (
+                'id' => 13,
+                'key' => 'configuracion.name',
+                'display_name' => 'Nombre del Hotel
+',
+                'value' => 'HOTEL TAROPE',
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 1,
+                'group' => 'Configuración',
+            ),
+            12 => 
+            array (
+                'id' => 14,
+                'key' => 'configuracion.phone',
+                'display_name' => 'Teléfono',
+                'value' => '532543245',
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 3,
+                'group' => 'Configuración',
+            ),
+            13 => 
+            array (
+                'id' => 15,
+                'key' => 'configuracion.cellphone',
+                'display_name' => 'Celular',
+                'value' => NULL,
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 4,
+                'group' => 'Configuración',
+            ),
+            14 => 
+            array (
+                'id' => 16,
+                'key' => 'configuracion.address',
+                'display_name' => 'Dirección',
+                'value' => 'Calle LA Paz',
+                'details' => NULL,
+                'type' => 'text',
+                'order' => 5,
+                'group' => 'Configuración',
             ),
         ));
         
